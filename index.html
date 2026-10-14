@@ -2673,6 +2673,21 @@ html.sb-collapsed .brand-logo{width:46px;height:46px;border-width:2px;border-rad
 #panel-flash .fc-layout:has(#fc-card:not(.flipped)) #fc-speak-nav{display:inline-flex;align-items:center;justify-content:center;color:var(--fc-accent,var(--blue));}
 #fc-speak-nav.playing{background:var(--green-tint);border-color:var(--green);color:var(--green)!important;}
 #fc-speak-nav:disabled{opacity:.6;cursor:wait;}
+
+/* Mario: bàn phím đang bật (vùng nhìn thấp) -> chế độ gọn, nhường chỗ cho khung chơi có nhân vật */
+@media (max-width:760px){
+  html.vv-short{--mbarg:52px;}
+  html.vv-short #panel-mario .mr-wrap:has(#mr-side:not([hidden])) .mr-hud{padding:5px 104px 4px 10px;gap:6px;font-size:8.5px;}
+  html.vv-short #panel-mario .mr-wrap:has(#mr-side:not([hidden])) .mr-hud .fr-ib{display:none;}
+  html.vv-short #panel-mario .mr-wrap:has(#mr-side:not([hidden])) #mr-side{top:4px;}
+  html.vv-short #panel-mario .mr-wrap:has(#mr-side:not([hidden])) .mr-q{flex:none;min-height:0;padding:4px 12px 6px;gap:0;border-bottom-width:2px;}
+  html.vv-short .mq-lbl,html.vv-short .mq-next{display:none;}
+  html.vv-short .mq-main{font-size:34px;line-height:1.15;}
+  html.vv-short .mq-main.vi{font-size:19px;line-height:1.2;}
+  html.vv-short #panel-mario .mr-wrap:has(#mr-side:not([hidden])) canvas{flex:1 1 0;min-height:110px;max-height:300px;}
+  html.vv-short #panel-mario:has(#mr-side:not([hidden])) .mr-bar{padding:3px 12px;}
+  html.vv-short #panel-mario:has(#mr-side:not([hidden])) .mr-bar input{font-size:17px;}
+}
 </style>
 </head>
 <body>
@@ -8361,6 +8376,7 @@ kbBuild();initScene();idle();
     if(!v)return;
     r.style.setProperty('--vvh',Math.round(v.height)+'px');
     r.style.setProperty('--vvt',Math.round(v.offsetTop)+'px');
+    r.classList.toggle('vv-short',v.height<560);
   }
   if(v){v.addEventListener('resize',sync);v.addEventListener('scroll',sync);sync();}
 })();
