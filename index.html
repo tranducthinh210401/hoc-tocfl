@@ -2666,11 +2666,11 @@ html.sb-collapsed .brand-logo{width:46px;height:46px;border-width:2px;border-rad
   #fs-wrap:has(#fs-ov[style*="flex"]){min-height:0;}
 }
 
-/* Flashcard mặt trước: bỏ nút Ghi chú, nút Nghe phát âm chuyển xuống hàng nút điều hướng (mặt sau giữ nguyên) */
+/* Flashcard (cả hai mặt): bỏ nút Ghi chú, nút Nghe phát âm chuyển xuống hàng nút điều hướng */
 #fc-speak-nav{display:none;}
-#panel-flash .fc-layout:has(#fc-card:not(.flipped)) #fc-notebtn{display:none;}
-#panel-flash .fc-layout:has(#fc-card:not(.flipped)) #fc-speak{display:none;}
-#panel-flash .fc-layout:has(#fc-card:not(.flipped)) #fc-speak-nav{display:inline-flex;align-items:center;justify-content:center;color:var(--fc-accent,var(--blue));}
+#panel-flash #fc-notebtn{display:none;}
+#panel-flash #fc-speak{display:none;}
+#panel-flash #fc-speak-nav{display:inline-flex;align-items:center;justify-content:center;color:var(--fc-accent,var(--blue));}
 #fc-speak-nav.playing{background:var(--green-tint);border-color:var(--green);color:var(--green)!important;}
 #fc-speak-nav:disabled{opacity:.6;cursor:wait;}
 
