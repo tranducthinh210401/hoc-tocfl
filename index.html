@@ -436,6 +436,7 @@
   .fc-back{transform:rotateY(180deg);}
   .fc-han{font-size:clamp(56px,11vw,96px);font-weight:600;line-height:1.15;word-break:break-all;color:var(--fc-accent);}
   .fc-han.long{font-size:clamp(32px,6vw,52px);}
+  #panel-flash .fc-front .fc-han{max-width:100%;overflow-wrap:anywhere;}
   .fc-hint{
     position:absolute;left:0;right:0;bottom:36px;display:flex;align-items:center;justify-content:center;gap:6px;
     font-size:11px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--text-tertiary);
@@ -3792,19 +3793,30 @@ function playWordTTS(han, btn, opts){
   // Thu nhỏ chữ Hán mặt trước cho vừa đúng 1 hàng (không xuống hàng)
   function fitHan(){
     const el = $('fc-han'); if(!el) return;
-    el.style.fontSize = '';
+    el.style.fontSize = ''; el.style.whiteSpace = ''; el.style.wordBreak = ''; el.style.overflowWrap = '';
     const face = el.parentElement, cs = getComputedStyle(face);
     const avail = face.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
     if(avail <= 0) return;                       // tab đang ẩn: sẽ chạy lại khi hiện
-    let size = parseFloat(getComputedStyle(el).fontSize);
-    const w = el.scrollWidth;
-    if(w > avail){
-      size = Math.max(14, Math.floor(size * avail / w * 0.98));
+    const base = parseFloat(getComputedStyle(el).fontSize);
+    const floor1 = face.clientWidth < 520 ? 30 : 44;      // cỡ nhỏ nhất còn chấp nhận khi giữ 1 hàng
+    const maxH = Math.max(60, face.clientHeight * 0.34);   // chiều cao tối đa của khối chữ
+    const fits = () => el.scrollWidth <= avail + 1 && el.offsetHeight <= maxH;
+    // 1) ưu tiên 1 hàng: giảm cỡ chữ tới ngưỡng floor1
+    let size = base;
+    if(el.scrollWidth > avail){
+      size = Math.max(floor1, Math.floor(base * avail / el.scrollWidth * 0.98));
       el.style.fontSize = size + 'px';
-      let guard = 20;
-      while(el.scrollWidth > avail && size > 12 && guard--){ size -= 2; el.style.fontSize = size + 'px'; }
     }
+    if(el.scrollWidth <= avail + 1) return;
+    // 2) vẫn tràn (cụm dài như mẫu ngữ pháp): cho xuống dòng, tìm cỡ chữ lớn nhất vừa cả ngang lẫn cao
+    el.style.whiteSpace = 'normal'; el.style.wordBreak = 'normal'; el.style.overflowWrap = 'anywhere';
+    size = Math.min(base, Math.max(floor1, size + 8));
+    let guard = 60;
+    el.style.fontSize = size + 'px';
+    while(!fits() && size > 14 && guard--){ size -= 2; el.style.fontSize = size + 'px'; }
   }
+  /* đo lại khi font chữ tải xong (iPhone: font tải chậm làm chữ rộng hơn lúc đo lần đầu) */
+  try{ if(document.fonts){ document.fonts.ready.then(() => fitHan()); document.fonts.addEventListener && document.fonts.addEventListener('loadingdone', () => fitHan()); } }catch(e){}
   window.addEventListener('resize', () => fitHan());
   document.querySelectorAll('.tab-btn').forEach(b => b.addEventListener('click', () => setTimeout(fitHan, 60)));
   if(window.ResizeObserver){ const _f = document.querySelector('#panel-flash .fc-front'); if(_f) new ResizeObserver(() => fitHan()).observe(_f); }
