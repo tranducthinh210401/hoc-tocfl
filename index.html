@@ -3817,6 +3817,19 @@ function playWordTTS(han, btn, opts){
   }
   /* đo lại khi font chữ tải xong (iPhone: font tải chậm làm chữ rộng hơn lúc đo lần đầu) */
   try{ if(document.fonts){ document.fonts.ready.then(() => fitHan()); document.fonts.addEventListener && document.fonts.addEventListener('loadingdone', () => fitHan()); } }catch(e){}
+  /* Đo + đo lại: font chữ Hán trên điện thoại tải chậm, lần đo đầu có thể sai nên đo thêm sau khi font xong và vài lần sau đó */
+  let _fhT = [];
+  function fitHanSoon(){
+    fitHan();
+    _fhT.forEach(clearTimeout); _fhT = [250, 900, 2200].map(ms => setTimeout(fitHan, ms));
+    try{
+      const t = (($('fc-han') || {}).textContent) || '';
+      if(document.fonts && document.fonts.load){
+        document.fonts.load('600 40px "Noto Serif TC"', t).then(() => fitHan()).catch(() => {});
+        document.fonts.load('600 40px "Be Vietnam Pro"', t).then(() => fitHan()).catch(() => {});
+      }
+    }catch(e){}
+  }
   window.addEventListener('resize', () => fitHan());
   document.querySelectorAll('.tab-btn').forEach(b => b.addEventListener('click', () => setTimeout(fitHan, 60)));
   if(window.ResizeObserver){ const _f = document.querySelector('#panel-flash .fc-front'); if(_f) new ResizeObserver(() => fitHan()).observe(_f); }
@@ -4093,7 +4106,7 @@ function playWordTTS(han, btn, opts){
     elHint.textContent = 'Nhấn hoặc Space để lật';
     elHan.textContent = it.han;
     elHan.classList.toggle('long', (it.han || '').length > 5);
-    fitHan();
+    fitHanSoon();
     const ft = $('fc-front-type'); ft.textContent = it.wordTypeLabel || ''; ft.hidden = !it.wordTypeLabel; paintPos(it.wordTypeLabel);   // từ loại hiện ở mặt trước, dưới chữ Hán, có màu riêng
     // đang ở mặt sau thì đợi thẻ xoay xong nửa vòng rồi mới đổi nội dung, tránh lộ đáp án thẻ kế tiếp
     if(wasFlipped){ backT = setTimeout(() => setBack(it), 280); } else setBack(it);
