@@ -4967,6 +4967,7 @@ function playWordTTS(han, btn, opts){
   }
   function start(items){
     show('qg-modal', false); stop(); closeInfo(); silence();
+    hidePy = true; hideVi = true; /* mặc định ẩn pinyin + nghĩa, bấm nút để xem */
     const base = items ? items.slice() : shuffleArr(ALL.filter(d => matchPart(d, lessonKey))), seen = new Set();
     let pool = [];
     base.forEach(d => {
