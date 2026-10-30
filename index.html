@@ -3732,8 +3732,82 @@ const audioKey = h => String(h || '').replace(/[（(][^）)]*[）)]/g, '').split
 /* Chỉ giáo trình Đương Đại (A1/A2/B1) mới dùng file ghi âm thật; MỌI giáo trình khác (ngữ pháp, các cấp TOCFL, từ vựng theo chủ đề…) luôn dùng giọng chuẩn Đài Loan phồn thể (zh-TW) */
 const REC_BOOKS = ['A1','A2','B1'];
 function activeBook(){ try{ return LESSON_SYNC.length ? LESSON_SYNC[0].bookSel.value : ''; }catch(e){ return ''; } }
+/* ============ Đọc song ngữ: mẫu ngữ pháp có cả tiếng Việt lẫn chữ Hán phồn thể ============ */
+/* Tách chuỗi theo loại chữ: chữ Hán -> giọng Đài Loan (zh-TW), chữ Latin/tiếng Việt -> giọng Việt (vi); ký hiệu (+ ... ~ /) bỏ qua */
+function splitMixed(t){
+  const clean = String(t || '').replace(/[（(][^）)]*[）)]/g, ' ');
+  const re = /([\u3400-\u9fff\uf900-\ufaff]+)|([A-Za-z0-9\u00C0-\u1EF9][A-Za-z0-9\u00C0-\u1EF9'’\-\s]*)/g;
+  const segs = []; let m;
+  while((m = re.exec(clean))){
+    const lang = m[1] ? 'zh-TW' : 'vi', txt = (m[1] || m[2]).replace(/\s+/g, ' ').trim();
+    if(!txt) continue;
+    const last = segs[segs.length - 1];
+    if(last && last.lang === lang) last.text += ' ' + txt; else segs.push({lang, text: txt});
+  }
+  return segs;
+}
+const hasLatin = t => /[A-Za-z\u00C0-\u1EF9]/.test(String(t || '').replace(/[（(][^）)]*[）)]/g, ''));
+let mixToken = 0;
+function mixVoice(lang){
+  try{
+    const v = speechSynthesis.getVoices();
+    if(lang === 'vi') return v.find(x => /^vi/i.test(x.lang)) || null;
+    return zhVoice();
+  }catch(e){ return null; }
+}
+function playMixed(segs, btn, opts){
+  opts = opts || {};
+  if(currentAudio){
+    try{ currentAudio.pause(); }catch(e){}
+    if(currentBtn){ currentBtn.classList.remove('playing'); currentBtn.disabled = false; }
+  }
+  try{ speechSynthesis.cancel(); }catch(e){}
+  const my = ++mixToken; let cur = null;
+  const shim = { pause(){ mixToken++; try{ speechSynthesis.cancel(); }catch(e){} if(cur){ try{ cur.pause(); }catch(e){} } } };
+  currentAudio = shim; currentBtn = btn;
+  btn.disabled = false; btn.classList.add('playing');
+  const finish = ok => {
+    if(mixToken !== my) return;
+    btn.classList.remove('playing'); btn.disabled = false;
+    if(ok && opts.onEnd) opts.onEnd();
+    else if(!ok && !opts.silent) alert('Không phát được âm thanh. Kiểm tra kết nối Internet rồi thử lại.');
+  };
+  const net = seg => new Promise(res => {
+    if(ttsDown) return res(false);
+    let done = false, started = false;
+    const end = ok => { if(done) return; done = true; clearTimeout(t); if(!ok && !started) ttsDown = true; res(ok); };
+    const a = new Audio('https://translate.google.com/translate_tts?ie=UTF-8&q=' + encodeURIComponent(seg.text) + '&tl=' + (seg.lang === 'vi' ? 'vi' : 'zh-TW') + '&client=tw-ob');
+    cur = a;
+    a.addEventListener('playing', () => { started = true; clearTimeout(t); });
+    a.addEventListener('ended', () => end(true));
+    a.addEventListener('error', () => end(false));
+    const t = setTimeout(() => { if(!started){ try{ a.pause(); }catch(e){} end(false); } }, 3500);
+    a.play().catch(() => end(false));
+  });
+  const local = seg => new Promise(res => {
+    try{
+      if(!('speechSynthesis' in window)) return res(false);
+      const u = new SpeechSynthesisUtterance(seg.text), v = mixVoice(seg.lang === 'vi' ? 'vi' : 'zh');
+      u.lang = seg.lang === 'vi' ? 'vi-VN' : 'zh-TW'; if(v) u.voice = v; u.rate = 0.92;
+      u.onend = () => res(true); u.onerror = () => res(false);
+      speechSynthesis.speak(u);
+    }catch(e){ res(false); }
+  });
+  (async () => {
+    for(const seg of segs){
+      if(mixToken !== my) return;
+      let ok = await net(seg);
+      if(mixToken !== my) return;
+      if(!ok) ok = await local(seg);
+      if(!ok){ finish(false); return; }
+    }
+    finish(true);
+  })();
+}
 function playWord(han, btn, opts){
   opts = opts || {};
+  /* mẫu ngữ pháp song ngữ (Việt + Trung): mỗi đoạn đọc bằng đúng giọng của ngôn ngữ đó */
+  if(hasLatin(han)){ const segs = splitMixed(han); if(segs.length){ playMixed(segs, btn, opts); return; } }
   const clip = REC_BOOKS.indexOf(activeBook()) >= 0 ? WORD_AUDIO[audioKey(han)] : null;
   if(clip){
     if(currentAudio){
