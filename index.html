@@ -1021,6 +1021,8 @@
   .qg-card .ty-prompt.vi{font-size:clamp(20px,3.2vw,26px);}
   .qg-card .ty-prompt.ctx{font-size:clamp(22px,3.6vw,30px);line-height:1.7;}
   .qg-py{display:inline-flex;align-items:center;gap:6px;margin:0;font-size:13px;}
+  .qg-vi{margin:6px 4px 2px;text-align:center;font-size:clamp(15px,2.4vw,18px);line-height:1.5;color:var(--muted,#6b7280);font-style:italic;}
+  #qg-vieye{display:inline-flex;}
   .qg-py .ty-ic{width:15px;height:15px;} #qg-eye{display:inline-flex;}
   .qg-pinyin{font-style:italic;color:var(--text-secondary);font-size:15px;min-height:22px;margin:4px 0 12px;}
   .qg-keyhint{display:inline-block;background:#e8f6fd;border:1px solid #bfe3f7;color:#0a5a96;font-size:12px;border-radius:999px;padding:6px 14px;margin:0 0 18px;}
@@ -3188,8 +3190,10 @@ html.sb-collapsed .brand-logo{width:46px;height:46px;border-width:2px;border-rad
             <button class="ty-spk" id="qg-spk" type="button" aria-label="Nghe phát âm (Ctrl+X)" title="Nghe phát âm (Ctrl+X)"><svg class="ty-ic" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></button>
             <div class="ls-tag" id="qg-tag" hidden></div>
             <button class="mt-link qg-py" id="qg-pybtn" type="button"><span id="qg-eye"></span><span id="qg-pylbl">Ẩn pinyin</span></button>
+            <button class="mt-link qg-py" id="qg-vibtn" type="button" hidden><span id="qg-vieye"></span><span id="qg-vilbl">Ẩn nghĩa</span></button>
           </div>
           <div class="qg-pinyin" id="qg-pinyin"></div>
+          <div class="qg-vi" id="qg-vi" hidden></div>
           <div class="qg-keyhint" id="qg-keyhint">Phím tắt: <kbd>Ctrl + X</kbd> để phát âm</div>
           <div class="qg-opts" id="qg-opts"></div>
           <div class="qg-foot">Sử dụng phím số 1-4 để chọn nhanh đáp án</div>
@@ -4517,12 +4521,31 @@ function playWordTTS(han, btn, opts){
     const cfg = (() => { try { return JSON.parse(localStorage.getItem('wrCfg') || '{}'); } catch(e){ return {}; } })();
     let outline = cfg.outline !== false, whole = cfg.whole !== false, maxN = cfg.maxN || 4;
     const saveCfg = () => { try { localStorage.setItem('wrCfg', JSON.stringify({outline, whole, maxN})); } catch(e){} };
-    const loadHW = () => hwP || (hwP = new Promise((res, rej) => {
-      if(window.HanziWriter) return res(window.HanziWriter);
-      const sc = document.createElement('script'); sc.src = HW_SRC;
-      sc.onload = () => res(window.HanziWriter); sc.onerror = () => { hwP = null; rej(new Error('load')); };
-      document.head.appendChild(sc);
-    }));
+    const HW_SRCS = ['hanzi-writer.min.js', HW_SRC, 'https://unpkg.com/hanzi-writer@3.5.0/dist/hanzi-writer.min.js'];
+    const DATA_SRCS = ['https://cdn.jsdelivr.net/npm/hanzi-writer-data@2.0/', 'https://unpkg.com/hanzi-writer-data@2.0/', 'https://fastly.jsdelivr.net/npm/hanzi-writer-data@2.0/'];
+    const tryScript = src => new Promise((res, rej) => {
+      const sc = document.createElement('script'); let done = false;
+      const fin = ok => { if(done) return; done = true; clearTimeout(tm); if(ok && window.HanziWriter) res(window.HanziWriter); else { sc.remove(); rej(new Error('load')); } };
+      const tm = setTimeout(() => fin(false), 8000);
+      sc.onload = () => fin(true); sc.onerror = () => fin(false); sc.src = src; document.head.appendChild(sc);
+    });
+    const loadHW = () => hwP || (hwP = (async () => {
+      if(window.HanziWriter) return window.HanziWriter;
+      for(const src of HW_SRCS){ try{ return await tryScript(src); }catch(e){} }
+      hwP = null; throw new Error('load');
+    })());
+    const charLoader = (ch, ok, bad) => {
+      let i = 0;
+      const next = () => {
+        if(i >= DATA_SRCS.length) return bad && bad();
+        const url = DATA_SRCS[i++] + encodeURIComponent(ch) + '.json';
+        const ctl = ('AbortController' in window) ? new AbortController() : null;
+        const tm = setTimeout(() => { try{ ctl && ctl.abort(); }catch(e){} }, 8000);
+        fetch(url, ctl ? {signal: ctl.signal} : {}).then(r => { if(!r.ok) throw 0; return r.json(); })
+          .then(j => { clearTimeout(tm); ok(j); }).catch(() => { clearTimeout(tm); next(); });
+      };
+      next();
+    };
     const wordOf = it => {
       let t = (it.han || '').replace(/[（(][^）)]*[）)]/g, '').split(/[\/／、]/)[0];
       return Array.from(t).filter(c => /[㐀-鿿豈-﫿]/.test(c));
@@ -4585,7 +4608,7 @@ function playWordTTS(han, btn, opts){
       cv.replaceChildren(); writers = []; msg.className = 'wr-msg'; msg.textContent = 'Đang tải dữ liệu nét chữ…';
       const grp = groups[gi] || [], size = Math.max(1, maxN), startIdx = gi * (whole ? size : 1);
       Array.from(q('wr-tiles').children).forEach((b, i) => b.classList.toggle('on', i >= startIdx && i < startIdx + grp.length));
-      let HW; try { HW = await loadHW(); } catch(e){ if(my === token) msg.textContent = 'Không tải được thư viện nét chữ — cần kết nối mạng.'; return; }
+      let HW; try { HW = await loadHW(); } catch(e){ if(my === token) msg.textContent = 'Không tải được thư viện nét chữ — kiểm tra mạng rồi bấm “Làm lại”.'; return; }
       if(my !== token) return;
       const avail = Math.max(120, (q('wr-cv').clientWidth || 360) - 24);
       const cols = Math.max(1, Math.min(grp.length, Math.floor((avail + 8) / 168)));
@@ -4599,6 +4622,7 @@ function playWordTTS(han, btn, opts){
           width: sz, height: sz, padding: 8, showCharacter: false, showOutline: outline,
           strokeColor: ink, outlineColor: dark ? '#3a3a3c' : '#d3d6dc', drawingColor: ink, highlightColor: '#0071e3',
           drawingWidth: 8, strokeAnimationSpeed: 1.4, delayBetweenStrokes: 120, leniency: 1.2,
+          charDataLoader: charLoader,
           onLoadCharDataError: () => { if(my === token) msg.textContent = 'Chưa có dữ liệu nét cho chữ “' + c + '”.'; }
         }));
       });
@@ -4812,12 +4836,21 @@ function playWordTTS(han, btn, opts){
     $('qg-count').textContent = 'Câu ' + (idx + 1) + ' / ' + qs.length;
     $('qg-pbar').style.width = (qs.length ? idx / qs.length * 100 : 0) + '%';
   }
+  let hideVi = false;
+  function viUi(){
+    const q = qs[idx], has = !!(q && q.m === 'ctx' && q.ex && q.ex.vi);
+    $('qg-vibtn').hidden = !has;
+    $('qg-vieye').innerHTML = hideVi ? EYE : EYEOFF;
+    $('qg-vilbl').textContent = hideVi ? 'Hiện nghĩa' : 'Ẩn nghĩa';
+    const v = $('qg-vi'); v.hidden = !has || hideVi; v.textContent = has ? q.ex.vi : '';
+  }
   function pyUi(){
     $('qg-eye').innerHTML = hidePy ? EYE : EYEOFF;
     $('qg-pylbl').textContent = hidePy ? 'Hiện pinyin' : 'Ẩn pinyin';
     $('qg-opts').classList.toggle('nopy', hidePy);
     const q = qs[idx];
     $('qg-pinyin').textContent = (q && q.m === 'zh2vi' && !hidePy) ? (q.it.pinyin || '') : '';
+    viUi();
   }
   function onTick(){
     if(over || infoOpen) return;
@@ -4952,6 +4985,7 @@ function playWordTTS(han, btn, opts){
   lessonKey = sel.value;
   $('qg-spk').addEventListener('click', speak);
   $('qg-pybtn').addEventListener('click', () => { hidePy = !hidePy; pyUi(); });
+  $('qg-vibtn').addEventListener('click', () => { hideVi = !hideVi; viUi(); });
   $('qg-isp').addEventListener('click', () => { const w = $('qg-iw').textContent; if(w) playWord(speakText({han: w}), $('qg-isp'), {silent: true}); });
   $('qg-ipause').addEventListener('click', () => { cdPaused = !cdPaused; $('qg-ipause').textContent = cdPaused ? '▶' : '⏸'; });
   $('qg-icont').addEventListener('click', next);
