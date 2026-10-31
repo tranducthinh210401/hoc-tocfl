@@ -77,7 +77,34 @@ var css='\
 @media (max-width:700px){.ta-panel{inset:0;width:auto;max-width:none;max-height:none;height:100%;border-radius:0;border:0}.ta-h{padding-top:calc(12px + env(safe-area-inset-top,0px))}.ta-foot{padding-bottom:calc(9px + env(safe-area-inset-bottom,0px))}}\
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ta-h{background:linear-gradient(100deg,#3a3320,#1f2f46);color:#f5f5f7}}\
 html[data-theme="dark"] .ta-h{background:linear-gradient(100deg,#3a3320,#1f2f46);color:#f5f5f7}\
-html[data-theme="dark"] .ta-x{background:rgba(255,255,255,.14)}';
+html[data-theme="dark"] .ta-x{background:rgba(255,255,255,.14)}\
+.ta-panel{width:420px;height:640px;border-radius:26px;border:1px solid var(--border,rgba(0,0,0,.08));box-shadow:0 24px 64px rgba(20,20,40,.28),0 2px 8px rgba(0,0,0,.08)}\
+.ta-h{position:relative;padding:14px 16px;gap:12px;background:linear-gradient(115deg,#0071e3 0%,#4f46e5 60%,#8b5cf6 100%);color:#fff}\
+.ta-h::after{content:"";position:absolute;right:-30px;top:-40px;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,.12);pointer-events:none}\
+.ta-h img{width:46px;height:46px;border:2.5px solid rgba(255,255,255,.9);box-shadow:0 2px 8px rgba(0,0,0,.2)}\
+.ta-ht{position:relative}.ta-ht::before{content:"";position:absolute;left:-14px;bottom:2px;width:11px;height:11px;border-radius:50%;background:#34d399;border:2px solid #4f46e5;display:none}\
+.ta-h b{font-size:16px;font-weight:800;letter-spacing:.01em}\
+.ta-h small{opacity:.88;font-size:12px;display:flex;align-items:center;gap:5px}.ta-h small::before{content:"";width:7px;height:7px;border-radius:50%;background:#34d399;box-shadow:0 0 0 3px rgba(52,211,153,.3)}\
+.ta-h .ta-x{background:rgba(255,255,255,.18);color:#fff;width:34px;height:34px;position:relative;z-index:1;transition:background .15s}.ta-h .ta-x:hover{background:rgba(255,255,255,.3)}\
+.ta-msgs{padding:16px 16px 8px;gap:12px;background:var(--bg,#f5f5f7);scroll-behavior:smooth}\
+.ta-m{max-width:88%;padding:10px 14px;font-size:15px;line-height:1.55;box-shadow:0 1px 2px rgba(0,0,0,.06)}\
+.ta-m.u{background:linear-gradient(135deg,#0071e3,#4f46e5);border-radius:20px 20px 6px 20px;box-shadow:0 3px 10px rgba(79,70,229,.3)}\
+.ta-m.a{background:var(--surface,#fff);border:1px solid var(--border-soft,rgba(0,0,0,.06));border-radius:20px 20px 20px 6px;position:relative;margin-left:0}\
+.ta-m.a b{font-weight:700}\
+.ta-m.a .zh{font-size:1.08em;color:var(--blue,#0071e3);border-bottom:0;background:var(--blue-tint,rgba(0,113,227,.08));border-radius:6px;padding:0 4px}\
+.ta-m{animation:ta-in .25s}\
+.ta-spi{background:var(--blue,#0071e3)!important;color:#fff!important;width:24px!important;height:24px!important;font-size:11px!important;margin:0 4px 0 2px!important;box-shadow:0 1px 4px rgba(0,113,227,.4);transition:transform .12s}.ta-spi:active{transform:scale(.9)}\
+.ta-sug{padding:8px 16px 10px;background:var(--bg,#f5f5f7);scrollbar-width:none}.ta-sug::-webkit-scrollbar{display:none}\
+.ta-sug button{background:var(--surface,#fff);border:1px solid var(--border,rgba(0,0,0,.1));box-shadow:0 1px 2px rgba(0,0,0,.05);font-weight:600;color:var(--blue,#0071e3);transition:background .15s,transform .1s}.ta-sug button:hover{background:var(--blue-tint,rgba(0,113,227,.08))}.ta-sug button:active{transform:scale(.97)}\
+.ta-cin{padding:10px 14px 12px;align-items:flex-end;gap:8px;border-top:1px solid var(--border-soft,rgba(0,0,0,.07));background:var(--surface,#fff)}\
+.ta-cin textarea{border-radius:22px;padding:11px 16px;min-height:46px;background:var(--bg,#f5f5f7);border:1.5px solid transparent;font-size:15.5px;transition:border-color .15s,background .15s}.ta-cin textarea:focus{background:var(--surface,#fff);border-color:var(--blue,#0071e3);box-shadow:0 0 0 4px rgba(0,113,227,.12)}\
+.ta-cin .ta-go{width:46px;height:46px;padding:0;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0071e3,#4f46e5);box-shadow:0 3px 10px rgba(79,70,229,.35);transition:transform .12s,opacity .15s}.ta-cin .ta-go:active{transform:scale(.92)}.ta-cin .ta-go:disabled{opacity:.45;box-shadow:none}\
+.ta-foot{background:var(--surface,#fff);border-top:0;padding:0 10px 10px;font-size:11px}\
+.ta-fab{width:64px;height:64px;box-shadow:0 8px 24px rgba(79,70,229,.4),0 2px 6px rgba(0,0,0,.18)}\
+.ta-lbl{background:linear-gradient(135deg,#0071e3,#4f46e5);color:#fff;border:0;box-shadow:0 8px 22px rgba(79,70,229,.4)}\
+@media (max-width:700px){.ta-panel{inset:0;width:auto;max-width:none;height:100%;max-height:none;border-radius:0;border:0}.ta-h{padding-top:calc(14px + env(safe-area-inset-top,0px))}.ta-m{font-size:15.5px}}\
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ta-h{background:linear-gradient(115deg,#0a4f9e,#3730a3 60%,#6d28d9);color:#fff}:root:not([data-theme="light"]) .ta-m.a .zh{color:#7db8ff}}\
+html[data-theme="dark"] .ta-h{background:linear-gradient(115deg,#0a4f9e,#3730a3 60%,#6d28d9);color:#fff}html[data-theme="dark"] .ta-m.a .zh{color:#7db8ff}';
 var st=document.createElement('style');st.textContent=css;document.head.appendChild(st);
 
 /* ---------- Từ điển nội bộ (kho TOCFL trong trang) ---------- */
@@ -196,12 +223,12 @@ var fab=document.createElement('button');fab.className='ta-fab';fab.type='button
 fab.innerHTML='<span class="ta-lbl">Trò chuyện với Lona</span>';
 document.body.appendChild(fab);
 var panel=document.createElement('div');panel.className='ta-panel';panel.setAttribute('role','dialog');panel.setAttribute('aria-label','Trợ lý ảo Lona');
-panel.innerHTML='<div class="ta-h"><img src="'+IMG+'" alt=""><div><b>Trợ lý ảo Lona</b></div><button class="ta-x" type="button" aria-label="Đóng">×</button></div>'
+panel.innerHTML='<div class="ta-h"><img src="'+IMG+'" alt=""><div class="ta-ht"><b>Trợ lý ảo Lona</b><small>Trực tuyến · hỏi gì cũng được</small></div><button class="ta-x" type="button" aria-label="Đóng">×</button></div>'
 
  +'<div class="ta-body ta-dict"><div class="ta-modes"><button type="button" data-m="auto" class="on">Tự nhận</button><button type="button" data-m="zh2vi">繁 → Việt</button><button type="button" data-m="vi2zh">Việt → 繁</button></div>'
  +'<div class="ta-in"><textarea rows="1" placeholder="Gõ chữ Hán / tiếng Việt…" enterkeyhint="search"></textarea><button class="ta-go" type="button">Dịch</button></div>'
  +'<div class="ta-out"></div><div class="ta-hist"></div></div>'
- +'<div class="ta-chat" hidden><div class="ta-msgs"></div><div class="ta-sug"></div><div class="ta-in ta-cin"><textarea rows="1" placeholder="Hỏi về từ vựng, ngữ pháp, cách dùng…" enterkeyhint="send"></textarea><button class="ta-go" type="button">Gửi</button></div></div>'
+ +'<div class="ta-chat" hidden><div class="ta-msgs"></div><div class="ta-sug"></div><div class="ta-in ta-cin"><textarea rows="1" placeholder="Nhắn cho Lona…" enterkeyhint="send"></textarea><button class="ta-go" type="button" aria-label="Gửi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></div></div>'
  +'<div class="ta-foot">© 2026 Học TOCFL cùng Thịnh &amp; Loan</div>';
 document.body.appendChild(panel);
 var ta=$('textarea',panel),out=$('.ta-out',panel),go=$('.ta-go',panel),histEl=$('.ta-hist',panel);
