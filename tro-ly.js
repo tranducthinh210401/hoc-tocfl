@@ -3,9 +3,9 @@
    (2) Google Translate (gtx) ra zh-TW + pinyin, (3) MyMemory dự phòng. */
 (function(){
 'use strict';
-var IMG='tro-ly-avatar.jpg?v=20261031j';
+var IMG='tro-ly-avatar.jpg?v=20261031k';
 /* Địa chỉ máy chủ trung gian (xem worker/README.md). Để trống = dùng dịch miễn phí, chưa có giải thích ngữ pháp bằng AI. */
-var API=(window.TRO_LY_API||'').replace(/\/$/,'');
+var API=(window.TRO_LY_API||'https://tro-ly-tocfl.tranducthinh210401.workers.dev').replace(/\/$/,'');
 var CJK=/[㐀-䶿一-鿿豈-﫿]/;
 var CJK_ALL=/^[㐀-䶿一-鿿豈-﫿]+$/;
 function $(s,r){return (r||document).querySelector(s)}
