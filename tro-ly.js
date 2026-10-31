@@ -4,6 +4,8 @@
 (function(){
 'use strict';
 var IMG='tro-ly-cun.jpg';
+/* Địa chỉ máy chủ trung gian (xem worker/README.md). Để trống = dùng dịch miễn phí, chưa có giải thích ngữ pháp bằng AI. */
+var API=(window.TRO_LY_API||'').replace(/\/$/,'');
 var CJK=/[㐀-䶿一-鿿豈-﫿]/;
 var CJK_ALL=/^[㐀-䶿一-鿿豈-﫿]+$/;
 function $(s,r){return (r||document).querySelector(s)}
@@ -52,6 +54,7 @@ var css='\
 .ta-seg{display:flex;flex-wrap:wrap;gap:6px}.ta-seg span{background:var(--surface,#fff);border:1px solid var(--border,rgba(0,0,0,.1));border-radius:10px;padding:4px 8px;text-align:center;line-height:1.25}\
 .ta-seg b{display:block;font-family:var(--han-font,serif);font-size:18px}.ta-seg small{display:block;font-size:11px;color:var(--blue,#0071e3)}.ta-seg em{display:block;font-style:normal;font-size:11.5px;color:var(--text-secondary,#6e6e73);max-width:110px}\
 .ta-hist{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.ta-hist button{border:1px solid var(--border,rgba(0,0,0,.1));background:var(--surface-2,#fafafa);color:inherit;border-radius:999px;padding:5px 11px;font:500 13px inherit;font-family:inherit;cursor:pointer;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}\
+.ta-gram{width:100%;margin-top:12px;border:1.5px solid var(--blue,#0071e3);background:transparent;color:var(--blue,#0071e3);border-radius:14px;padding:11px;font:700 14px inherit;font-family:inherit;cursor:pointer}.ta-gram:disabled{opacity:.55}\
 .ta-err{color:#c2410c;font-size:13.5px;margin-top:10px}\
 .ta-foot{flex:none;text-align:center;font-size:11px;color:var(--text-tertiary,#86868b);padding:6px 10px 9px;border-top:1px solid var(--border-soft,rgba(0,0,0,.07))}\
 .ta-dots{display:inline-block}.ta-dots::after{content:"…";animation:ta-bob 1s infinite}\
@@ -139,9 +142,20 @@ function mymemory(q,from,to,signal){
     return {text:t,translit:'',alts:[]};
   });
 }
+function apiCall(task,q,dir,signal){
+  return fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({task:task,q:q,dir:dir}),signal:signal})
+    .then(function(r){return r.json().catch(function(){return {ok:false,error:'http_'+r.status}})})
+    .then(function(j){if(!j||!j.ok||!j.data){var e=new Error((j&&j.error)||'api');e.code=j&&j.error;throw e}return j.data});
+}
 function translate(q,dir,signal){
   var sl=dir==='zh2vi'?'zh-TW':'vi',tl=dir==='zh2vi'?'vi':'zh-TW';
-  return gtx(q,sl,tl,signal).catch(function(e){
+  var first=API?apiCall('translate',q,dir,signal).then(function(d){
+    if(!d.translation)throw new Error('empty');
+    return {text:String(d.translation),translit:String(d.pinyin||''),alts:(d.alternatives||[]).map(String).slice(0,6),trad:d.traditional?String(d.traditional):'',note:d.note?String(d.note):'',ai:true};
+  }):Promise.reject(new Error('noapi'));
+  return first.catch(function(e){
+    if(e&&e.name==='AbortError')throw e;
+    return gtx(q,sl,tl,signal)}).catch(function(e){
     if(e&&e.name==='AbortError')throw e;
     return mymemory(q,sl,tl,signal);
   });
@@ -241,6 +255,41 @@ function detect(q){
   return han>0&&han>=q.replace(/\s/g,'').length*0.3?'zh2vi':'vi2zh';
 }
 
+function localGrammar(zh){
+  var I=buildIdx(),out=[];
+  I.list.forEach(function(w){
+    if(out.length>=5||!(w.wordType==='Ngữ pháp'||/^\[GP\]/.test(w.lesson||'')))return;
+    var ch=String(w.han).split(/[^\u3400-\u9fff]+/).filter(Boolean);
+    if(ch.length&&ch.every(function(c){return zh.indexOf(c)>=0}))out.push(w);
+  });
+  return simplifyEntries(out);
+}
+function grammarHtml(d){
+  var h='<div class="ta-card"><h4>Giải thích ngữ pháp (AI)</h4>';
+  if(d.summary)h+='<div style="font-size:14px;margin-bottom:6px">'+esc(d.summary)+'</div>';
+  if(d.breakdown&&d.breakdown.length)h+='<div class="ta-seg" style="margin:6px 0 10px">'+d.breakdown.map(function(b){
+    return '<span><b>'+esc(b.han)+'</b><small>'+esc(b.pinyin||'')+'</small><em>'+esc(b.vi||'')+(b.role?' · '+esc(b.role):'')+'</em></span>'}).join('')+'</div>';
+  (d.points||[]).forEach(function(p){
+    h+='<div class="ta-ent"><span class="h">'+esc(p.pattern||'')+'</span>'+(p.level?'<span class="t">'+esc(p.level)+'</span>':'')
+     +'<div class="m">'+esc(p.explain||'')+'</div>'
+     +(p.mistake?'<div class="e">⚠️ '+esc(p.mistake)+'</div>':'')
+     +(p.examples||[]).map(function(x){return '<div class="e"><i>'+esc(x.han)+'</i> <span style="color:var(--blue,#0071e3)">'+esc(x.pinyin||'')+'</span> — '+esc(x.vi||'')+'</div>'}).join('')+'</div>';
+  });
+  return h+'</div>';
+}
+function grammar(zh,btn){
+  var box=$('.ta-gout',out);if(!box)return;
+  var loc=localGrammar(zh);
+  var locHtml=loc.length?'<div class="ta-card"><h4>Mẫu ngữ pháp trong kho “100 ngữ pháp”</h4>'+loc.map(entryHtml).join('')+'</div>':'';
+  if(!API){
+    box.innerHTML=locHtml+'<div class="ta-note" style="margin:8px 4px">'+(loc.length?'':'Chưa tìm thấy mẫu ngữ pháp trùng trong kho. ')+'Giải thích chi tiết bằng AI sẽ bật khi kết nối máy chủ (xem worker/README.md).</div>';return;
+  }
+  btn.disabled=true;box.innerHTML=locHtml+'<div class="ta-card"><h4>Đang phân tích ngữ pháp <span class="ta-dots"></span></h4></div>';
+  apiCall('grammar',zh,'',null).then(function(d){box.innerHTML=locHtml+grammarHtml(d)})
+   .catch(function(e){box.innerHTML=locHtml+'<div class="ta-err">'+(e&&e.code==='limit'?'Hôm nay bạn đã dùng hết lượt giải thích. Mai thử lại nhé.':'Chưa giải thích được lúc này, thử lại sau giây lát nhé.')+'</div>'})
+   .then(function(){btn.disabled=false});
+}
+
 function run(){
   var q=ta.value.trim().slice(0,500);if(!q)return;
   if(ctrl)ctrl.abort();ctrl=new AbortController();var my=ctrl;
@@ -265,10 +314,10 @@ function run(){
   }
   var main=translate(q,dir,my.signal);
   var trad=null;
-  if(dir==='zh2vi'&&/[一-鿿]/.test(q)){trad=gtx(q,'zh-CN','zh-TW',my.signal).then(function(r){return r.text&&r.text!==q?r.text:null}).catch(function(){return null})}
+  if(dir==='zh2vi'&&/[一-鿿]/.test(q)&&!API){trad=gtx(q,'zh-CN','zh-TW',my.signal).then(function(r){return r.text&&r.text!==q?r.text:null}).catch(function(){return null})}
   Promise.all([main,trad]).then(function(res){
     if(my!==ctrl)return;
-    var r=res[0],tr=res[1],h='';
+    var r=res[0],tr=res[1]||r.trad||null,h='';if(tr===q)tr=null;
     if(dir==='zh2vi'){
       h+='<div class="ta-card"><h4>Nghĩa tiếng Việt</h4><div class="ta-row"><div><div class="ta-big">'+esc(r.text)+'</div>'
        +(r.translit?'<div class="ta-py">'+esc(r.translit)+'</div>':'')+(tr?'<div class="ta-note">Dạng phồn thể: <b style="font-family:var(--han-font,serif)">'+esc(tr)+'</b> '+'</div>':'')
@@ -280,8 +329,12 @@ function run(){
        +'</div><div style="display:flex;gap:6px">'+speakBtn(r.text)+copyBtn(r.text)+'</div></div>'
        +(r.alts.length?'<div class="ta-note">Cách nói khác: '+r.alts.map(function(a){return '<a href="#" data-q="'+esc(a)+'" style="color:inherit">'+esc(a)+'</a>'}).join(' · ')+'</div>':'')+'</div>';
     }
+    if(r.note)h+='<div class="ta-note" style="margin:6px 4px 0">'+esc(r.note)+'</div>';
+    var zh=dir==='zh2vi'?(tr||q):r.text;
+    h+='<button class="ta-gram" type="button" data-zh="'+esc(zh)+'">📘 Giải thích ngữ pháp</button><div class="ta-gout"></div>';
     out.innerHTML=localHtml+h+segHtml+'<div class="ta-note" style="margin:8px 4px 0">'+(local.length?'Ưu tiên nghĩa trong kho TOCFL ở trên; ':'')+'bản dịch máy chỉ để tham khảo.</div>';
     bindOut();pushHist(q);
+    var gb=$('.ta-gram',out);if(gb)gb.onclick=function(){grammar(gb.dataset.zh,gb)};
   }).catch(function(e){
     if(e&&e.name==='AbortError')return;
     if(my!==ctrl)return;
