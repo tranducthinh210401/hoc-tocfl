@@ -8983,7 +8983,7 @@ kbBuild();initScene();idle();
 <script>
 /* Bấm logo hoặc chữ Học TOCFL cùng Thịnh & Loan -> về trang chủ */
 (function(){
-  var st=document.createElement('style');st.textContent='.brand,.tb-brand b{cursor:pointer;-webkit-tap-highlight-color:transparent}';document.head.appendChild(st);
+  var st=document.createElement('style');st.textContent='.brand,.tb-brand b{cursor:pointer;-webkit-tap-highlight-color:transparent}.tb-brand,.tb-brand b{pointer-events:auto!important}.tb-brand b{position:relative;z-index:2;-webkit-user-select:none;user-select:none}';document.head.appendChild(st);
   function home(){var h=document.querySelector('.tab-btn[data-tab="home"]');if(h)h.click();window.scrollTo({top:0})}
   document.addEventListener('click',function(e){var t=e.target;if(t.closest&&t.closest('.brand,.tb-brand b'))home()});
   document.querySelectorAll('.brand,.tb-brand b').forEach(function(el){el.setAttribute('role','link');el.setAttribute('title','Về trang chủ')});
