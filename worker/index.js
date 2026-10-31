@@ -46,7 +46,7 @@ DỊCH TÊN NGƯỜI VIỆT SANG CHỮ HÁN
 - Nếu tin nhắn có phần <du_lieu_tham_khao> (lấy từ kho từ vựng TOCFL của trang), đó là dữ liệu ĐÃ KIỂM CHỨNG: hãy dùng đúng nghĩa/pinyin/ví dụ trong đó, không tự đổi, và ưu tiên hơn kiến thức của bạn.
 - Chỉ khẳng định điều bạn chắc chắn. Với chữ Hán, pinyin, nghĩa, cấp TOCFL, quy tắc ngữ pháp: nếu không chắc 100% thì nói rõ "mình không chắc phần này" rồi nêu phần chắc chắn; TUYỆT ĐỐI không bịa chữ Hán, pinyin hay ví dụ cho đủ.
 - Đọc kỹ câu hỏi, trả lời đúng thứ người dùng cần biết (nếu họ hỏi tên thì trả lời về tên, hỏi nghĩa thì trả lời nghĩa). Có hai cách hiểu khác hẳn nhau thì hỏi lại một câu ngắn thay vì đoán.
-- Nếu có phần <tra_cuu_internet> (kết quả tra từ điển trực tuyến: 萌典 – Từ điển của Bộ Giáo dục Đài Loan, Wiktionary, hoặc tìm kiếm web), hãy dùng để kiểm chứng. 萌典 là chuẩn cho cách đọc/định nghĩa tiếng Hoa Đài Loan; nghĩa tiếng Việt ưu tiên <du_lieu_tham_khao> rồi Wiktionary tiếng Việt. Khi dùng, nhắc nguồn ngắn gọn (ví dụ "theo 萌典"). Nếu tra không thấy thì nói thẳng là chưa tra được, đừng bịa.
+- Nếu có phần <tra_cuu_internet> (kết quả tra từ điển trực tuyến: 萌典 – Từ điển của Bộ Giáo dục Đài Loan, Wiktionary, hoặc tìm kiếm web), hãy dùng để kiểm chứng. 萌典 là chuẩn cho cách đọc/định nghĩa tiếng Hoa Đài Loan; nghĩa tiếng Việt ưu tiên <du_lieu_tham_khao> rồi Wiktionary tiếng Việt. Khi dùng, nhắc nguồn ngắn gọn (ví dụ "theo 萌典"). Nếu tra không thấy (hoặc không có phần <tra_cuu_internet>) thì tuyệt đối KHÔNG nói rằng bạn đã tìm/tra trên mạng; hãy nói thẳng là chưa tra được. Không bịa lịch thi, ngày tháng, giá, số liệu.
 - Trước khi trả lời, tự kiểm tra lại: số chữ/âm tiết có khớp không, pinyin có khớp chữ Hán không, nghĩa có khớp ngữ cảnh không.
 
 ĐỊNH DẠNG
@@ -83,24 +83,27 @@ async function wiktionary(word) {
     return { name: "Wiktionary tiếng Việt", url: "https://vi.wiktionary.org/wiki/" + encodeURIComponent(word), text: word + ": " + ex };
   } catch (e) { return null; }
 }
-async function tavily(env, query) {
-  if (!env.TAVILY_API_KEY) return [];
+async function tavily(env, query, status) {
+  if (!env.TAVILY_API_KEY) { status.web = "chưa có khóa TAVILY_API_KEY trên máy chủ"; return []; }
   try {
     const r = await fetch("https://api.tavily.com/search", {
-      method: "POST", signal: tmo(5000),
-      headers: { "content-type": "application/json", Authorization: "Bearer " + env.TAVILY_API_KEY },
-      body: JSON.stringify({ query, max_results: 3, search_depth: "basic" }),
+      method: "POST", signal: tmo(8000),
+      headers: { "content-type": "application/json", Authorization: "Bearer " + String(env.TAVILY_API_KEY).trim() },
+      body: JSON.stringify({ query: query.slice(0, 300), max_results: 4, search_depth: "basic", include_answer: false }),
     });
-    if (!r.ok) return [];
+    if (!r.ok) { status.web = "Tavily trả lỗi HTTP " + r.status; return []; }
     const d = await r.json();
-    return (d.results || []).slice(0, 3).map(x => ({ name: x.title || "Web", url: x.url, text: String(x.content || "").slice(0, 400) }));
-  } catch (e) { return []; }
+    const out = (d.results || []).slice(0, 4).map(x => ({ name: x.title || "Web", url: x.url, text: String(x.content || "").slice(0, 500) }));
+    status.web = out.length ? "ok" : "không có kết quả";
+    return out;
+  } catch (e) { status.web = "không kết nối được Tavily (" + String((e && e.name) || "lỗi") + ")"; return []; }
 }
-async function lookupOnline(env, text) {
+const WEBQ = /tra (mạng|internet|web|google)|tìm (trên )?(mạng|internet|web)|search|mới nhất|hiện (nay|tại)|năm nay|gần đây|lịch thi|ngày thi|lệ phí|đăng ký thi|202\d/i;
+async function lookupOnline(env, text, status) {
   const runs = Array.from(new Set((text.match(HAN) || []).filter(x => x.length <= 6))).slice(0, 3);
   const jobs = [];
   for (const w of runs) { jobs.push(moedict(w)); jobs.push(wiktionary(w)); }
-  if (/tra (mạng|internet|web)|tìm trên (mạng|internet|web)|mới nhất|hiện nay|năm nay|202\d/i.test(text)) jobs.push(tavily(env, text).then(a => a));
+  if (WEBQ.test(text)) jobs.push(tavily(env, text, status));
   const res = (await Promise.allSettled(jobs)).map(x => x.status === "fulfilled" ? x.value : null).flat().filter(Boolean);
   return res.slice(0, 7);
 }
@@ -154,6 +157,7 @@ export default {
     const ctx = String(body.context || "").trim().slice(0, 2500);
     let msgs = null;
     let sources = [];
+    const status = {};
     if (task === "chat") {
       msgs = (Array.isArray(body.messages) ? body.messages : [])
         .filter(m => m && (m.role === "user" || m.role === "assistant") && typeof m.content === "string" && m.content.trim())
@@ -162,8 +166,10 @@ export default {
       if (msgs.length && msgs[msgs.length - 1].role === "user") {
         const last = msgs[msgs.length - 1];
         if (ctx) last.content += "\n\n<du_lieu_tham_khao>\n" + ctx + "\n</du_lieu_tham_khao>";
-        sources = await lookupOnline(env, last.content.split("<du_lieu_tham_khao>")[0]);
+        const userText = last.content.split("<du_lieu_tham_khao>")[0];
+        sources = await lookupOnline(env, userText, status);
         if (sources.length) last.content += "\n\n<tra_cuu_internet>\n" + sources.map(x => "- (" + x.name + ") " + x.text).join("\n") + "\n</tra_cuu_internet>";
+        else if (WEBQ.test(userText)) last.content += "\n\n<tra_cuu_internet>KHÔNG TRA ĐƯỢC KẾT QUẢ NÀO TỪ INTERNET LẦN NÀY. Hãy nói thẳng với người dùng là bạn chưa tra được trên mạng lúc này, KHÔNG được nói rằng đã tìm thấy hay tra được; chỉ trả lời phần bạn chắc chắn và chỉ họ nguồn chính thức để tự kiểm tra.</tra_cuu_internet>";
       }
       if (!msgs.length || msgs[msgs.length - 1].role !== "user") return json({ ok: false, error: "empty" }, 400, h);
     } else if (!q) return json({ ok: false, error: "empty" }, 400, h);
@@ -194,7 +200,7 @@ export default {
       let text = typeof r === "string" ? r : (r && (r.response || (r.choices && r.choices[0] && r.choices[0].message && r.choices[0].message.content))) || "";
       text = String(text).replace(/<think>[\s\S]*?<\/think>/g, "").trim();
       if (!text) return json({ ok: false, error: "empty_reply" }, 502, h);
-      if (task === "chat") return json({ ok: true, task, data: { reply: text, sources: sources.map(x => ({ name: x.name, url: x.url })) } }, 200, h);
+      if (task === "chat") return json({ ok: true, task, data: { reply: text, sources: sources.map(x => ({ name: x.name, url: x.url })), status: status.web || "" } }, 200, h);
       return json({ ok: true, task, data: parseModel(text) }, 200, h);
     } catch (e) {
       /* Hết hạn mức miễn phí trong ngày của Workers AI */

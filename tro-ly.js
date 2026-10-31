@@ -3,7 +3,7 @@
    (2) Google Translate (gtx) ra zh-TW + pinyin, (3) MyMemory dự phòng. */
 (function(){
 'use strict';
-var IMG='tro-ly-avatar.jpg?v=20261031o';
+var IMG='tro-ly-avatar.jpg?v=20261101a';
 /* Địa chỉ máy chủ trung gian (xem worker/README.md). Để trống = dùng dịch miễn phí, chưa có giải thích ngữ pháp bằng AI. */
 var API=(window.TRO_LY_API||'https://tro-ly-tocfl.tranducthinh210401.workers.dev').replace(/\/$/,'');
 var CJK=/[㐀-䶿一-鿿豈-﫿]/;
@@ -411,7 +411,7 @@ function sendChat(){
   busy=true;cgo.disabled=true;
   var typing=addMsg('assistant','…');
   apiChat(convo.slice(-12)).then(function(r){
-    typing.innerHTML=fmt(r.text)+srcHtml(r.sources);convo.push({role:'assistant',content:r.text});convo=convo.slice(-20);store('ta_chat',convo);
+    typing.innerHTML=fmt(r.text)+srcHtml(r.sources)+(r.status&&r.status!=='ok'?'<div class="ta-src">⚠️ Tra web: '+esc(r.status)+'</div>':'');convo.push({role:'assistant',content:r.text});convo=convo.slice(-20);store('ta_chat',convo);
   }).catch(function(e){
     convo.pop();
     typing.textContent=e&&e.code==='limit'?'Hôm nay bạn đã dùng hết lượt hỏi rồi, mai quay lại nhé!':'Mình chưa trả lời được lúc này, bạn gửi lại giúp mình nhé.';
@@ -444,7 +444,7 @@ function apiChat(messages){
   var lastUser='';for(var i=messages.length-1;i>=0;i--){if(messages[i].role==='user'){lastUser=messages[i].content;break}}
   return fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({task:'chat',messages:messages,context:buildContext(lastUser)})})
    .then(function(r){return r.json().catch(function(){return {ok:false,error:'http_'+r.status}})})
-   .then(function(j){if(!j||!j.ok||!j.data||!j.data.reply){var e=new Error('chat');e.code=j&&j.error;throw e}return {text:String(j.data.reply),sources:j.data.sources||[]}});
+   .then(function(j){if(!j||!j.ok||!j.data||!j.data.reply){var e=new Error('chat');e.code=j&&j.error;throw e}return {text:String(j.data.reply),sources:j.data.sources||[],status:j.data.status||''}});
 }
 function showView(v){
   panel.querySelectorAll('.ta-tabs button').forEach(function(b){b.classList.toggle('on',b.dataset.v===v)});
