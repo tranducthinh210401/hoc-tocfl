@@ -3,7 +3,7 @@
    (2) Google Translate (gtx) ra zh-TW + pinyin, (3) MyMemory dự phòng. */
 (function(){
 'use strict';
-var IMG='tro-ly-avatar.jpg?v=20261031k';
+var IMG='tro-ly-avatar.jpg?v=20261031l';
 /* Địa chỉ máy chủ trung gian (xem worker/README.md). Để trống = dùng dịch miễn phí, chưa có giải thích ngữ pháp bằng AI. */
 var API=(window.TRO_LY_API||'https://tro-ly-tocfl.tranducthinh210401.workers.dev').replace(/\/$/,'');
 var CJK=/[㐀-䶿一-鿿豈-﫿]/;
@@ -34,7 +34,7 @@ var css='\
 .ta-modes button{flex:1;border:1.5px solid var(--border,rgba(0,0,0,.12));background:transparent;color:inherit;border-radius:999px;padding:7px 6px;font:600 12.5px inherit;font-family:inherit;cursor:pointer}\
 .ta-modes button.on{background:var(--blue,#0071e3);border-color:var(--blue,#0071e3);color:#fff}\
 .ta-in{display:flex;gap:8px;align-items:flex-end}\
-.ta-in textarea{flex:1;resize:none;border:1.5px solid var(--border,rgba(0,0,0,.14));border-radius:14px;padding:10px 12px;font:500 16px/1.4 "Be Vietnam Pro","Noto Serif TC",system-ui,sans-serif;background:var(--surface-2,#fafafa);color:inherit;min-height:46px;max-height:120px;outline:none}\
+.ta-in textarea{flex:1;resize:none;border:1.5px solid var(--border,rgba(0,0,0,.14));border-radius:14px;padding:10px 12px;font:500 16px/1.4 "Be Vietnam Pro","Noto Serif TC",system-ui,sans-serif;background:var(--surface-2,#fafafa);color:inherit;min-height:46px;max-height:120px;outline:none;overflow-y:auto}\
 .ta-in textarea:focus{border-color:var(--blue,#0071e3)}\
 .ta-go{border:0;background:var(--blue,#0071e3);color:#fff;border-radius:14px;height:46px;padding:0 16px;font:700 14px inherit;font-family:inherit;cursor:pointer;flex:none}\
 .ta-go:disabled{opacity:.55}\
@@ -68,6 +68,7 @@ var css='\
 .ta-cin{padding:8px 14px 10px;border-top:1px solid var(--border-soft,rgba(0,0,0,.07));flex:none}\
 .ta-dict{display:flex;flex-direction:column}.ta-dict[hidden]{display:none}.ta-out{flex:1 0 auto;display:flex;flex-direction:column}.ta-out>.ta-main{flex:1 0 auto;margin-bottom:4px}\
 .ta-clrh{border-style:dashed!important;color:var(--text-secondary,#6e6e73)!important}\
+.ta-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:8px;padding:24px 18px}.ta-eico{font-size:40px;line-height:1}.ta-etit{font-weight:800;font-size:16px}.ta-esub{font-size:13px;color:var(--text-secondary,#6e6e73);max-width:280px;line-height:1.5}.ta-ech{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:8px}.ta-ech button{border:1px solid var(--border,rgba(0,0,0,.12));background:var(--surface,#fff);color:inherit;border-radius:999px;padding:7px 14px;font:600 14px inherit;font-family:var(--han-font,serif);cursor:pointer}\
 .ta-err{color:#c2410c;font-size:13.5px;margin-top:10px}\
 .ta-foot{flex:none;text-align:center;font-size:11px;color:var(--text-tertiary,#86868b);padding:6px 10px 9px;border-top:1px solid var(--border-soft,rgba(0,0,0,.07))}\
 .ta-dots{display:inline-block}.ta-dots::after{content:"…";animation:ta-bob 1s infinite}\
@@ -195,7 +196,7 @@ var panel=document.createElement('div');panel.className='ta-panel';panel.setAttr
 panel.innerHTML='<div class="ta-h"><img src="'+IMG+'" alt=""><div><b>Trợ lý TILO</b><small>Hán phồn thể ⇄ Tiếng Việt</small></div><button class="ta-x" type="button" aria-label="Đóng">×</button></div>'
  +'<div class="ta-tabs"><button type="button" data-v="dict" class="on">📖 Từ điển</button><button type="button" data-v="chat">💬 Trò chuyện</button></div>'
  +'<div class="ta-body ta-dict"><div class="ta-modes"><button type="button" data-m="auto" class="on">Tự nhận</button><button type="button" data-m="zh2vi">繁 → Việt</button><button type="button" data-m="vi2zh">Việt → 繁</button></div>'
- +'<div class="ta-in"><textarea rows="1" placeholder="Gõ hoặc dán chữ Hán / tiếng Việt…" enterkeyhint="search"></textarea><button class="ta-go" type="button">Dịch</button></div>'
+ +'<div class="ta-in"><textarea rows="1" placeholder="Gõ chữ Hán / tiếng Việt…" enterkeyhint="search"></textarea><button class="ta-go" type="button">Dịch</button></div>'
  +'<div class="ta-out"></div><div class="ta-hist"></div></div>'
  +'<div class="ta-chat" hidden><div class="ta-msgs"></div><div class="ta-sug"></div><div class="ta-in ta-cin"><textarea rows="1" placeholder="Hỏi về từ vựng, ngữ pháp, cách dùng…" enterkeyhint="send"></textarea><button class="ta-go" type="button">Gửi</button></div></div>'
  +'<div class="ta-foot">© 2026 Học TOCFL cùng Thịnh &amp; Loan</div>';
@@ -232,7 +233,7 @@ setTimeout(place,1500);
 function toggle(o){
   panel.classList.toggle('open',o);fab.style.display=o?'none':'';
   var t=$('.ta-tip');if(t)t.remove();
-  if(o){renderHist();setTimeout(function(){try{ta.focus()}catch(e){}},60)}
+  if(o){if(!out.innerHTML.trim())emptyState();renderHist();setTimeout(function(){try{ta.focus()}catch(e){}},60)}
 }
 $('.ta-x',panel).addEventListener('click',function(){toggle(false)});
 document.addEventListener('pointerdown',function(e){
@@ -254,8 +255,13 @@ function renderHist(){
   histEl.querySelectorAll('button[data-i]').forEach(function(b){b.addEventListener('click',function(){ta.value=hist[+b.dataset.i];autosize();run()})});
   var ch=$('.ta-clrh',histEl);if(ch)ch.onclick=clearLookup;
 }
+var EX=['你好','謝謝','圖書館','xin chào','cảm ơn','đẹp'];
+function emptyState(){
+  out.innerHTML='<div class="ta-card ta-main ta-empty"><div class="ta-eico">📖</div><div class="ta-etit">Tra từ điển Hán ⇄ Việt</div><div class="ta-esub">Gõ chữ Hán phồn thể hoặc tiếng Việt vào ô phía trên, kết quả sẽ hiện ở đây kèm pinyin, ví dụ và phát âm.</div><div class="ta-ech">'+EX.map(function(x){return '<button type="button" data-q="'+esc(x)+'">'+esc(x)+'</button>'}).join('')+'</div></div>';
+  out.querySelectorAll('.ta-ech button').forEach(function(b){b.onclick=function(){ta.value=b.dataset.q;autosize();run()}});
+}
 function clearLookup(){
-  if(ctrl)ctrl.abort();hist=[];store('ta_hist',[]);ta.value='';autosize();out.innerHTML='';go.disabled=false;renderHist();
+  if(ctrl)ctrl.abort();hist=[];store('ta_hist',[]);ta.value='';autosize();emptyState();go.disabled=false;renderHist();
 }
 function pushHist(q){hist=[q].concat(hist.filter(function(x){return x!==q})).slice(0,12);store('ta_hist',hist);renderHist()}
 
