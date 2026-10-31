@@ -1,9 +1,9 @@
-/* Trợ lý từ điển Hán (phồn thể) ⇄ Việt — © 2026 Học TOCFL cùng Thịnh & Loan
+/* Trợ lý TILO — từ điển Hán (phồn thể) ⇄ Việt — © 2026 Học TOCFL cùng Thịnh & Loan
    Nguồn tra cứu: (1) kho từ vựng TOCFL trong trang (chính xác nhất, có ví dụ),
    (2) Google Translate (gtx) ra zh-TW + pinyin, (3) MyMemory dự phòng. */
 (function(){
 'use strict';
-var IMG='tro-ly-avatar.jpg?v=20261031f';
+var IMG='tro-ly-avatar.jpg?v=20261031g';
 /* Địa chỉ máy chủ trung gian (xem worker/README.md). Để trống = dùng dịch miễn phí, chưa có giải thích ngữ pháp bằng AI. */
 var API=(window.TRO_LY_API||'').replace(/\/$/,'');
 var CJK=/[㐀-䶿一-鿿豈-﫿]/;
@@ -23,7 +23,7 @@ var css='\
 @keyframes ta-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}\
 .ta-tip{position:fixed;z-index:9000;background:var(--surface,#fff);color:var(--text,#1d1d1f);border:1px solid var(--border,rgba(0,0,0,.1));border-radius:14px 14px 4px 14px;padding:8px 12px;font:600 13px "Be Vietnam Pro",system-ui,sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.16);max-width:200px;animation:ta-in .3s}\
 @keyframes ta-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}\
-.ta-panel{position:fixed;right:12px;bottom:12px;width:400px;max-width:calc(100vw - 24px);top:12px;display:none;flex-direction:column;background:var(--surface,#fff);color:var(--text,#1d1d1f);border:1px solid var(--border,rgba(0,0,0,.1));border-radius:22px;box-shadow:0 18px 50px rgba(0,0,0,.28);z-index:9001;overflow:hidden;font-family:"Be Vietnam Pro",system-ui,sans-serif}\
+.ta-panel{position:fixed;right:12px;bottom:12px;width:380px;max-width:calc(100vw - 24px);height:560px;max-height:calc(100vh - 28px);max-height:calc(100dvh - 28px);display:none;flex-direction:column;background:var(--surface,#fff);color:var(--text,#1d1d1f);border:1px solid var(--border,rgba(0,0,0,.1));border-radius:22px;box-shadow:0 18px 50px rgba(0,0,0,.28);z-index:9001;overflow:hidden;font-family:"Be Vietnam Pro",system-ui,sans-serif}\
 .ta-panel.open{display:flex;animation:ta-in .22s}\
 .ta-h{display:flex;align-items:center;gap:10px;padding:12px 14px;background:linear-gradient(100deg,#fff4d6,#e3f0ff);color:#1d1d1f;flex:none}\
 .ta-h img{width:42px;height:42px;border-radius:50%;object-fit:cover;border:2px solid #fff;flex:none}\
@@ -188,10 +188,10 @@ function speak(txt,btn){
 }
 
 /* ---------- Giao diện ---------- */
-var fab=document.createElement('button');fab.className='ta-fab';fab.type='button';fab.title='Trợ lý từ điển Hán ⇄ Việt';fab.setAttribute('aria-label','Mở trợ lý từ điển');
+var fab=document.createElement('button');fab.className='ta-fab';fab.type='button';fab.title='Trợ lý TILO';fab.setAttribute('aria-label','Mở trợ lý TILO');
 document.body.appendChild(fab);
-var panel=document.createElement('div');panel.className='ta-panel';panel.setAttribute('role','dialog');panel.setAttribute('aria-label','Trợ lý từ điển');
-panel.innerHTML='<div class="ta-h"><img src="'+IMG+'" alt=""><div><b>Trợ lý từ điển</b><small>Hán phồn thể ⇄ Tiếng Việt</small></div><button class="ta-x" type="button" aria-label="Đóng">×</button></div>'
+var panel=document.createElement('div');panel.className='ta-panel';panel.setAttribute('role','dialog');panel.setAttribute('aria-label','Trợ lý TILO');
+panel.innerHTML='<div class="ta-h"><img src="'+IMG+'" alt=""><div><b>Trợ lý TILO</b><small>Hán phồn thể ⇄ Tiếng Việt</small></div><button class="ta-x" type="button" aria-label="Đóng">×</button></div>'
  +'<div class="ta-tabs"><button type="button" data-v="dict" class="on">📖 Từ điển</button><button type="button" data-v="chat">💬 Trò chuyện</button></div>'
  +'<div class="ta-body ta-dict"><div class="ta-modes"><button type="button" data-m="auto" class="on">Tự nhận</button><button type="button" data-m="zh2vi">繁 → Việt</button><button type="button" data-m="vi2zh">Việt → 繁</button></div>'
  +'<div class="ta-in"><textarea rows="1" placeholder="Gõ hoặc dán chữ Hán / tiếng Việt…" enterkeyhint="search"></textarea><button class="ta-go" type="button">Dịch</button></div>'
