@@ -3,7 +3,7 @@
    (2) Google Translate (gtx) ra zh-TW + pinyin, (3) MyMemory dự phòng. */
 (function(){
 'use strict';
-var IMG='tro-ly-avatar.jpg?v=20261031b';
+var IMG='tro-ly-avatar.jpg?v=20261031c';
 /* Địa chỉ máy chủ trung gian (xem worker/README.md). Để trống = dùng dịch miễn phí, chưa có giải thích ngữ pháp bằng AI. */
 var API=(window.TRO_LY_API||'').replace(/\/$/,'');
 var CJK=/[㐀-䶿一-鿿豈-﫿]/;
@@ -314,13 +314,16 @@ function run(){
         return '<span data-q="'+esc(x.t)+'"><b>'+esc(x.t)+'</b>'+(x.w?'<small>'+esc(x.w.pinyin||'')+'</small><em>'+esc(shortMeaning(x.w))+'</em>':'')+'</span>'}).join('')+'</div></div>';
     }
   }
-  var main=translate(q,dir,my.signal);
+  var noMT=(dir==='zh2vi'&&!API);
+  var main=noMT?Promise.resolve({text:'',translit:'',alts:[]}):translate(q,dir,my.signal);
   var trad=null;
-  if(dir==='zh2vi'&&/[一-鿿]/.test(q)&&!API){trad=gtx(q,'zh-CN','zh-TW',my.signal).then(function(r){return r.text&&r.text!==q?r.text:null}).catch(function(){return null})}
+  if(dir==='zh2vi'&&/[一-鿿]/.test(q)&&!API&&!noMT){trad=gtx(q,'zh-CN','zh-TW',my.signal).then(function(r){return r.text&&r.text!==q?r.text:null}).catch(function(){return null})}
   Promise.all([main,trad]).then(function(res){
     if(my!==ctrl)return;
     var r=res[0],tr=res[1]||r.trad||null,h='';if(tr===q)tr=null;
-    if(dir==='zh2vi'){
+    if(dir==='zh2vi'&&noMT){
+      h+='<div class="ta-card"><div class="ta-qline"><span class="ta-qh">'+esc(q)+'</span><button class="ta-sp" type="button" data-say="'+esc(q)+'" aria-label="Nghe từ vừa tra">🔊</button></div></div>';
+    }else if(dir==='zh2vi'){
       h+='<div class="ta-card"><div class="ta-qline"><span class="ta-qh">'+esc(q)+'</span><button class="ta-sp" type="button" data-say="'+esc(q)+'" aria-label="Nghe từ vừa tra">🔊</button></div><h4>Nghĩa tiếng Việt</h4><div class="ta-row"><div><div class="ta-big">'+esc(r.text)+'</div>'
        +(r.translit?'<div class="ta-py">'+esc(r.translit)+'</div>':'')+(tr?'<div class="ta-note">Dạng phồn thể: <b style="font-family:var(--han-font,serif)">'+esc(tr)+'</b> '+'</div>':'')
        +'</div><div style="display:flex;gap:6px">'+speakBtn(tr||q)+copyBtn(r.text)+'</div></div>'
