@@ -2,10 +2,14 @@ name = "tro-ly-tocfl"
 main = "index.js"
 compatibility_date = "2025-01-01"
 
+# Cloudflare Workers AI: không cần khóa API, dùng hạn mức miễn phí mỗi ngày của tài khoản
+[ai]
+binding = "AI"
+
 [vars]
 # Trang web được phép gọi (nhiều địa chỉ thì cách nhau bằng dấu phẩy)
 ALLOWED_ORIGINS = "https://tranducthinh210401.github.io"
-MODEL = "claude-haiku-5-5"
+MODEL = "@cf/qwen/qwen3-30b-a3b-fp8"
 DAILY_LIMIT = "150"
 
 # (Tuỳ chọn) bật giới hạn theo IP: tạo KV rồi bỏ dấu # ở 3 dòng dưới

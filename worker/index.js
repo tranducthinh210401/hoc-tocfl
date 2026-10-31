@@ -1,5 +1,5 @@
-/* Máy chủ trung gian cho Trợ lý từ điển — © 2026 Học TOCFL cùng Thịnh & Loan
-   Giấu khóa API, chỉ cho phép trang web của bạn gọi, giới hạn độ dài và số lần gọi. */
+/* Máy chủ trung gian cho Trợ lý TILO (dùng Cloudflare Workers AI, miễn phí theo hạn mức ngày) — © 2026 Học TOCFL cùng Thịnh & Loan
+   Chỉ cho phép trang web của bạn gọi, giới hạn độ dài và số lần gọi. */
 
 const SYS_TRANSLATE = `Bạn là từ điển Hán–Việt chuyên cho người học TOCFL (tiếng Quan thoại Đài Loan).
 Quy tắc:
@@ -70,7 +70,7 @@ export default {
     if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: h });
     if (req.method !== "POST") return json({ ok: false, error: "method" }, 405, h);
     if (!ok) return json({ ok: false, error: "origin" }, 403, h);
-    if (!env.ANTHROPIC_API_KEY) return json({ ok: false, error: "no_key" }, 500, h);
+    if (!env.AI) return json({ ok: false, error: "no_ai" }, 500, h);
 
     let body;
     try { body = await req.json(); } catch { return json({ ok: false, error: "bad_json" }, 400, h); }
@@ -90,23 +90,22 @@ export default {
     const hint = task === "translate" && (body.dir === "zh2vi" || body.dir === "vi2zh")
       ? `\n(Hướng dịch yêu cầu: ${body.dir === "zh2vi" ? "Hán → Việt" : "Việt → Hán phồn thể"})` : "";
     try {
-      const r = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: { "x-api-key": env.ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01", "content-type": "application/json" },
-        body: JSON.stringify({
-          model: env.MODEL || "claude-haiku-5-5",
-          max_tokens: task === "chat" ? 1200 : task === "grammar" ? 1800 : 600,
-          temperature: task === "chat" ? 0.5 : 0.2,
-          system,
-          messages: task === "chat" ? msgs : [{ role: "user", content: "<input>\n" + q + "\n</input>" + hint }],
-        }),
+      const model = env.MODEL || "@cf/qwen/qwen3-30b-a3b-fp8";
+      const messages = [{ role: "system", content: system + "\n/no_think" }].concat(
+        task === "chat" ? msgs : [{ role: "user", content: "<input>\n" + q + "\n</input>" + hint }]);
+      const r = await env.AI.run(model, {
+        messages,
+        max_tokens: task === "chat" ? 1200 : task === "grammar" ? 1800 : 600,
+        temperature: task === "chat" ? 0.5 : 0.2,
       });
-      if (!r.ok) return json({ ok: false, error: "upstream_" + r.status }, 502, h);
-      const d = await r.json();
-      const text = (d.content || []).map(c => c.text || "").join("");
-      if (task === "chat") return json({ ok: true, task, data: { reply: text.trim() } }, 200, h);
+      let text = typeof r === "string" ? r : (r && (r.response || (r.choices && r.choices[0] && r.choices[0].message && r.choices[0].message.content))) || "";
+      text = String(text).replace(/<think>[\s\S]*?<\/think>/g, "").trim();
+      if (!text) return json({ ok: false, error: "empty_reply" }, 502, h);
+      if (task === "chat") return json({ ok: true, task, data: { reply: text } }, 200, h);
       return json({ ok: true, task, data: parseModel(text) }, 200, h);
     } catch (e) {
+      /* Hết hạn mức miễn phí trong ngày của Workers AI */
+      if (/allocation|quota|neurons|limit|4006|rate/i.test(String((e && e.message) || e))) return json({ ok: false, error: "limit" }, 429, h);
       return json({ ok: false, error: "fail" }, 502, h);
     }
   },
