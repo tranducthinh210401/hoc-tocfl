@@ -3,7 +3,7 @@
    (2) Google Translate (gtx) ra zh-TW + pinyin, (3) MyMemory dự phòng. */
 (function(){
 'use strict';
-var IMG='tro-ly-cun.jpg';
+var IMG='tro-ly-avatar.jpg';
 /* Địa chỉ máy chủ trung gian (xem worker/README.md). Để trống = dùng dịch miễn phí, chưa có giải thích ngữ pháp bằng AI. */
 var API=(window.TRO_LY_API||'').replace(/\/$/,'');
 var CJK=/[㐀-䶿一-鿿豈-﫿]/;
@@ -351,7 +351,7 @@ try{
     store('ta_seen',1);
     setTimeout(function(){
       if(panel.classList.contains('open'))return;
-      var t=document.createElement('div');t.className='ta-tip';t.textContent='Xin chào! Cần tra từ Hán ⇄ Việt cứ hỏi mình nhé 🐾';document.body.appendChild(t);
+      var t=document.createElement('div');t.className='ta-tip';t.textContent='Xin chào! Cần tra từ Hán ⇄ Việt cứ hỏi mình nhé 💕';document.body.appendChild(t);
       var r=fab.getBoundingClientRect();t.style.right=Math.max(8,innerWidth-r.right)+'px';t.style.bottom=(innerHeight-r.top+10)+'px';
       setTimeout(function(){t.remove()},6000);
     },2500);
