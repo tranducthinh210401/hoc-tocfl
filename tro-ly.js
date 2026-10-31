@@ -3,7 +3,7 @@
    (2) Google Translate (gtx) ra zh-TW + pinyin, (3) MyMemory dự phòng. */
 (function(){
 'use strict';
-var IMG='tro-ly-avatar.jpg?v=20261031i';
+var IMG='tro-ly-avatar.jpg?v=20261031j';
 /* Địa chỉ máy chủ trung gian (xem worker/README.md). Để trống = dùng dịch miễn phí, chưa có giải thích ngữ pháp bằng AI. */
 var API=(window.TRO_LY_API||'').replace(/\/$/,'');
 var CJK=/[㐀-䶿一-鿿豈-﫿]/;
@@ -67,6 +67,7 @@ var css='\
 .ta-sug{display:flex;gap:6px;overflow-x:auto;padding:0 14px 8px;flex:none}.ta-sug button{flex:none;border:1px solid var(--border,rgba(0,0,0,.12));background:var(--surface-2,#fafafa);color:inherit;border-radius:999px;padding:6px 12px;font:500 12.5px inherit;font-family:inherit;cursor:pointer;white-space:nowrap}\
 .ta-cin{padding:8px 14px 10px;border-top:1px solid var(--border-soft,rgba(0,0,0,.07));flex:none}\
 .ta-dict{display:flex;flex-direction:column}.ta-dict[hidden]{display:none}.ta-out{flex:1 0 auto;display:flex;flex-direction:column}.ta-out>.ta-main{flex:1 0 auto;margin-bottom:4px}\
+.ta-clrh{border-style:dashed!important;color:var(--text-secondary,#6e6e73)!important}\
 .ta-err{color:#c2410c;font-size:13.5px;margin-top:10px}\
 .ta-foot{flex:none;text-align:center;font-size:11px;color:var(--text-tertiary,#86868b);padding:6px 10px 9px;border-top:1px solid var(--border-soft,rgba(0,0,0,.07))}\
 .ta-dots{display:inline-block}.ta-dots::after{content:"…";animation:ta-bob 1s infinite}\
@@ -234,6 +235,11 @@ function toggle(o){
   if(o){renderHist();setTimeout(function(){try{ta.focus()}catch(e){}},60)}
 }
 $('.ta-x',panel).addEventListener('click',function(){toggle(false)});
+document.addEventListener('pointerdown',function(e){
+  if(!panel.classList.contains('open'))return;
+  var t=e.target;if(panel.contains(t)||fab.contains(t))return;
+  toggle(false);
+},true);
 document.addEventListener('keydown',function(e){if(e.key==='Escape'&&panel.classList.contains('open'))toggle(false)});
 panel.querySelectorAll('.ta-modes button').forEach(function(b){b.addEventListener('click',function(){
   mode=b.dataset.m;panel.querySelectorAll('.ta-modes button').forEach(function(x){x.classList.toggle('on',x===b)});if(ta.value.trim())run();
@@ -244,8 +250,12 @@ ta.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey&&!e.is
 go.addEventListener('click',run);
 
 function renderHist(){
-  histEl.innerHTML=hist.length?hist.map(function(h,i){return '<button type="button" data-i="'+i+'">'+esc(h)+'</button>'}).join(''):'';
-  histEl.querySelectorAll('button').forEach(function(b){b.addEventListener('click',function(){ta.value=hist[+b.dataset.i];autosize();run()})});
+  histEl.innerHTML=hist.length?hist.map(function(h,i){return '<button type="button" data-i="'+i+'">'+esc(h)+'</button>'}).join('')+'<button type="button" class="ta-clrh">🗑 Xóa lịch sử tra</button>':'';
+  histEl.querySelectorAll('button[data-i]').forEach(function(b){b.addEventListener('click',function(){ta.value=hist[+b.dataset.i];autosize();run()})});
+  var ch=$('.ta-clrh',histEl);if(ch)ch.onclick=clearLookup;
+}
+function clearLookup(){
+  if(ctrl)ctrl.abort();hist=[];store('ta_hist',[]);ta.value='';autosize();out.innerHTML='';go.disabled=false;renderHist();
 }
 function pushHist(q){hist=[q].concat(hist.filter(function(x){return x!==q})).slice(0,12);store('ta_hist',hist);renderHist()}
 
@@ -408,11 +418,17 @@ function apiChat(messages){
 function showView(v){
   panel.querySelectorAll('.ta-tabs button').forEach(function(b){b.classList.toggle('on',b.dataset.v===v)});
   dictEl.hidden=v!=='dict';chatEl.hidden=v!=='chat';
+  setClrTitle();
   if(v==='chat'){renderConvo();setTimeout(function(){try{cta.focus()}catch(e){}},60)}
 }
 panel.querySelectorAll('.ta-tabs button').forEach(function(b){b.onclick=function(){showView(b.dataset.v)}});
 var clr=document.createElement('button');clr.type='button';clr.className='ta-x';clr.title='Xóa cuộc trò chuyện';clr.setAttribute('aria-label','Xóa cuộc trò chuyện');clr.textContent='🗑';clr.style.cssText='margin-left:auto;margin-right:6px;font-size:14px';
 var xb=$('.ta-h .ta-x',panel);xb.style.marginLeft='0';xb.parentNode.insertBefore(clr,xb);
-clr.onclick=function(){if(!convo.length)return;convo=[];store('ta_chat',[]);renderConvo()};
+clr.onclick=function(){
+  if(chatEl.hidden){clearLookup()}
+  else{convo=[];store('ta_chat',[]);renderConvo()}
+};
+function setClrTitle(){var t=chatEl.hidden?'Xóa lịch sử tra từ':'Xóa cuộc trò chuyện';clr.title=t;clr.setAttribute('aria-label',t)}
+setClrTitle();
 window.taOpen=function(q){toggle(true);if(q){ta.value=q;autosize();run()}};
 })();
