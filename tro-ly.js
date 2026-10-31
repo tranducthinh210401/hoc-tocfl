@@ -3,7 +3,7 @@
    (2) Google Translate (gtx) ra zh-TW + pinyin, (3) MyMemory dự phòng. */
 (function(){
 'use strict';
-var IMG='tro-ly-avatar.jpg?v=20261031e';
+var IMG='tro-ly-avatar.jpg?v=20261031f';
 /* Địa chỉ máy chủ trung gian (xem worker/README.md). Để trống = dùng dịch miễn phí, chưa có giải thích ngữ pháp bằng AI. */
 var API=(window.TRO_LY_API||'').replace(/\/$/,'');
 var CJK=/[㐀-䶿一-鿿豈-﫿]/;
@@ -23,13 +23,13 @@ var css='\
 @keyframes ta-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}\
 .ta-tip{position:fixed;z-index:9000;background:var(--surface,#fff);color:var(--text,#1d1d1f);border:1px solid var(--border,rgba(0,0,0,.1));border-radius:14px 14px 4px 14px;padding:8px 12px;font:600 13px "Be Vietnam Pro",system-ui,sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.16);max-width:200px;animation:ta-in .3s}\
 @keyframes ta-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}\
-.ta-panel{position:fixed;right:12px;bottom:12px;width:400px;max-width:calc(100vw - 24px);max-height:calc(100vh - 24px);max-height:calc(100dvh - 24px);display:none;flex-direction:column;background:var(--surface,#fff);color:var(--text,#1d1d1f);border:1px solid var(--border,rgba(0,0,0,.1));border-radius:22px;box-shadow:0 18px 50px rgba(0,0,0,.28);z-index:9001;overflow:hidden;font-family:"Be Vietnam Pro",system-ui,sans-serif}\
+.ta-panel{position:fixed;right:12px;bottom:12px;width:400px;max-width:calc(100vw - 24px);top:12px;display:none;flex-direction:column;background:var(--surface,#fff);color:var(--text,#1d1d1f);border:1px solid var(--border,rgba(0,0,0,.1));border-radius:22px;box-shadow:0 18px 50px rgba(0,0,0,.28);z-index:9001;overflow:hidden;font-family:"Be Vietnam Pro",system-ui,sans-serif}\
 .ta-panel.open{display:flex;animation:ta-in .22s}\
 .ta-h{display:flex;align-items:center;gap:10px;padding:12px 14px;background:linear-gradient(100deg,#fff4d6,#e3f0ff);color:#1d1d1f;flex:none}\
 .ta-h img{width:42px;height:42px;border-radius:50%;object-fit:cover;border:2px solid #fff;flex:none}\
 .ta-h b{display:block;font-size:15px;line-height:1.2}.ta-h small{display:block;font-size:11.5px;opacity:.7;margin-top:1px}\
 .ta-x{margin-left:auto;border:0;background:rgba(0,0,0,.08);width:32px;height:32px;border-radius:50%;font-size:18px;line-height:1;cursor:pointer;color:inherit;flex:none}\
-.ta-body{overflow:auto;padding:12px 14px;flex:1;min-height:120px;-webkit-overflow-scrolling:touch}\
+.ta-body{overflow:auto;padding:12px 14px;flex:1 1 auto;min-height:0;-webkit-overflow-scrolling:touch}\
 .ta-modes{display:flex;gap:6px;margin-bottom:10px}\
 .ta-modes button{flex:1;border:1.5px solid var(--border,rgba(0,0,0,.12));background:transparent;color:inherit;border-radius:999px;padding:7px 6px;font:600 12.5px inherit;font-family:inherit;cursor:pointer}\
 .ta-modes button.on{background:var(--blue,#0071e3);border-color:var(--blue,#0071e3);color:#fff}\
@@ -58,18 +58,19 @@ var css='\
 .ta-sp{border:0;background:var(--blue-tint,rgba(0,113,227,.1));color:inherit;border-radius:50%;width:28px;height:28px;font-size:13px;cursor:pointer;margin-left:6px;vertical-align:middle;padding:0}\
 .ta-qline{display:flex;align-items:center;margin-bottom:8px}.ta-qh{font-family:var(--han-font,serif);font-size:24px;font-weight:700;word-break:break-word}\
 .ta-tabs{display:flex;gap:6px;padding:8px 14px 0;flex:none}.ta-tabs button{flex:1;border:0;border-bottom:3px solid transparent;background:none;color:var(--text-secondary,#6e6e73);font:700 13.5px inherit;font-family:inherit;padding:8px 4px;cursor:pointer}.ta-tabs button.on{color:var(--blue,#0071e3);border-color:var(--blue,#0071e3)}\
-.ta-chat{display:flex;flex-direction:column;flex:none;height:60vh;height:60dvh;max-height:480px;min-height:300px}.ta-chat[hidden]{display:none}\
-.ta-msgs{flex:1 1 auto;min-height:150px;overflow:auto;padding:12px 14px;display:flex;flex-direction:column;gap:10px;-webkit-overflow-scrolling:touch}\
+.ta-chat{display:flex;flex-direction:column;flex:1 1 auto;min-height:0}.ta-chat[hidden]{display:none}\
+.ta-msgs{flex:1 1 auto;min-height:0;overflow:auto;padding:12px 14px;display:flex;flex-direction:column;gap:10px;-webkit-overflow-scrolling:touch}\
 .ta-m{max-width:88%;padding:9px 13px;border-radius:18px;font-size:14.5px;line-height:1.5;word-break:break-word;white-space:pre-wrap}\
 .ta-m.u{align-self:flex-end;background:var(--blue,#0071e3);color:#fff;border-bottom-right-radius:5px}\
 .ta-m.a{align-self:flex-start;background:var(--surface-2,#f2f2f5);border:1px solid var(--border-soft,rgba(0,0,0,.07));border-bottom-left-radius:5px}\
 .ta-m.a .zh{font-family:var(--han-font,"Noto Serif TC",serif);font-weight:600;cursor:pointer;border-bottom:1px dotted var(--blue,#0071e3)}\
 .ta-sug{display:flex;gap:6px;overflow-x:auto;padding:0 14px 8px;flex:none}.ta-sug button{flex:none;border:1px solid var(--border,rgba(0,0,0,.12));background:var(--surface-2,#fafafa);color:inherit;border-radius:999px;padding:6px 12px;font:500 12.5px inherit;font-family:inherit;cursor:pointer;white-space:nowrap}\
 .ta-cin{padding:8px 14px 10px;border-top:1px solid var(--border-soft,rgba(0,0,0,.07));flex:none}\
+.ta-dict{display:flex;flex-direction:column}.ta-dict[hidden]{display:none}.ta-out{flex:1 0 auto;display:flex;flex-direction:column}.ta-out>.ta-main{flex:1 0 auto;margin-bottom:4px}\
 .ta-err{color:#c2410c;font-size:13.5px;margin-top:10px}\
 .ta-foot{flex:none;text-align:center;font-size:11px;color:var(--text-tertiary,#86868b);padding:6px 10px 9px;border-top:1px solid var(--border-soft,rgba(0,0,0,.07))}\
 .ta-dots{display:inline-block}.ta-dots::after{content:"…";animation:ta-bob 1s infinite}\
-@media (max-width:700px){.ta-panel{right:8px;left:8px;width:auto;bottom:8px;max-height:calc(100vh - 16px);max-height:calc(100dvh - 16px)}}\
+@media (max-width:700px){.ta-panel{inset:0;width:auto;max-width:none;max-height:none;height:100%;border-radius:0;border:0}.ta-h{padding-top:calc(12px + env(safe-area-inset-top,0px))}.ta-foot{padding-bottom:calc(9px + env(safe-area-inset-bottom,0px))}}\
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ta-h{background:linear-gradient(100deg,#3a3320,#1f2f46);color:#f5f5f7}}\
 html[data-theme="dark"] .ta-h{background:linear-gradient(100deg,#3a3320,#1f2f46);color:#f5f5f7}\
 html[data-theme="dark"] .ta-x{background:rgba(255,255,255,.14)}';
@@ -174,10 +175,13 @@ function translate(q,dir,signal){
 
 /* ---------- Giọng đọc ---------- */
 var aud=null;
-function speak(txt){
+function speak(txt,btn){
+  txt=String(txt||'').trim();if(!txt)return;
+  var b=btn&&btn.classList?btn:document.createElement('button');
+  /* Dùng đúng bộ phát âm của trang (Google Dịch, tự chuyển sang giọng zh-TW của máy nếu bị chặn) */
+  try{if(typeof playWord==='function'){playWord(txt,b,{});return}}catch(e){}
   try{if(aud){aud.pause();aud=null}}catch(e){}
-  var u='https://translate.googleapis.com/translate_tts?ie=UTF-8&client=gtx&tl=zh-TW&q='+encodeURIComponent(txt);
-  aud=new Audio(u);
+  aud=new Audio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=zh-TW&q='+encodeURIComponent(txt));
   aud.play().catch(function(){
     try{var s=new SpeechSynthesisUtterance(txt);s.lang='zh-TW';speechSynthesis.cancel();speechSynthesis.speak(s)}catch(e){}
   });
@@ -256,7 +260,7 @@ function speakBtn(t){return '<button class="ta-ic" type="button" data-say="'+esc
 function copyBtn(t){return '<button class="ta-ic" type="button" data-copy="'+esc(t)+'" aria-label="Sao chép">⧉</button>'}
 
 function bindOut(){
-  out.querySelectorAll('[data-say]').forEach(function(b){b.onclick=function(){speak(b.dataset.say)}});
+  out.querySelectorAll('[data-say]').forEach(function(b){b.onclick=function(e){e.stopPropagation();speak(b.dataset.say,b)}});
   out.querySelectorAll('[data-copy]').forEach(function(b){b.onclick=function(){
     var t=b.dataset.copy;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){b.textContent='✓'},function(){try{ta.value=t}catch(e){}});setTimeout(function(){b.textContent='⧉'},1200)}});
   out.querySelectorAll('[data-q]').forEach(function(b){b.onclick=function(){ta.value=b.dataset.q;autosize();run()}});
@@ -306,56 +310,41 @@ function grammar(zh,btn){
 function run(){
   var q=ta.value.trim().slice(0,500);if(!q)return;
   if(ctrl)ctrl.abort();ctrl=new AbortController();var my=ctrl;
-  var dir=detect(q);
-  go.disabled=true;
-  var html='',local=[],extra=[];
-  if(dir==='zh2vi'){local=lookupHan(q);if(!local.length&&q.length<=4)extra=containsHan(q,6)}
-  else{local=searchVi(q,8)}
-  out.innerHTML='<div class="ta-card"><h4>Đang dịch <span class="ta-dots"></span></h4></div>';
-  var localHtml='';
+  var dir=detect(q),local=[],extra=[];
+  if(dir==='zh2vi'){local=lookupHan(q);if(!local.length&&q.length<=4)extra=containsHan(q,8)}
+  else{local=searchVi(q,10)}
+  /* Có trong kho TOCFL: chỉ hiện đúng một khung này */
   if(local.length||extra.length){
-    localHtml='<div class="ta-card"><h4>'+(local.length?'Trong kho từ vựng TOCFL':'Từ chứa “'+esc(q)+'” trong kho TOCFL')+'</h4>'+(local.length?local:extra).map(entryHtml).join('')+'</div>';
+    out.innerHTML='<div class="ta-card ta-main"><h4>'+(local.length?'Trong kho từ vựng TOCFL':'Từ chứa “'+esc(q)+'” trong kho TOCFL')+'</h4>'+(local.length?local:extra).map(entryHtml).join('')+'</div>';
+    bindOut();pushHist(q);go.disabled=false;return;
   }
-  var segHtml='';
-  if(dir==='zh2vi'&&q.length>1){
-    var sg=segment(q).filter(function(x){return CJK.test(x.t)});
-    if(sg.length>1&&sg.some(function(x){return x.w})){
-      segHtml='<div class="ta-card"><h4>Tách từng từ</h4><div class="ta-seg">'+segment(q).map(function(x){
-        if(!CJK.test(x.t))return x.t.trim()?'<span><b>'+esc(x.t)+'</b></span>':'';
-        return '<span data-q="'+esc(x.t)+'"><b>'+esc(x.t)+'</b>'+(x.w?'<small>'+esc(x.w.pinyin||'')+'</small><em>'+esc(shortMeaning(x.w))+'</em>':'')+'</span>'}).join('')+'</div></div>';
-    }
+  /* Không có: chữ Hán + chưa nối AI -> báo rõ thay vì hiện bản dịch máy sai */
+  if(dir==='zh2vi'&&!API){
+    out.innerHTML='<div class="ta-card ta-main"><h4>Chưa có trong kho TOCFL</h4><div class="ta-note" style="font-size:14px">Từ/câu này chưa có trong kho từ vựng. Khi kết nối máy chủ AI, trợ lý sẽ dịch và giải thích ở đây và ở tab “Trò chuyện”.</div></div>';
+    pushHist(q);go.disabled=false;return;
   }
-  var noMT=(dir==='zh2vi'&&!API);
-  var main=noMT?Promise.resolve({text:'',translit:'',alts:[]}):translate(q,dir,my.signal);
-  var trad=null;
-  if(dir==='zh2vi'&&/[一-鿿]/.test(q)&&!API&&!noMT){trad=gtx(q,'zh-CN','zh-TW',my.signal).then(function(r){return r.text&&r.text!==q?r.text:null}).catch(function(){return null})}
-  Promise.all([main,trad]).then(function(res){
+  go.disabled=true;
+  out.innerHTML='<div class="ta-card ta-main"><h4>Đang dịch <span class="ta-dots"></span></h4></div>';
+  translate(q,dir,my.signal).then(function(r){
     if(my!==ctrl)return;
-    var r=res[0],tr=res[1]||r.trad||null,h='';if(tr===q)tr=null;
-    if(dir==='zh2vi'&&noMT){
-      h+='<div class="ta-card"><div class="ta-qline"><span class="ta-qh">'+esc(q)+'</span><button class="ta-sp" type="button" data-say="'+esc(q)+'" aria-label="Nghe từ vừa tra">🔊</button></div></div>';
-    }else if(dir==='zh2vi'){
-      h+='<div class="ta-card"><div class="ta-qline"><span class="ta-qh">'+esc(q)+'</span><button class="ta-sp" type="button" data-say="'+esc(q)+'" aria-label="Nghe từ vừa tra">🔊</button></div><h4>Nghĩa tiếng Việt</h4><div class="ta-row"><div><div class="ta-big">'+esc(r.text)+'</div>'
-       +(r.translit?'<div class="ta-py">'+esc(r.translit)+'</div>':'')+(tr?'<div class="ta-note">Dạng phồn thể: <b style="font-family:var(--han-font,serif)">'+esc(tr)+'</b> '+'</div>':'')
-       +'</div><div style="display:flex;gap:6px">'+speakBtn(tr||q)+copyBtn(r.text)+'</div></div>'
-       +(r.alts.length?'<div class="ta-note">Nghĩa khác: '+r.alts.map(esc).join(' · ')+'</div>':'')+'</div>';
+    var h;
+    if(dir==='zh2vi'){
+      h='<div class="ta-card ta-main"><h4>Nghĩa tiếng Việt</h4><div class="ta-row"><div><div class="ta-big">'+esc(r.text)+'</div>'
+       +(r.translit?'<div class="ta-py">'+esc(r.translit)+'</div>':'')
+       +'</div><div style="display:flex;gap:6px">'+speakBtn(q)+copyBtn(r.text)+'</div></div>'
+       +(r.alts.length?'<div class="ta-note">Nghĩa khác: '+r.alts.map(esc).join(' · ')+'</div>':'')+(r.note?'<div class="ta-note">'+esc(r.note)+'</div>':'')+'</div>';
     }else{
-      h+='<div class="ta-card"><h4>Chữ Hán phồn thể (Đài Loan)</h4><div class="ta-row"><div><div class="ta-big zh">'+esc(r.text)+'</div>'
+      h='<div class="ta-card ta-main"><h4>Chữ Hán phồn thể (Đài Loan)</h4><div class="ta-row"><div><div class="ta-big zh">'+esc(r.text)+'</div>'
        +(r.translit?'<div class="ta-py">'+esc(r.translit)+'</div>':'')
        +'</div><div style="display:flex;gap:6px">'+speakBtn(r.text)+copyBtn(r.text)+'</div></div>'
-       +(r.alts.length?'<div class="ta-note">Cách nói khác: '+r.alts.map(function(a){return '<a href="#" data-q="'+esc(a)+'" style="color:inherit">'+esc(a)+'</a>'}).join(' · ')+'</div>':'')+'</div>';
+       +(r.alts.length?'<div class="ta-note">Cách nói khác: '+r.alts.map(function(a){return '<a href="#" data-q="'+esc(a)+'" style="color:inherit">'+esc(a)+'</a>'}).join(' · ')+'</div>':'')+(r.note?'<div class="ta-note">'+esc(r.note)+'</div>':'')+'</div>';
     }
-    if(r.note)h+='<div class="ta-note" style="margin:6px 4px 0">'+esc(r.note)+'</div>';
-    var zh=dir==='zh2vi'?(tr||q):r.text;
-    h+='<button class="ta-gram" type="button" data-zh="'+esc(zh)+'">📘 Giải thích ngữ pháp</button><div class="ta-gout"></div>';
-    out.innerHTML=localHtml+h+segHtml+'<div class="ta-note" style="margin:8px 4px 0">'+(local.length?'Ưu tiên nghĩa trong kho TOCFL ở trên; ':'')+'bản dịch máy chỉ để tham khảo.</div>';
+    out.innerHTML=h+'<div class="ta-note" style="margin:8px 4px 0">Bản dịch máy chỉ để tham khảo.</div>';
     bindOut();pushHist(q);
-    var gb=$('.ta-gram',out);if(gb)gb.onclick=function(){grammar(gb.dataset.zh,gb)};
   }).catch(function(e){
     if(e&&e.name==='AbortError')return;
     if(my!==ctrl)return;
-    out.innerHTML=localHtml+segHtml+'<div class="ta-err">'+(local.length?'Không kết nối được dịch trực tuyến — bạn vẫn có kết quả trong kho TOCFL ở trên.':'Chưa dịch được (cần Internet hoặc dịch vụ đang bận). Bạn thử lại sau giây lát nhé.')+'</div>';
-    bindOut();
+    out.innerHTML='<div class="ta-err">Chưa dịch được (cần Internet hoặc dịch vụ đang bận). Bạn thử lại sau giây lát nhé.</div>';
   }).then(function(){if(my===ctrl)go.disabled=false});
 }
 
@@ -390,7 +379,7 @@ function renderConvo(){
   convo.forEach(function(m){addMsg(m.role,m.content)});
   sugEl.style.display=convo.length?'none':'';
 }
-msgsEl.addEventListener('click',function(e){var z=e.target.closest&&e.target.closest('.zh');if(z)speak(z.dataset.say)});
+msgsEl.addEventListener('click',function(e){var z=e.target.closest&&e.target.closest('.zh');if(z)speak(z.dataset.say,z)});
 sugEl.innerHTML=SUG.map(function(x){return '<button type="button">'+esc(x)+'</button>'}).join('');
 sugEl.querySelectorAll('button').forEach(function(b){b.onclick=function(){cta.value=b.textContent;sendChat()}});
 function cauto(){cta.style.height='auto';cta.style.height=Math.min(120,cta.scrollHeight)+'px'}
@@ -418,7 +407,7 @@ function apiChat(messages){
 }
 function showView(v){
   panel.querySelectorAll('.ta-tabs button').forEach(function(b){b.classList.toggle('on',b.dataset.v===v)});
-  dictEl.hidden=v!=='dict';chatEl.hidden=v!=='chat';dictEl.style.display=v==='dict'?'':'none';
+  dictEl.hidden=v!=='dict';chatEl.hidden=v!=='chat';
   if(v==='chat'){renderConvo();setTimeout(function(){try{cta.focus()}catch(e){}},60)}
 }
 panel.querySelectorAll('.ta-tabs button').forEach(function(b){b.onclick=function(){showView(b.dataset.v)}});
