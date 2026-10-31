@@ -1,4 +1,4 @@
-/* Máy chủ trung gian cho Trợ lý TILO (dùng Cloudflare Workers AI, miễn phí theo hạn mức ngày) — © 2026 Học TOCFL cùng Thịnh & Loan
+/* Máy chủ trung gian cho Trợ lý Lona (dùng Cloudflare Workers AI, miễn phí theo hạn mức ngày) — © 2026 Học TOCFL cùng Thịnh & Loan
    Chỉ cho phép trang web của bạn gọi, giới hạn độ dài và số lần gọi. */
 
 const SYS_TRANSLATE = `Bạn là từ điển Hán–Việt chuyên cho người học TOCFL (tiếng Quan thoại Đài Loan).
@@ -21,7 +21,7 @@ Quy tắc:
 Chỉ trả về MỘT đối tượng JSON, không kèm chữ nào khác:
 {"translation":"nghĩa cả câu bằng tiếng Việt","pinyin":"...","breakdown":[{"han":"","pinyin":"","vi":"","role":""}],"points":[{"pattern":"","level":"","explain":"","mistake":"","examples":[{"han":"","pinyin":"","vi":""}]}],"summary":"1–2 câu tóm tắt"}`;
 
-const SYS_CHAT = `Bạn là TILO, trợ lý ảo thân thiện của "Học TOCFL cùng Thịnh & Loan", giống một người bạn học giỏi tiếng Hoa (Quan thoại Đài Loan, chữ PHỒN THỂ) đang kèm một bạn người Việt ôn thi TOCFL.
+const SYS_CHAT = `Bạn là Lona, trợ lý ảo thân thiện của "Học TOCFL cùng Thịnh & Loan", giống một người bạn học giỏi tiếng Hoa (Quan thoại Đài Loan, chữ PHỒN THỂ) đang kèm một bạn người Việt ôn thi TOCFL.
 
 CÁCH TRÒ CHUYỆN
 - Nói như người thật: tự nhiên, ấm áp, gần gũi, xưng "mình" và gọi người dùng là "bạn". Không văn mẫu, không mở đầu kiểu "Tất nhiên!", "Chắc chắn rồi!", không lặp lại câu hỏi của người dùng.

@@ -1,9 +1,9 @@
-/* Trợ lý TILO — từ điển Hán (phồn thể) ⇄ Việt — © 2026 Học TOCFL cùng Thịnh & Loan
+/* Trợ lý Lona — từ điển Hán (phồn thể) ⇄ Việt — © 2026 Học TOCFL cùng Thịnh & Loan
    Nguồn tra cứu: (1) kho từ vựng TOCFL trong trang (chính xác nhất, có ví dụ),
    (2) Google Translate (gtx) ra zh-TW + pinyin, (3) MyMemory dự phòng. */
 (function(){
 'use strict';
-var IMG='tro-ly-avatar.jpg?v=20261101b';
+var IMG='tro-ly-avatar.jpg?v=20261101c';
 /* Địa chỉ máy chủ trung gian (xem worker/README.md). Để trống = dùng dịch miễn phí, chưa có giải thích ngữ pháp bằng AI. */
 var API=(window.TRO_LY_API||'https://tro-ly-tocfl.tranducthinh210401.workers.dev').replace(/\/$/,'');
 var CJK=/[㐀-䶿一-鿿豈-﫿]/;
@@ -19,6 +19,7 @@ var css='\
 .ta-fab{position:fixed;right:14px;bottom:14px;width:60px;height:60px;border-radius:50%;padding:0;border:3px solid #fff;background:#ffe9b0 url('+IMG+') center/cover;box-shadow:0 6px 20px rgba(0,0,0,.28);cursor:pointer;z-index:9000;touch-action:none;transition:transform .15s}\
 .ta-fab:active{transform:scale(.94)}\
 .ta-fab::after{content:"";position:absolute;right:1px;bottom:1px;width:13px;height:13px;border-radius:50%;background:#22c55e;border:2px solid #fff}\
+.ta-lbl{position:absolute;right:-2px;bottom:calc(100% + 10px);white-space:nowrap;pointer-events:none;background:var(--surface,#fff);color:var(--text,#1d1d1f);border:1px solid var(--border,rgba(0,0,0,.1));border-radius:14px 14px 4px 14px;padding:7px 12px;font:700 12.5px system-ui,-apple-system,sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.16);animation:ta-in .4s}.ta-lbl::after{content:"";position:absolute;right:22px;bottom:-6px;width:10px;height:10px;background:inherit;border-right:1px solid var(--border,rgba(0,0,0,.1));border-bottom:1px solid var(--border,rgba(0,0,0,.1));transform:rotate(45deg)}\
 .ta-fab.hasnew{animation:ta-bob 2.4s ease-in-out infinite}\
 @keyframes ta-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}\
 .ta-tip{position:fixed;z-index:9000;background:var(--surface,#fff);color:var(--text,#1d1d1f);border:1px solid var(--border,rgba(0,0,0,.1));border-radius:14px 14px 4px 14px;padding:8px 12px;font:600 13px "Be Vietnam Pro",system-ui,sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.16);max-width:200px;animation:ta-in .3s}\
@@ -191,10 +192,11 @@ function speak(txt,btn){
 }
 
 /* ---------- Giao diện ---------- */
-var fab=document.createElement('button');fab.className='ta-fab';fab.type='button';fab.title='Trợ lý ảo TILO';fab.setAttribute('aria-label','Mở trợ lý ảo TILO');
+var fab=document.createElement('button');fab.className='ta-fab';fab.type='button';fab.title='Trợ lý ảo Lona';fab.setAttribute('aria-label','Mở trợ lý ảo Lona');
+fab.innerHTML='<span class="ta-lbl">Trò chuyện với Lona</span>';
 document.body.appendChild(fab);
-var panel=document.createElement('div');panel.className='ta-panel';panel.setAttribute('role','dialog');panel.setAttribute('aria-label','Trợ lý ảo TILO');
-panel.innerHTML='<div class="ta-h"><img src="'+IMG+'" alt=""><div><b>Trợ lý ảo TILO</b></div><button class="ta-x" type="button" aria-label="Đóng">×</button></div>'
+var panel=document.createElement('div');panel.className='ta-panel';panel.setAttribute('role','dialog');panel.setAttribute('aria-label','Trợ lý ảo Lona');
+panel.innerHTML='<div class="ta-h"><img src="'+IMG+'" alt=""><div><b>Trợ lý ảo Lona</b></div><button class="ta-x" type="button" aria-label="Đóng">×</button></div>'
  +'<div class="ta-tabs"><button type="button" data-v="dict" class="on">📖 Từ điển</button><button type="button" data-v="chat">💬 Trò chuyện</button></div>'
  +'<div class="ta-body ta-dict"><div class="ta-modes"><button type="button" data-m="auto" class="on">Tự nhận</button><button type="button" data-m="zh2vi">繁 → Việt</button><button type="button" data-m="vi2zh">Việt → 繁</button></div>'
  +'<div class="ta-in"><textarea rows="1" placeholder="Gõ chữ Hán / tiếng Việt…" enterkeyhint="search"></textarea><button class="ta-go" type="button">Dịch</button></div>'
@@ -365,18 +367,6 @@ function run(){
   }).then(function(){if(my===ctrl)go.disabled=false});
 }
 
-/* lời chào nhỏ lần đầu */
-try{
-  if(!store('ta_seen')){
-    store('ta_seen',1);
-    setTimeout(function(){
-      if(panel.classList.contains('open'))return;
-      var t=document.createElement('div');t.className='ta-tip';t.textContent='Xin chào! Cần tra từ Hán ⇄ Việt cứ hỏi mình nhé 💕';document.body.appendChild(t);
-      var r=fab.getBoundingClientRect();t.style.right=Math.max(8,innerWidth-r.right)+'px';t.style.bottom=(innerHeight-r.top+10)+'px';
-      setTimeout(function(){t.remove()},6000);
-    },2500);
-  }
-}catch(e){}
 /* ---------- Trò chuyện ---------- */
 var chatEl=$('.ta-chat',panel),dictEl=$('.ta-dict',panel),msgsEl=$('.ta-msgs',panel),cta=$('textarea',chatEl),cgo=$('.ta-go',chatEl),sugEl=$('.ta-sug',panel);
 var convo=(store('ta_chat')||[]).filter(function(m){return m&&typeof m.content==='string'&&(m.role==='user'||m.role==='assistant')}).slice(-20),busy=false;
@@ -396,7 +386,7 @@ function addMsg(role,text){
 }
 function renderConvo(){
   msgsEl.innerHTML='';
-  if(!convo.length)addMsg('assistant','Xin chào! Mình là trợ lý ảo TILO của Thịnh & Loan 💕 Bạn cứ hỏi về từ vựng, ngữ pháp hay nhờ dịch/sửa câu tiếng Hoa nhé.');
+  if(!convo.length)addMsg('assistant','Xin chào! Mình là trợ lý ảo Lona của Thịnh & Loan 💕 Bạn cứ hỏi về từ vựng, ngữ pháp hay nhờ dịch/sửa câu tiếng Hoa nhé.');
   convo.forEach(function(m){addMsg(m.role,m.content)});
   sugEl.style.display=convo.length?'none':'';
 }
