@@ -21,6 +21,15 @@ Quy tắc:
 Chỉ trả về MỘT đối tượng JSON, không kèm chữ nào khác:
 {"translation":"nghĩa cả câu bằng tiếng Việt","pinyin":"...","breakdown":[{"han":"","pinyin":"","vi":"","role":""}],"points":[{"pattern":"","level":"","explain":"","mistake":"","examples":[{"han":"","pinyin":"","vi":""}]}],"summary":"1–2 câu tóm tắt"}`;
 
+const SYS_CHAT = `Bạn là "Trợ lý Thịnh & Loan", gia sư tiếng Hoa (Quan thoại Đài Loan, chữ PHỒN THỂ) thân thiện cho người Việt đang ôn thi TOCFL.
+Phong cách: trò chuyện tự nhiên, ấm áp, ngắn gọn, đi thẳng vào câu hỏi; trả lời bằng tiếng Việt (trừ phần ví dụ tiếng Hoa).
+Khi hỏi TỪ VỰNG: nêu chữ Hán phồn thể, pinyin có dấu, loại từ, nghĩa tiếng Việt, cấp TOCFL nếu biết, 2 ví dụ ngắn (Hán + pinyin + nghĩa Việt), và lưu ý/ từ dễ nhầm.
+Khi hỏi NGỮ PHÁP: nêu cấu trúc, ý nghĩa, cách dùng, lỗi người Việt hay mắc, 2 ví dụ; so sánh khi hai cấu trúc gần nghĩa.
+Khi người dùng gửi câu tiếng Hoa: dịch, giải thích cấu trúc và sửa lỗi nếu có (nói rõ vì sao).
+Nếu người dùng gõ giản thể, trả lời bằng phồn thể và nhắc nhẹ dạng phồn thể.
+Không bịa; nếu không chắc thì nói không chắc. Từ chối nhẹ nhàng nếu câu hỏi không liên quan đến học tiếng Hoa và đưa cuộc trò chuyện về lại việc học.
+Định dạng: văn bản thường, có thể dùng **đậm** và gạch đầu dòng "- ". Không dùng bảng, không dùng tiêu đề #.`;
+
 function cors(env, req) {
   const allow = (env.ALLOWED_ORIGINS || "https://tranducthinh210401.github.io").split(",").map(s => s.trim());
   const o = req.headers.get("Origin") || "";
@@ -65,12 +74,19 @@ export default {
 
     let body;
     try { body = await req.json(); } catch { return json({ ok: false, error: "bad_json" }, 400, h); }
-    const q = String(body.q || "").trim().slice(0, 400);
-    const task = body.task === "grammar" ? "grammar" : "translate";
-    if (!q) return json({ ok: false, error: "empty" }, 400, h);
+    const task = body.task === "grammar" ? "grammar" : body.task === "chat" ? "chat" : "translate";
+    let q = String(body.q || "").trim().slice(0, 400);
+    let msgs = null;
+    if (task === "chat") {
+      msgs = (Array.isArray(body.messages) ? body.messages : [])
+        .filter(m => m && (m.role === "user" || m.role === "assistant") && typeof m.content === "string" && m.content.trim())
+        .slice(-12).map(m => ({ role: m.role, content: m.content.slice(0, 1500) }));
+      while (msgs.length && msgs[0].role !== "user") msgs.shift();
+      if (!msgs.length || msgs[msgs.length - 1].role !== "user") return json({ ok: false, error: "empty" }, 400, h);
+    } else if (!q) return json({ ok: false, error: "empty" }, 400, h);
     if (await overLimit(env, req)) return json({ ok: false, error: "limit" }, 429, h);
 
-    const system = task === "grammar" ? SYS_GRAMMAR : SYS_TRANSLATE;
+    const system = task === "grammar" ? SYS_GRAMMAR : task === "chat" ? SYS_CHAT : SYS_TRANSLATE;
     const hint = task === "translate" && (body.dir === "zh2vi" || body.dir === "vi2zh")
       ? `\n(Hướng dịch yêu cầu: ${body.dir === "zh2vi" ? "Hán → Việt" : "Việt → Hán phồn thể"})` : "";
     try {
@@ -79,15 +95,16 @@ export default {
         headers: { "x-api-key": env.ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01", "content-type": "application/json" },
         body: JSON.stringify({
           model: env.MODEL || "claude-haiku-5-5",
-          max_tokens: task === "grammar" ? 1800 : 600,
-          temperature: 0.2,
+          max_tokens: task === "chat" ? 1200 : task === "grammar" ? 1800 : 600,
+          temperature: task === "chat" ? 0.5 : 0.2,
           system,
-          messages: [{ role: "user", content: "<input>\n" + q + "\n</input>" + hint }],
+          messages: task === "chat" ? msgs : [{ role: "user", content: "<input>\n" + q + "\n</input>" + hint }],
         }),
       });
       if (!r.ok) return json({ ok: false, error: "upstream_" + r.status }, 502, h);
       const d = await r.json();
       const text = (d.content || []).map(c => c.text || "").join("");
+      if (task === "chat") return json({ ok: true, task, data: { reply: text.trim() } }, 200, h);
       return json({ ok: true, task, data: parseModel(text) }, 200, h);
     } catch (e) {
       return json({ ok: false, error: "fail" }, 502, h);

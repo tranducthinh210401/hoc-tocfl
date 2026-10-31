@@ -3,7 +3,7 @@
    (2) Google Translate (gtx) ra zh-TW + pinyin, (3) MyMemory dự phòng. */
 (function(){
 'use strict';
-var IMG='tro-ly-avatar.jpg?v=20261031c';
+var IMG='tro-ly-avatar.jpg?v=20261031d';
 /* Địa chỉ máy chủ trung gian (xem worker/README.md). Để trống = dùng dịch miễn phí, chưa có giải thích ngữ pháp bằng AI. */
 var API=(window.TRO_LY_API||'').replace(/\/$/,'');
 var CJK=/[㐀-䶿一-鿿豈-﫿]/;
@@ -57,6 +57,15 @@ var css='\
 .ta-gram{width:100%;margin-top:12px;border:1.5px solid var(--blue,#0071e3);background:transparent;color:var(--blue,#0071e3);border-radius:14px;padding:11px;font:700 14px inherit;font-family:inherit;cursor:pointer}.ta-gram:disabled{opacity:.55}\
 .ta-sp{border:0;background:var(--blue-tint,rgba(0,113,227,.1));color:inherit;border-radius:50%;width:28px;height:28px;font-size:13px;cursor:pointer;margin-left:6px;vertical-align:middle;padding:0}\
 .ta-qline{display:flex;align-items:center;margin-bottom:8px}.ta-qh{font-family:var(--han-font,serif);font-size:24px;font-weight:700;word-break:break-word}\
+.ta-tabs{display:flex;gap:6px;padding:8px 14px 0;flex:none}.ta-tabs button{flex:1;border:0;border-bottom:3px solid transparent;background:none;color:var(--text-secondary,#6e6e73);font:700 13.5px inherit;font-family:inherit;padding:8px 4px;cursor:pointer}.ta-tabs button.on{color:var(--blue,#0071e3);border-color:var(--blue,#0071e3)}\
+.ta-chat{display:flex;flex-direction:column;flex:1;min-height:0;height:min(480px,60dvh)}.ta-chat[hidden]{display:none}\
+.ta-msgs{flex:1;overflow:auto;padding:12px 14px;display:flex;flex-direction:column;gap:10px;-webkit-overflow-scrolling:touch}\
+.ta-m{max-width:88%;padding:9px 13px;border-radius:18px;font-size:14.5px;line-height:1.5;word-break:break-word;white-space:pre-wrap}\
+.ta-m.u{align-self:flex-end;background:var(--blue,#0071e3);color:#fff;border-bottom-right-radius:5px}\
+.ta-m.a{align-self:flex-start;background:var(--surface-2,#f2f2f5);border:1px solid var(--border-soft,rgba(0,0,0,.07));border-bottom-left-radius:5px}\
+.ta-m.a .zh{font-family:var(--han-font,"Noto Serif TC",serif);font-weight:600;cursor:pointer;border-bottom:1px dotted var(--blue,#0071e3)}\
+.ta-sug{display:flex;gap:6px;overflow-x:auto;padding:0 14px 8px;flex:none}.ta-sug button{flex:none;border:1px solid var(--border,rgba(0,0,0,.12));background:var(--surface-2,#fafafa);color:inherit;border-radius:999px;padding:6px 12px;font:500 12.5px inherit;font-family:inherit;cursor:pointer;white-space:nowrap}\
+.ta-cin{padding:8px 14px 10px;border-top:1px solid var(--border-soft,rgba(0,0,0,.07));flex:none}\
 .ta-err{color:#c2410c;font-size:13.5px;margin-top:10px}\
 .ta-foot{flex:none;text-align:center;font-size:11px;color:var(--text-tertiary,#86868b);padding:6px 10px 9px;border-top:1px solid var(--border-soft,rgba(0,0,0,.07))}\
 .ta-dots{display:inline-block}.ta-dots::after{content:"…";animation:ta-bob 1s infinite}\
@@ -179,9 +188,11 @@ var fab=document.createElement('button');fab.className='ta-fab';fab.type='button
 document.body.appendChild(fab);
 var panel=document.createElement('div');panel.className='ta-panel';panel.setAttribute('role','dialog');panel.setAttribute('aria-label','Trợ lý từ điển');
 panel.innerHTML='<div class="ta-h"><img src="'+IMG+'" alt=""><div><b>Trợ lý từ điển</b><small>Hán phồn thể ⇄ Tiếng Việt</small></div><button class="ta-x" type="button" aria-label="Đóng">×</button></div>'
- +'<div class="ta-body"><div class="ta-modes"><button type="button" data-m="auto" class="on">Tự nhận</button><button type="button" data-m="zh2vi">繁 → Việt</button><button type="button" data-m="vi2zh">Việt → 繁</button></div>'
+ +'<div class="ta-tabs"><button type="button" data-v="dict" class="on">📖 Từ điển</button><button type="button" data-v="chat">💬 Trò chuyện</button></div>'
+ +'<div class="ta-body ta-dict"><div class="ta-modes"><button type="button" data-m="auto" class="on">Tự nhận</button><button type="button" data-m="zh2vi">繁 → Việt</button><button type="button" data-m="vi2zh">Việt → 繁</button></div>'
  +'<div class="ta-in"><textarea rows="1" placeholder="Gõ hoặc dán chữ Hán / tiếng Việt…" enterkeyhint="search"></textarea><button class="ta-go" type="button">Dịch</button></div>'
  +'<div class="ta-out"></div><div class="ta-hist"></div></div>'
+ +'<div class="ta-chat" hidden><div class="ta-msgs"></div><div class="ta-sug"></div><div class="ta-in ta-cin"><textarea rows="1" placeholder="Hỏi về từ vựng, ngữ pháp, cách dùng…" enterkeyhint="send"></textarea><button class="ta-go" type="button">Gửi</button></div></div>'
  +'<div class="ta-foot">© 2026 Học TOCFL cùng Thịnh &amp; Loan · Bản dịch tự động, hãy đối chiếu khi thi</div>';
 document.body.appendChild(panel);
 var ta=$('textarea',panel),out=$('.ta-out',panel),go=$('.ta-go',panel),histEl=$('.ta-hist',panel);
@@ -360,5 +371,59 @@ try{
     },2500);
   }
 }catch(e){}
+/* ---------- Trò chuyện ---------- */
+var chatEl=$('.ta-chat',panel),dictEl=$('.ta-dict',panel),msgsEl=$('.ta-msgs',panel),cta=$('textarea',chatEl),cgo=$('.ta-go',chatEl),sugEl=$('.ta-sug',panel);
+var convo=(store('ta_chat')||[]).filter(function(m){return m&&typeof m.content==='string'&&(m.role==='user'||m.role==='assistant')}).slice(-20),busy=false;
+var SUG=['Phân biệt 的、得、地','Giải thích câu 把','「想」和「要」khác nhau thế nào?','Cho mình ví dụ với 雖然…但是…','Dịch giúp: 我昨天去夜市吃了臭豆腐。'];
+function fmt(t){
+  var h=esc(t).replace(/\*\*([^*\n]+)\*\*/g,'<b>$1</b>').replace(/^- /gm,'• ');
+  return h.replace(/([\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff][\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff，。！？、：；「」『』…]*)/g,function(m){return '<span class="zh" data-say="'+m.replace(/[，。！？、：；「」『』…]/g,'')+'">'+m+'</span>'});
+}
+function addMsg(role,text){
+  var d=document.createElement('div');d.className='ta-m '+(role==='user'?'u':'a');
+  if(role==='user')d.textContent=text;else d.innerHTML=fmt(text);
+  msgsEl.appendChild(d);msgsEl.scrollTop=msgsEl.scrollHeight;return d;
+}
+function renderConvo(){
+  msgsEl.innerHTML='';
+  if(!convo.length)addMsg('assistant','Xin chào! Mình là trợ lý của Thịnh & Loan 💕 Bạn cứ hỏi về từ vựng, ngữ pháp hay nhờ dịch/sửa câu tiếng Hoa nhé. Bấm vào chữ Hán trong câu trả lời để nghe phát âm.');
+  convo.forEach(function(m){addMsg(m.role,m.content)});
+  sugEl.style.display=convo.length?'none':'';
+}
+msgsEl.addEventListener('click',function(e){var z=e.target.closest&&e.target.closest('.zh');if(z)speak(z.dataset.say)});
+sugEl.innerHTML=SUG.map(function(x){return '<button type="button">'+esc(x)+'</button>'}).join('');
+sugEl.querySelectorAll('button').forEach(function(b){b.onclick=function(){cta.value=b.textContent;sendChat()}});
+function cauto(){cta.style.height='auto';cta.style.height=Math.min(120,cta.scrollHeight)+'px'}
+cta.addEventListener('input',cauto);
+cta.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();sendChat()}});
+cgo.addEventListener('click',sendChat);
+function sendChat(){
+  var t=cta.value.trim().slice(0,1000);if(!t||busy)return;
+  cta.value='';cauto();sugEl.style.display='none';
+  convo.push({role:'user',content:t});addMsg('user',t);
+  if(!API){addMsg('assistant','Mình chưa được nối với máy chủ AI nên chưa trò chuyện tự nhiên được 🥲 Bạn xem hướng dẫn trong thư mục worker/README.md để bật nhé. Trong lúc đó bạn vẫn dùng tab “Từ điển” để tra từ.');convo.pop();return}
+  busy=true;cgo.disabled=true;
+  var typing=addMsg('assistant','…');
+  apiChat(convo.slice(-12)).then(function(r){
+    typing.innerHTML=fmt(r);convo.push({role:'assistant',content:r});convo=convo.slice(-20);store('ta_chat',convo);
+  }).catch(function(e){
+    convo.pop();
+    typing.textContent=e&&e.code==='limit'?'Hôm nay bạn đã dùng hết lượt hỏi rồi, mai quay lại nhé!':'Mình chưa trả lời được lúc này, bạn gửi lại giúp mình nhé.';
+  }).then(function(){busy=false;cgo.disabled=false;msgsEl.scrollTop=msgsEl.scrollHeight});
+}
+function apiChat(messages){
+  return fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({task:'chat',messages:messages})})
+   .then(function(r){return r.json().catch(function(){return {ok:false,error:'http_'+r.status}})})
+   .then(function(j){if(!j||!j.ok||!j.data||!j.data.reply){var e=new Error('chat');e.code=j&&j.error;throw e}return String(j.data.reply)});
+}
+function showView(v){
+  panel.querySelectorAll('.ta-tabs button').forEach(function(b){b.classList.toggle('on',b.dataset.v===v)});
+  dictEl.hidden=v!=='dict';chatEl.hidden=v!=='chat';dictEl.style.display=v==='dict'?'':'none';
+  if(v==='chat'){renderConvo();setTimeout(function(){try{cta.focus()}catch(e){}},60)}
+}
+panel.querySelectorAll('.ta-tabs button').forEach(function(b){b.onclick=function(){showView(b.dataset.v)}});
+var clr=document.createElement('button');clr.type='button';clr.className='ta-x';clr.title='Xóa cuộc trò chuyện';clr.setAttribute('aria-label','Xóa cuộc trò chuyện');clr.textContent='🗑';clr.style.cssText='margin-left:auto;margin-right:6px;font-size:14px';
+var xb=$('.ta-h .ta-x',panel);xb.style.marginLeft='0';xb.parentNode.insertBefore(clr,xb);
+clr.onclick=function(){if(!convo.length)return;convo=[];store('ta_chat',[]);renderConvo()};
 window.taOpen=function(q){toggle(true);if(q){ta.value=q;autosize();run()}};
 })();
