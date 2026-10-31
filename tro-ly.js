@@ -3,7 +3,7 @@
    (2) Google Translate (gtx) ra zh-TW + pinyin, (3) MyMemory dự phòng. */
 (function(){
 'use strict';
-var IMG='tro-ly-avatar.jpg?v=20261031m';
+var IMG='tro-ly-avatar.jpg?v=20261031n';
 /* Địa chỉ máy chủ trung gian (xem worker/README.md). Để trống = dùng dịch miễn phí, chưa có giải thích ngữ pháp bằng AI. */
 var API=(window.TRO_LY_API||'https://tro-ly-tocfl.tranducthinh210401.workers.dev').replace(/\/$/,'');
 var CJK=/[㐀-䶿一-鿿豈-﫿]/;
@@ -416,8 +416,27 @@ function sendChat(){
     typing.textContent=e&&e.code==='limit'?'Hôm nay bạn đã dùng hết lượt hỏi rồi, mai quay lại nhé!':'Mình chưa trả lời được lúc này, bạn gửi lại giúp mình nhé.';
   }).then(function(){busy=false;cgo.disabled=false;msgsEl.scrollTop=msgsEl.scrollHeight});
 }
+/* Lấy dữ liệu đã kiểm chứng từ kho TOCFL của trang để AI trả lời đúng, không bịa */
+function buildContext(text){
+  var seen={},rows=[];
+  function add(w){
+    if(!w||rows.length>=8)return;var k=w.han+'|'+w.nghia;if(seen[k])return;seen[k]=1;
+    var ex=(w.examples&&w.examples[0])||null;
+    rows.push(w.han+' | '+(w.pinyin||'')+' | '+String(w.nghia||'').slice(0,140)+' | '+(w.tocfl||'')+(ex?' | ví dụ: '+ex.han+' — '+(ex.vi||''):''));
+  }
+  try{
+    (text.match(/[㐀-䶿一-鿿豈-﫿]+/g)||[]).forEach(function(chunk){
+      segment(chunk).forEach(function(x){if(x.w)lookupHan(x.t).slice(0,2).forEach(add)});
+      if(chunk.length>1)lookupHan(chunk).slice(0,2).forEach(add);
+    });
+    var vi=text.replace(/[㐀-䶿一-鿿豈-﫿]+/g,' ').trim();
+    if(vi.length>=2&&vi.length<=40)searchVi(vi,4).forEach(add);
+  }catch(e){}
+  return rows.join('\n');
+}
 function apiChat(messages){
-  return fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({task:'chat',messages:messages})})
+  var lastUser='';for(var i=messages.length-1;i>=0;i--){if(messages[i].role==='user'){lastUser=messages[i].content;break}}
+  return fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({task:'chat',messages:messages,context:buildContext(lastUser)})})
    .then(function(r){return r.json().catch(function(){return {ok:false,error:'http_'+r.status}})})
    .then(function(j){if(!j||!j.ok||!j.data||!j.data.reply){var e=new Error('chat');e.code=j&&j.error;throw e}return String(j.data.reply)});
 }

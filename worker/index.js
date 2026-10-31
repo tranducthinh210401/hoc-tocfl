@@ -42,6 +42,12 @@ DỊCH TÊN NGƯỜI VIỆT SANG CHỮ HÁN
 - Với tên riêng có nhiều chữ Hán cùng âm (ví dụ Loan: 鸞 / 鑾; Thúy: 翠 / 翠; Lan: 蘭), chọn chữ phổ biến nhất, nói rõ ý nghĩa và cho biết còn lựa chọn khác. Nếu không chắc chữ nào đúng với tên cụ thể của người dùng thì nói là "phổ biến nhất" và nhờ họ xác nhận.
 - Trước khi trả lời hãy tự đếm lại số âm tiết Việt và số chữ Hán cho khớp. Ghi rõ từng cặp âm tiết → chữ Hán → pinyin. Họ tên trong bản dịch ghi theo thứ tự Họ + Đệm + Tên.
 
+ĐỘ CHÍNH XÁC (QUAN TRỌNG NHẤT)
+- Nếu tin nhắn có phần <du_lieu_tham_khao> (lấy từ kho từ vựng TOCFL của trang), đó là dữ liệu ĐÃ KIỂM CHỨNG: hãy dùng đúng nghĩa/pinyin/ví dụ trong đó, không tự đổi, và ưu tiên hơn kiến thức của bạn.
+- Chỉ khẳng định điều bạn chắc chắn. Với chữ Hán, pinyin, nghĩa, cấp TOCFL, quy tắc ngữ pháp: nếu không chắc 100% thì nói rõ "mình không chắc phần này" rồi nêu phần chắc chắn; TUYỆT ĐỐI không bịa chữ Hán, pinyin hay ví dụ cho đủ.
+- Đọc kỹ câu hỏi, trả lời đúng thứ người dùng cần biết (nếu họ hỏi tên thì trả lời về tên, hỏi nghĩa thì trả lời nghĩa). Có hai cách hiểu khác hẳn nhau thì hỏi lại một câu ngắn thay vì đoán.
+- Trước khi trả lời, tự kiểm tra lại: số chữ/âm tiết có khớp không, pinyin có khớp chữ Hán không, nghĩa có khớp ngữ cảnh không.
+
 ĐỊNH DẠNG
 - Viết như tin nhắn chat: văn xuôi ngắn, xuống dòng vừa phải. Chỉ dùng **đậm** cho từ khóa và gạch đầu dòng "- " khi liệt kê thật sự cần. Không bảng, không tiêu đề #. Tối đa 1–2 biểu tượng cảm xúc, dùng khi hợp.
 - Ví dụ tiếng Hoa viết trên một dòng riêng: 我想喝咖啡。(wǒ xiǎng hē kāfēi) — Mình muốn uống cà phê.`;
@@ -92,12 +98,16 @@ export default {
     try { body = await req.json(); } catch { return json({ ok: false, error: "bad_json" }, 400, h); }
     const task = body.task === "grammar" ? "grammar" : body.task === "chat" ? "chat" : "translate";
     let q = String(body.q || "").trim().slice(0, 400);
+    const ctx = String(body.context || "").trim().slice(0, 2500);
     let msgs = null;
     if (task === "chat") {
       msgs = (Array.isArray(body.messages) ? body.messages : [])
         .filter(m => m && (m.role === "user" || m.role === "assistant") && typeof m.content === "string" && m.content.trim())
         .slice(-12).map(m => ({ role: m.role, content: m.content.slice(0, 1500) }));
       while (msgs.length && msgs[0].role !== "user") msgs.shift();
+      if (ctx && msgs.length && msgs[msgs.length - 1].role === "user") {
+        msgs[msgs.length - 1].content += "\n\n<du_lieu_tham_khao>\n" + ctx + "\n</du_lieu_tham_khao>";
+      }
       if (!msgs.length || msgs[msgs.length - 1].role !== "user") return json({ ok: false, error: "empty" }, 400, h);
     } else if (!q) return json({ ok: false, error: "empty" }, 400, h);
     if (await overLimit(env, req)) return json({ ok: false, error: "limit" }, 429, h);
@@ -106,14 +116,24 @@ export default {
     const hint = task === "translate" && (body.dir === "zh2vi" || body.dir === "vi2zh")
       ? `\n(Hướng dịch yêu cầu: ${body.dir === "zh2vi" ? "Hán → Việt" : "Việt → Hán phồn thể"})` : "";
     try {
-      const model = env.MODEL || "@cf/qwen/qwen3-30b-a3b-fp8";
+      const models = (env.MODELS || "@cf/meta/llama-3.3-70b-instruct-fp8-fast,@cf/qwen/qwen3-30b-a3b-fp8").split(",").map(x => x.trim()).filter(Boolean);
       const messages = [{ role: "system", content: system + "\n/no_think" }].concat(
         task === "chat" ? msgs : [{ role: "user", content: "<input>\n" + q + "\n</input>" + hint }]);
-      const r = await env.AI.run(model, {
-        messages,
-        max_tokens: task === "chat" ? 1200 : task === "grammar" ? 1800 : 600,
-        temperature: task === "chat" ? 0.7 : 0.2,
-      });
+      let r = null, lastErr = null;
+      for (const model of models) {
+        try {
+          r = await env.AI.run(model, {
+            messages,
+            max_tokens: task === "chat" ? 1200 : task === "grammar" ? 1800 : 600,
+            temperature: task === "chat" ? 0.3 : 0.2,
+          });
+          break;
+        } catch (e) {
+          lastErr = e;
+          if (/allocation|quota|neurons|4006/i.test(String((e && e.message) || e))) throw e;
+        }
+      }
+      if (r === null) throw lastErr || new Error("no model");
       let text = typeof r === "string" ? r : (r && (r.response || (r.choices && r.choices[0] && r.choices[0].message && r.choices[0].message.content))) || "";
       text = String(text).replace(/<think>[\s\S]*?<\/think>/g, "").trim();
       if (!text) return json({ ok: false, error: "empty_reply" }, 502, h);

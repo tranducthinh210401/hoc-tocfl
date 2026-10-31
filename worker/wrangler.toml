@@ -10,7 +10,8 @@ binding = "AI"
 [vars]
 # Trang web được phép gọi (nhiều địa chỉ thì cách nhau bằng dấu phẩy)
 ALLOWED_ORIGINS = "https://tranducthinh210401.github.io"
-MODEL = "@cf/qwen/qwen3-30b-a3b-fp8"
+# Thử lần lượt từng mô hình (mô hình đầu chính xác hơn, mô hình sau dự phòng)
+MODELS = "@cf/meta/llama-3.3-70b-instruct-fp8-fast,@cf/qwen/qwen3-30b-a3b-fp8"
 DAILY_LIMIT = "150"
 
 # (Tuỳ chọn) bật giới hạn theo IP: tạo KV rồi bỏ dấu # ở 3 dòng dưới
