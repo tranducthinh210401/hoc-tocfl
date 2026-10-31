@@ -8977,12 +8977,16 @@ kbBuild();initScene();idle();
   Object.keys(M).forEach(function(k){
     var p=document.getElementById('panel-'+k),b=p&&p.querySelector('.tb-brand');if(!b)return;
     var i=document.createElement('span');i.className='tb-fn';i.textContent=M[k][0];i.style.color=M[k][1];b.appendChild(i);
-    if(k==='home')return;
-    var g=document.createElement('button');g.type='button';g.className='tb-back';g.title='Quay lại trang chủ';g.setAttribute('aria-label','Quay lại trang chủ');
-    g.innerHTML='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg><span>Trang chủ</span>';
-    g.addEventListener('click',function(){var h=document.querySelector('.tab-btn[data-tab="home"]');if(h)h.click();g.blur()});
-    b.appendChild(g);
   });
+})();
+</script>
+<script>
+/* Bấm logo hoặc chữ Học TOCFL cùng Thịnh & Loan -> về trang chủ */
+(function(){
+  var st=document.createElement('style');st.textContent='.brand,.tb-brand b{cursor:pointer;-webkit-tap-highlight-color:transparent}';document.head.appendChild(st);
+  function home(){var h=document.querySelector('.tab-btn[data-tab="home"]');if(h)h.click();window.scrollTo({top:0})}
+  document.addEventListener('click',function(e){var t=e.target;if(t.closest&&t.closest('.brand,.tb-brand b'))home()});
+  document.querySelectorAll('.brand,.tb-brand b').forEach(function(el){el.setAttribute('role','link');el.setAttribute('title','Về trang chủ')});
 })();
 </script>
 <script>
