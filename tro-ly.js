@@ -3,7 +3,7 @@
    (2) Google Translate (gtx) ra zh-TW + pinyin, (3) MyMemory dự phòng. */
 (function(){
 'use strict';
-var IMG='tro-ly-avatar.jpg?v=20261101a';
+var IMG='tro-ly-avatar.jpg?v=20261101b';
 /* Địa chỉ máy chủ trung gian (xem worker/README.md). Để trống = dùng dịch miễn phí, chưa có giải thích ngữ pháp bằng AI. */
 var API=(window.TRO_LY_API||'https://tro-ly-tocfl.tranducthinh210401.workers.dev').replace(/\/$/,'');
 var CJK=/[㐀-䶿一-鿿豈-﫿]/;
@@ -60,7 +60,7 @@ var css='\
 .ta-tabs{display:flex;gap:6px;padding:8px 14px 0;flex:none}.ta-tabs button{flex:1;border:0;border-bottom:3px solid transparent;background:none;color:var(--text-secondary,#6e6e73);font:700 13.5px inherit;font-family:inherit;padding:8px 4px;cursor:pointer}.ta-tabs button.on{color:var(--blue,#0071e3);border-color:var(--blue,#0071e3)}\
 .ta-chat{display:flex;flex-direction:column;flex:1 1 auto;min-height:0}.ta-chat[hidden]{display:none}\
 .ta-msgs{flex:1 1 auto;min-height:0;overflow:auto;padding:12px 14px;display:flex;flex-direction:column;gap:10px;-webkit-overflow-scrolling:touch}\
-.ta-m{max-width:88%;padding:9px 13px;border-radius:18px;font-size:14.5px;line-height:1.5;word-break:break-word;white-space:pre-wrap}\
+.ta-spi{width:22px!important;height:22px!important;font-size:11px!important;margin:0 4px 0 3px!important;vertical-align:baseline!important}.ta-m{max-width:94%;padding:9px 13px;border-radius:18px;font-size:14.5px;line-height:1.5;word-break:break-word;white-space:pre-wrap}\
 .ta-m.u{align-self:flex-end;background:var(--blue,#0071e3);color:#fff;border-bottom-right-radius:5px}\
 .ta-m.a{align-self:flex-start;background:var(--surface-2,#f2f2f5);border:1px solid var(--border-soft,rgba(0,0,0,.07));border-bottom-left-radius:5px}\
 .ta-m.a .zh{font-family:var(--han-font,"Noto Serif TC",serif);font-weight:600;cursor:pointer;border-bottom:1px dotted var(--blue,#0071e3)}\
@@ -383,7 +383,11 @@ var convo=(store('ta_chat')||[]).filter(function(m){return m&&typeof m.content==
 var SUG=['Phân biệt 的、得、地','Giải thích câu 把','「想」和「要」khác nhau thế nào?','Cho mình ví dụ với 雖然…但是…','Dịch giúp: 我昨天去夜市吃了臭豆腐。'];
 function fmt(t){
   var h=esc(t).replace(/\*\*([^*\n]+)\*\*/g,'<b>$1</b>').replace(/^- /gm,'• ');
-  return h.replace(/([\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff][\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff，。！？、：；「」『』…]*)/g,function(m){return '<span class="zh" data-say="'+m.replace(/[，。！？、：；「」『』…]/g,'')+'">'+m+'</span>'});
+  /* mỗi cụm/câu tiếng Hoa: gạch chân chấm + loa nhỏ ngay bên cạnh để nghe */
+  return h.replace(/([\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff][\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff，。！？：；「」『』…～]*)/g,function(m){
+    var say=m.replace(/[，。！？：；「」『』…～]/g,'');if(!say)return m;
+    return '<span class="zh" data-say="'+say+'">'+m+'</span><button type="button" class="ta-sp ta-spi" data-say="'+say+'" aria-label="Nghe">🔊</button>';
+  });
 }
 function addMsg(role,text){
   var d=document.createElement('div');d.className='ta-m '+(role==='user'?'u':'a');
@@ -396,7 +400,7 @@ function renderConvo(){
   convo.forEach(function(m){addMsg(m.role,m.content)});
   sugEl.style.display=convo.length?'none':'';
 }
-msgsEl.addEventListener('click',function(e){var z=e.target.closest&&e.target.closest('.zh');if(z)speak(z.dataset.say,z)});
+msgsEl.addEventListener('click',function(e){var z=e.target.closest&&e.target.closest('.zh,.ta-spi');if(z)speak(z.dataset.say,z)});
 sugEl.innerHTML=SUG.map(function(x){return '<button type="button">'+esc(x)+'</button>'}).join('');
 sugEl.querySelectorAll('button').forEach(function(b){b.onclick=function(){cta.value=b.textContent;sendChat()}});
 function cauto(){cta.style.height='auto';cta.style.height=Math.min(120,cta.scrollHeight)+'px'}
