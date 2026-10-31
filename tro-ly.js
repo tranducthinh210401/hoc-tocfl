@@ -3,7 +3,7 @@
    (2) Google Translate (gtx) ra zh-TW + pinyin, (3) MyMemory dự phòng. */
 (function(){
 'use strict';
-var IMG='tro-ly-avatar.jpg?v=20261031g';
+var IMG='tro-ly-avatar.jpg?v=20261031h';
 /* Địa chỉ máy chủ trung gian (xem worker/README.md). Để trống = dùng dịch miễn phí, chưa có giải thích ngữ pháp bằng AI. */
 var API=(window.TRO_LY_API||'').replace(/\/$/,'');
 var CJK=/[㐀-䶿一-鿿豈-﫿]/;
@@ -197,7 +197,7 @@ panel.innerHTML='<div class="ta-h"><img src="'+IMG+'" alt=""><div><b>Trợ lý T
  +'<div class="ta-in"><textarea rows="1" placeholder="Gõ hoặc dán chữ Hán / tiếng Việt…" enterkeyhint="search"></textarea><button class="ta-go" type="button">Dịch</button></div>'
  +'<div class="ta-out"></div><div class="ta-hist"></div></div>'
  +'<div class="ta-chat" hidden><div class="ta-msgs"></div><div class="ta-sug"></div><div class="ta-in ta-cin"><textarea rows="1" placeholder="Hỏi về từ vựng, ngữ pháp, cách dùng…" enterkeyhint="send"></textarea><button class="ta-go" type="button">Gửi</button></div></div>'
- +'<div class="ta-foot">© 2026 Học TOCFL cùng Thịnh &amp; Loan · Bản dịch tự động, hãy đối chiếu khi thi</div>';
+ +'<div class="ta-foot">© 2026 Học TOCFL cùng Thịnh &amp; Loan</div>';
 document.body.appendChild(panel);
 var ta=$('textarea',panel),out=$('.ta-out',panel),go=$('.ta-go',panel),histEl=$('.ta-hist',panel);
 var mode='auto',ctrl=null,hist=store('ta_hist')||[];
