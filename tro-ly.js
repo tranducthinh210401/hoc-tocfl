@@ -3,7 +3,7 @@
    (2) Google Translate (gtx) ra zh-TW + pinyin, (3) MyMemory dự phòng. */
 (function(){
 'use strict';
-var IMG='tro-ly-avatar.jpg?v=20261031l';
+var IMG='tro-ly-avatar.jpg?v=20261031m';
 /* Địa chỉ máy chủ trung gian (xem worker/README.md). Để trống = dùng dịch miễn phí, chưa có giải thích ngữ pháp bằng AI. */
 var API=(window.TRO_LY_API||'https://tro-ly-tocfl.tranducthinh210401.workers.dev').replace(/\/$/,'');
 var CJK=/[㐀-䶿一-鿿豈-﫿]/;
@@ -190,10 +190,10 @@ function speak(txt,btn){
 }
 
 /* ---------- Giao diện ---------- */
-var fab=document.createElement('button');fab.className='ta-fab';fab.type='button';fab.title='Trợ lý TILO';fab.setAttribute('aria-label','Mở trợ lý TILO');
+var fab=document.createElement('button');fab.className='ta-fab';fab.type='button';fab.title='Trợ lý ảo TILO';fab.setAttribute('aria-label','Mở trợ lý ảo TILO');
 document.body.appendChild(fab);
-var panel=document.createElement('div');panel.className='ta-panel';panel.setAttribute('role','dialog');panel.setAttribute('aria-label','Trợ lý TILO');
-panel.innerHTML='<div class="ta-h"><img src="'+IMG+'" alt=""><div><b>Trợ lý TILO</b><small>Hán phồn thể ⇄ Tiếng Việt</small></div><button class="ta-x" type="button" aria-label="Đóng">×</button></div>'
+var panel=document.createElement('div');panel.className='ta-panel';panel.setAttribute('role','dialog');panel.setAttribute('aria-label','Trợ lý ảo TILO');
+panel.innerHTML='<div class="ta-h"><img src="'+IMG+'" alt=""><div><b>Trợ lý ảo TILO</b></div><button class="ta-x" type="button" aria-label="Đóng">×</button></div>'
  +'<div class="ta-tabs"><button type="button" data-v="dict" class="on">📖 Từ điển</button><button type="button" data-v="chat">💬 Trò chuyện</button></div>'
  +'<div class="ta-body ta-dict"><div class="ta-modes"><button type="button" data-m="auto" class="on">Tự nhận</button><button type="button" data-m="zh2vi">繁 → Việt</button><button type="button" data-m="vi2zh">Việt → 繁</button></div>'
  +'<div class="ta-in"><textarea rows="1" placeholder="Gõ chữ Hán / tiếng Việt…" enterkeyhint="search"></textarea><button class="ta-go" type="button">Dịch</button></div>'
@@ -391,7 +391,7 @@ function addMsg(role,text){
 }
 function renderConvo(){
   msgsEl.innerHTML='';
-  if(!convo.length)addMsg('assistant','Xin chào! Mình là trợ lý TILO của Thịnh & Loan 💕 Bạn cứ hỏi về từ vựng, ngữ pháp hay nhờ dịch/sửa câu tiếng Hoa nhé.');
+  if(!convo.length)addMsg('assistant','Xin chào! Mình là trợ lý ảo TILO của Thịnh & Loan 💕 Bạn cứ hỏi về từ vựng, ngữ pháp hay nhờ dịch/sửa câu tiếng Hoa nhé.');
   convo.forEach(function(m){addMsg(m.role,m.content)});
   sugEl.style.display=convo.length?'none':'';
 }
