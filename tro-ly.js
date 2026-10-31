@@ -55,6 +55,8 @@ var css='\
 .ta-seg b{display:block;font-family:var(--han-font,serif);font-size:18px}.ta-seg small{display:block;font-size:11px;color:var(--blue,#0071e3)}.ta-seg em{display:block;font-style:normal;font-size:11.5px;color:var(--text-secondary,#6e6e73);max-width:110px}\
 .ta-hist{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.ta-hist button{border:1px solid var(--border,rgba(0,0,0,.1));background:var(--surface-2,#fafafa);color:inherit;border-radius:999px;padding:5px 11px;font:500 13px inherit;font-family:inherit;cursor:pointer;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}\
 .ta-gram{width:100%;margin-top:12px;border:1.5px solid var(--blue,#0071e3);background:transparent;color:var(--blue,#0071e3);border-radius:14px;padding:11px;font:700 14px inherit;font-family:inherit;cursor:pointer}.ta-gram:disabled{opacity:.55}\
+.ta-sp{border:0;background:var(--blue-tint,rgba(0,113,227,.1));color:inherit;border-radius:50%;width:28px;height:28px;font-size:13px;cursor:pointer;margin-left:6px;vertical-align:middle;padding:0}\
+.ta-qline{display:flex;align-items:center;margin-bottom:8px}.ta-qh{font-family:var(--han-font,serif);font-size:24px;font-weight:700;word-break:break-word}\
 .ta-err{color:#c2410c;font-size:13.5px;margin-top:10px}\
 .ta-foot{flex:none;text-align:center;font-size:11px;color:var(--text-tertiary,#86868b);padding:6px 10px 9px;border-top:1px solid var(--border-soft,rgba(0,0,0,.07))}\
 .ta-dots{display:inline-block}.ta-dots::after{content:"…";animation:ta-bob 1s infinite}\
@@ -234,7 +236,7 @@ function pushHist(q){hist=[q].concat(hist.filter(function(x){return x!==q})).sli
 
 function entryHtml(w){
   var ex=(w.examples&&w.examples[0])||null;
-  return '<div class="ta-ent"><span class="h">'+esc(w.han)+'</span><span class="p">'+esc(w.pinyin||'')+'</span>'+(w.tocfl?'<span class="t">'+esc(w.tocfl.replace('TOCFL ',''))+'</span>':'')
+  return '<div class="ta-ent"><span class="h">'+esc(w.han)+'</span><button class="ta-sp" type="button" data-say="'+esc(String(w.han).replace(/[^\u3400-\u9fff]/g,'')||w.han)+'" aria-label="Nghe">🔊</button><span class="p">'+esc(w.pinyin||'')+'</span>'+(w.tocfl?'<span class="t">'+esc(w.tocfl.replace('TOCFL ',''))+'</span>':'')
    +(w.wordTypeLabel&&w.wordTypeLabel!=='Ngữ pháp'?'<span class="t" style="background:transparent;color:inherit;opacity:.7">'+esc(w.wordTypeLabel)+'</span>':'')
    +'<div class="m">'+esc(w.nghia)+'</div>'
    +(ex?'<div class="e"><i>'+esc(ex.han)+'</i> — '+esc(ex.vi||'')+'</div>':'')+'</div>';
@@ -319,7 +321,7 @@ function run(){
     if(my!==ctrl)return;
     var r=res[0],tr=res[1]||r.trad||null,h='';if(tr===q)tr=null;
     if(dir==='zh2vi'){
-      h+='<div class="ta-card"><h4>Nghĩa tiếng Việt</h4><div class="ta-row"><div><div class="ta-big">'+esc(r.text)+'</div>'
+      h+='<div class="ta-card"><div class="ta-qline"><span class="ta-qh">'+esc(q)+'</span><button class="ta-sp" type="button" data-say="'+esc(q)+'" aria-label="Nghe từ vừa tra">🔊</button></div><h4>Nghĩa tiếng Việt</h4><div class="ta-row"><div><div class="ta-big">'+esc(r.text)+'</div>'
        +(r.translit?'<div class="ta-py">'+esc(r.translit)+'</div>':'')+(tr?'<div class="ta-note">Dạng phồn thể: <b style="font-family:var(--han-font,serif)">'+esc(tr)+'</b> '+'</div>':'')
        +'</div><div style="display:flex;gap:6px">'+speakBtn(tr||q)+copyBtn(r.text)+'</div></div>'
        +(r.alts.length?'<div class="ta-note">Nghĩa khác: '+r.alts.map(esc).join(' · ')+'</div>':'')+'</div>';
