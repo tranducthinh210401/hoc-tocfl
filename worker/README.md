@@ -4,10 +4,8 @@ Không cần khóa AI. Dùng hạn mức miễn phí mỗi ngày của tài kho�
 
 ## Cài đặt tự động (khuyên dùng, làm 1 lần ~5 phút, chạy được trên điện thoại)
 1. Tạo tài khoản miễn phí tại https://dash.cloudflare.com
-2. Mục *My Profile → API Tokens → Create Token*, chọn mẫu **Edit Cloudflare Workers** → tạo và chép token. Chép thêm **Account ID** (trang Workers & Pages, cột bên phải).
-3. Vào repo GitHub → *Settings → Secrets and variables → Actions → New repository secret*, thêm 2 secret:
-   - `CLOUDFLARE_API_TOKEN`
-   - `CLOUDFLARE_ACCOUNT_ID`
+2. Mục *My Profile → API Tokens → Create Token*, chọn mẫu **Edit Cloudflare Workers** → tạo và chép token. (Account ID đã ghi sẵn trong `wrangler.toml`.)
+3. Vào repo GitHub → *Settings → Secrets and variables → Actions → New repository secret*, thêm 1 secret tên `CLOUDFLARE_API_TOKEN`
 4. Vào tab *Actions → Deploy TILO worker → Run workflow*. Khi chạy xong, log in ra địa chỉ dạng `https://tro-ly-tocfl.<tên-bạn>.workers.dev`.
 5. Mở `tro-ly.js`, dán địa chỉ đó vào dòng `var API='...'` ở đầu file rồi commit.
 

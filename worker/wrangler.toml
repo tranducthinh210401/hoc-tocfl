@@ -1,5 +1,6 @@
 name = "tro-ly-tocfl"
 main = "index.js"
+account_id = "d4f593ff7072a5bd2179a10e804f511f"
 compatibility_date = "2025-01-01"
 
 # Cloudflare Workers AI: không cần khóa API, dùng hạn mức miễn phí mỗi ngày của tài khoản
