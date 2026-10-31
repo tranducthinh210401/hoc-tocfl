@@ -1,4 +1,4 @@
-/* Trợ lý Lona — từ điển Hán (phồn thể) ⇄ Việt — © 2026 Học TOCFL cùng Thịnh & Loan
+/* Trợ lý Lona — trò chuyện tiếng Hoa (phồn thể) ⇄ Việt — © 2026 Học TOCFL cùng Thịnh & Loan
    Nguồn tra cứu: (1) kho từ vựng TOCFL trong trang (chính xác nhất, có ví dụ),
    (2) Google Translate (gtx) ra zh-TW + pinyin, (3) MyMemory dự phòng. */
 (function(){
@@ -197,7 +197,7 @@ fab.innerHTML='<span class="ta-lbl">Trò chuyện với Lona</span>';
 document.body.appendChild(fab);
 var panel=document.createElement('div');panel.className='ta-panel';panel.setAttribute('role','dialog');panel.setAttribute('aria-label','Trợ lý ảo Lona');
 panel.innerHTML='<div class="ta-h"><img src="'+IMG+'" alt=""><div><b>Trợ lý ảo Lona</b></div><button class="ta-x" type="button" aria-label="Đóng">×</button></div>'
- +'<div class="ta-tabs"><button type="button" data-v="dict" class="on">📖 Từ điển</button><button type="button" data-v="chat">💬 Trò chuyện</button></div>'
+
  +'<div class="ta-body ta-dict"><div class="ta-modes"><button type="button" data-m="auto" class="on">Tự nhận</button><button type="button" data-m="zh2vi">繁 → Việt</button><button type="button" data-m="vi2zh">Việt → 繁</button></div>'
  +'<div class="ta-in"><textarea rows="1" placeholder="Gõ chữ Hán / tiếng Việt…" enterkeyhint="search"></textarea><button class="ta-go" type="button">Dịch</button></div>'
  +'<div class="ta-out"></div><div class="ta-hist"></div></div>'
@@ -236,7 +236,7 @@ setTimeout(place,1500);
 function toggle(o){
   panel.classList.toggle('open',o);fab.style.display=o?'none':'';
   var t=$('.ta-tip');if(t)t.remove();
-  if(o){if(!out.innerHTML.trim())emptyState();renderHist();setTimeout(function(){try{ta.focus()}catch(e){}},60)}
+  if(o){setTimeout(function(){try{cta.focus()}catch(e){}},60)}
 }
 $('.ta-x',panel).addEventListener('click',function(){toggle(false)});
 document.addEventListener('pointerdown',function(e){
@@ -401,7 +401,7 @@ function sendChat(){
   var t=cta.value.trim().slice(0,1000);if(!t||busy)return;
   cta.value='';cauto();sugEl.style.display='none';
   convo.push({role:'user',content:t});addMsg('user',t);
-  if(!API){addMsg('assistant','Mình chưa được nối với máy chủ AI nên chưa trò chuyện tự nhiên được 🥲 Bạn xem hướng dẫn trong thư mục worker/README.md để bật nhé. Trong lúc đó bạn vẫn dùng tab “Từ điển” để tra từ.');convo.pop();return}
+  if(!API){addMsg('assistant','Mình chưa được nối với máy chủ AI nên chưa trò chuyện tự nhiên được 🥲 Bạn xem hướng dẫn trong thư mục worker/README.md để bật nhé.');convo.pop();return}
   busy=true;cgo.disabled=true;
   var typing=addMsg('assistant','…');
   apiChat(convo.slice(-12)).then(function(r){
@@ -441,19 +441,17 @@ function apiChat(messages){
    .then(function(j){if(!j||!j.ok||!j.data||!j.data.reply){var e=new Error('chat');e.code=j&&j.error;throw e}return {text:String(j.data.reply),sources:j.data.sources||[],status:j.data.status||''}});
 }
 function showView(v){
-  panel.querySelectorAll('.ta-tabs button').forEach(function(b){b.classList.toggle('on',b.dataset.v===v)});
   dictEl.hidden=v!=='dict';chatEl.hidden=v!=='chat';
   setClrTitle();
   if(v==='chat'){renderConvo();setTimeout(function(){try{cta.focus()}catch(e){}},60)}
 }
-panel.querySelectorAll('.ta-tabs button').forEach(function(b){b.onclick=function(){showView(b.dataset.v)}});
 var clr=document.createElement('button');clr.type='button';clr.className='ta-x';clr.title='Xóa cuộc trò chuyện';clr.setAttribute('aria-label','Xóa cuộc trò chuyện');clr.textContent='🗑';clr.style.cssText='margin-left:auto;margin-right:6px;font-size:14px';
 var xb=$('.ta-h .ta-x',panel);xb.style.marginLeft='0';xb.parentNode.insertBefore(clr,xb);
 clr.onclick=function(){
-  if(chatEl.hidden){clearLookup()}
-  else{convo=[];store('ta_chat',[]);renderConvo()}
+  convo=[];store('ta_chat',[]);renderConvo()
 };
-function setClrTitle(){var t=chatEl.hidden?'Xóa lịch sử tra từ':'Xóa cuộc trò chuyện';clr.title=t;clr.setAttribute('aria-label',t)}
+function setClrTitle(){var t='Xóa cuộc trò chuyện';clr.title=t;clr.setAttribute('aria-label',t)}
 setClrTitle();
-window.taOpen=function(q){toggle(true);if(q){ta.value=q;autosize();run()}};
+showView('chat');
+window.taOpen=function(q){toggle(true);if(q){cta.value=q;sendChat()}};
 })();
