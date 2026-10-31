@@ -3,7 +3,7 @@
    (2) Google Translate (gtx) ra zh-TW + pinyin, (3) MyMemory dự phòng. */
 (function(){
 'use strict';
-var IMG='tro-ly-avatar.jpg?v=20261031h';
+var IMG='tro-ly-avatar.jpg?v=20261031i';
 /* Địa chỉ máy chủ trung gian (xem worker/README.md). Để trống = dùng dịch miễn phí, chưa có giải thích ngữ pháp bằng AI. */
 var API=(window.TRO_LY_API||'').replace(/\/$/,'');
 var CJK=/[㐀-䶿一-鿿豈-﫿]/;
@@ -375,7 +375,7 @@ function addMsg(role,text){
 }
 function renderConvo(){
   msgsEl.innerHTML='';
-  if(!convo.length)addMsg('assistant','Xin chào! Mình là trợ lý của Thịnh & Loan 💕 Bạn cứ hỏi về từ vựng, ngữ pháp hay nhờ dịch/sửa câu tiếng Hoa nhé. Bấm vào chữ Hán trong câu trả lời để nghe phát âm.');
+  if(!convo.length)addMsg('assistant','Xin chào! Mình là trợ lý TILO của Thịnh & Loan 💕 Bạn cứ hỏi về từ vựng, ngữ pháp hay nhờ dịch/sửa câu tiếng Hoa nhé.');
   convo.forEach(function(m){addMsg(m.role,m.content)});
   sugEl.style.display=convo.length?'none':'';
 }
