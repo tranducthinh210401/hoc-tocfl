@@ -3,7 +3,7 @@
    (2) Google Translate (gtx) ra zh-TW + pinyin, (3) MyMemory dự phòng. */
 (function(){
 'use strict';
-var IMG='tro-ly-avatar.jpg?v=20261031d';
+var IMG='tro-ly-avatar.jpg?v=20261031e';
 /* Địa chỉ máy chủ trung gian (xem worker/README.md). Để trống = dùng dịch miễn phí, chưa có giải thích ngữ pháp bằng AI. */
 var API=(window.TRO_LY_API||'').replace(/\/$/,'');
 var CJK=/[㐀-䶿一-鿿豈-﫿]/;
@@ -23,7 +23,7 @@ var css='\
 @keyframes ta-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}\
 .ta-tip{position:fixed;z-index:9000;background:var(--surface,#fff);color:var(--text,#1d1d1f);border:1px solid var(--border,rgba(0,0,0,.1));border-radius:14px 14px 4px 14px;padding:8px 12px;font:600 13px "Be Vietnam Pro",system-ui,sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.16);max-width:200px;animation:ta-in .3s}\
 @keyframes ta-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}\
-.ta-panel{position:fixed;right:12px;bottom:12px;width:min(400px,calc(100vw - 24px));max-height:min(640px,calc(100dvh - 24px));display:none;flex-direction:column;background:var(--surface,#fff);color:var(--text,#1d1d1f);border:1px solid var(--border,rgba(0,0,0,.1));border-radius:22px;box-shadow:0 18px 50px rgba(0,0,0,.28);z-index:9001;overflow:hidden;font-family:"Be Vietnam Pro",system-ui,sans-serif}\
+.ta-panel{position:fixed;right:12px;bottom:12px;width:400px;max-width:calc(100vw - 24px);max-height:calc(100vh - 24px);max-height:calc(100dvh - 24px);display:none;flex-direction:column;background:var(--surface,#fff);color:var(--text,#1d1d1f);border:1px solid var(--border,rgba(0,0,0,.1));border-radius:22px;box-shadow:0 18px 50px rgba(0,0,0,.28);z-index:9001;overflow:hidden;font-family:"Be Vietnam Pro",system-ui,sans-serif}\
 .ta-panel.open{display:flex;animation:ta-in .22s}\
 .ta-h{display:flex;align-items:center;gap:10px;padding:12px 14px;background:linear-gradient(100deg,#fff4d6,#e3f0ff);color:#1d1d1f;flex:none}\
 .ta-h img{width:42px;height:42px;border-radius:50%;object-fit:cover;border:2px solid #fff;flex:none}\
@@ -58,8 +58,8 @@ var css='\
 .ta-sp{border:0;background:var(--blue-tint,rgba(0,113,227,.1));color:inherit;border-radius:50%;width:28px;height:28px;font-size:13px;cursor:pointer;margin-left:6px;vertical-align:middle;padding:0}\
 .ta-qline{display:flex;align-items:center;margin-bottom:8px}.ta-qh{font-family:var(--han-font,serif);font-size:24px;font-weight:700;word-break:break-word}\
 .ta-tabs{display:flex;gap:6px;padding:8px 14px 0;flex:none}.ta-tabs button{flex:1;border:0;border-bottom:3px solid transparent;background:none;color:var(--text-secondary,#6e6e73);font:700 13.5px inherit;font-family:inherit;padding:8px 4px;cursor:pointer}.ta-tabs button.on{color:var(--blue,#0071e3);border-color:var(--blue,#0071e3)}\
-.ta-chat{display:flex;flex-direction:column;flex:1;min-height:0;height:min(480px,60dvh)}.ta-chat[hidden]{display:none}\
-.ta-msgs{flex:1;overflow:auto;padding:12px 14px;display:flex;flex-direction:column;gap:10px;-webkit-overflow-scrolling:touch}\
+.ta-chat{display:flex;flex-direction:column;flex:none;height:60vh;height:60dvh;max-height:480px;min-height:300px}.ta-chat[hidden]{display:none}\
+.ta-msgs{flex:1 1 auto;min-height:150px;overflow:auto;padding:12px 14px;display:flex;flex-direction:column;gap:10px;-webkit-overflow-scrolling:touch}\
 .ta-m{max-width:88%;padding:9px 13px;border-radius:18px;font-size:14.5px;line-height:1.5;word-break:break-word;white-space:pre-wrap}\
 .ta-m.u{align-self:flex-end;background:var(--blue,#0071e3);color:#fff;border-bottom-right-radius:5px}\
 .ta-m.a{align-self:flex-start;background:var(--surface-2,#f2f2f5);border:1px solid var(--border-soft,rgba(0,0,0,.07));border-bottom-left-radius:5px}\
@@ -69,7 +69,7 @@ var css='\
 .ta-err{color:#c2410c;font-size:13.5px;margin-top:10px}\
 .ta-foot{flex:none;text-align:center;font-size:11px;color:var(--text-tertiary,#86868b);padding:6px 10px 9px;border-top:1px solid var(--border-soft,rgba(0,0,0,.07))}\
 .ta-dots{display:inline-block}.ta-dots::after{content:"…";animation:ta-bob 1s infinite}\
-@media (max-width:700px){.ta-panel{right:8px;left:8px;width:auto;bottom:8px;max-height:calc(100dvh - 16px)}}\
+@media (max-width:700px){.ta-panel{right:8px;left:8px;width:auto;bottom:8px;max-height:calc(100vh - 16px);max-height:calc(100dvh - 16px)}}\
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ta-h{background:linear-gradient(100deg,#3a3320,#1f2f46);color:#f5f5f7}}\
 html[data-theme="dark"] .ta-h{background:linear-gradient(100deg,#3a3320,#1f2f46);color:#f5f5f7}\
 html[data-theme="dark"] .ta-x{background:rgba(255,255,255,.14)}';
