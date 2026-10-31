@@ -3,7 +3,7 @@
    (2) Google Translate (gtx) ra zh-TW + pinyin, (3) MyMemory dự phòng. */
 (function(){
 'use strict';
-var IMG='tro-ly-avatar.jpg?v=20261031n';
+var IMG='tro-ly-avatar.jpg?v=20261031o';
 /* Địa chỉ máy chủ trung gian (xem worker/README.md). Để trống = dùng dịch miễn phí, chưa có giải thích ngữ pháp bằng AI. */
 var API=(window.TRO_LY_API||'https://tro-ly-tocfl.tranducthinh210401.workers.dev').replace(/\/$/,'');
 var CJK=/[㐀-䶿一-鿿豈-﫿]/;
@@ -69,6 +69,7 @@ var css='\
 .ta-dict{display:flex;flex-direction:column}.ta-dict[hidden]{display:none}.ta-out{flex:1 0 auto;display:flex;flex-direction:column}.ta-out>.ta-main{flex:1 0 auto;margin-bottom:4px}\
 .ta-clrh{border-style:dashed!important;color:var(--text-secondary,#6e6e73)!important}\
 .ta-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:8px;padding:24px 18px}.ta-eico{font-size:40px;line-height:1}.ta-etit{font-weight:800;font-size:16px}.ta-esub{font-size:13px;color:var(--text-secondary,#6e6e73);max-width:280px;line-height:1.5}.ta-ech{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:8px}.ta-ech button{border:1px solid var(--border,rgba(0,0,0,.12));background:var(--surface,#fff);color:inherit;border-radius:999px;padding:7px 14px;font:600 14px inherit;font-family:var(--han-font,serif);cursor:pointer}\
+.ta-src{margin-top:6px;font-size:11.5px;color:var(--text-tertiary,#86868b);white-space:normal}.ta-src a{color:var(--blue,#0071e3)}\
 .ta-err{color:#c2410c;font-size:13.5px;margin-top:10px}\
 .ta-foot{flex:none;text-align:center;font-size:11px;color:var(--text-tertiary,#86868b);padding:6px 10px 9px;border-top:1px solid var(--border-soft,rgba(0,0,0,.07))}\
 .ta-dots{display:inline-block}.ta-dots::after{content:"…";animation:ta-bob 1s infinite}\
@@ -410,7 +411,7 @@ function sendChat(){
   busy=true;cgo.disabled=true;
   var typing=addMsg('assistant','…');
   apiChat(convo.slice(-12)).then(function(r){
-    typing.innerHTML=fmt(r);convo.push({role:'assistant',content:r});convo=convo.slice(-20);store('ta_chat',convo);
+    typing.innerHTML=fmt(r.text)+srcHtml(r.sources);convo.push({role:'assistant',content:r.text});convo=convo.slice(-20);store('ta_chat',convo);
   }).catch(function(e){
     convo.pop();
     typing.textContent=e&&e.code==='limit'?'Hôm nay bạn đã dùng hết lượt hỏi rồi, mai quay lại nhé!':'Mình chưa trả lời được lúc này, bạn gửi lại giúp mình nhé.';
@@ -434,11 +435,16 @@ function buildContext(text){
   }catch(e){}
   return rows.join('\n');
 }
+function srcHtml(src){
+  if(!src||!src.length)return '';var seen={},out=[];
+  src.forEach(function(x){if(!x||!x.url||!/^https:\/\//.test(x.url)||seen[x.name])return;seen[x.name]=1;out.push('<a href="'+esc(x.url)+'" target="_blank" rel="noopener">'+esc(x.name)+'</a>')});
+  return out.length?'<div class="ta-src">🔎 Nguồn tra cứu: '+out.join(' · ')+'</div>':'';
+}
 function apiChat(messages){
   var lastUser='';for(var i=messages.length-1;i>=0;i--){if(messages[i].role==='user'){lastUser=messages[i].content;break}}
   return fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({task:'chat',messages:messages,context:buildContext(lastUser)})})
    .then(function(r){return r.json().catch(function(){return {ok:false,error:'http_'+r.status}})})
-   .then(function(j){if(!j||!j.ok||!j.data||!j.data.reply){var e=new Error('chat');e.code=j&&j.error;throw e}return String(j.data.reply)});
+   .then(function(j){if(!j||!j.ok||!j.data||!j.data.reply){var e=new Error('chat');e.code=j&&j.error;throw e}return {text:String(j.data.reply),sources:j.data.sources||[]}});
 }
 function showView(v){
   panel.querySelectorAll('.ta-tabs button').forEach(function(b){b.classList.toggle('on',b.dataset.v===v)});

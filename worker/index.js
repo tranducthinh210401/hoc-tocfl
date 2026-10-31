@@ -46,11 +46,64 @@ DỊCH TÊN NGƯỜI VIỆT SANG CHỮ HÁN
 - Nếu tin nhắn có phần <du_lieu_tham_khao> (lấy từ kho từ vựng TOCFL của trang), đó là dữ liệu ĐÃ KIỂM CHỨNG: hãy dùng đúng nghĩa/pinyin/ví dụ trong đó, không tự đổi, và ưu tiên hơn kiến thức của bạn.
 - Chỉ khẳng định điều bạn chắc chắn. Với chữ Hán, pinyin, nghĩa, cấp TOCFL, quy tắc ngữ pháp: nếu không chắc 100% thì nói rõ "mình không chắc phần này" rồi nêu phần chắc chắn; TUYỆT ĐỐI không bịa chữ Hán, pinyin hay ví dụ cho đủ.
 - Đọc kỹ câu hỏi, trả lời đúng thứ người dùng cần biết (nếu họ hỏi tên thì trả lời về tên, hỏi nghĩa thì trả lời nghĩa). Có hai cách hiểu khác hẳn nhau thì hỏi lại một câu ngắn thay vì đoán.
+- Nếu có phần <tra_cuu_internet> (kết quả tra từ điển trực tuyến: 萌典 – Từ điển của Bộ Giáo dục Đài Loan, Wiktionary, hoặc tìm kiếm web), hãy dùng để kiểm chứng. 萌典 là chuẩn cho cách đọc/định nghĩa tiếng Hoa Đài Loan; nghĩa tiếng Việt ưu tiên <du_lieu_tham_khao> rồi Wiktionary tiếng Việt. Khi dùng, nhắc nguồn ngắn gọn (ví dụ "theo 萌典"). Nếu tra không thấy thì nói thẳng là chưa tra được, đừng bịa.
 - Trước khi trả lời, tự kiểm tra lại: số chữ/âm tiết có khớp không, pinyin có khớp chữ Hán không, nghĩa có khớp ngữ cảnh không.
 
 ĐỊNH DẠNG
 - Viết như tin nhắn chat: văn xuôi ngắn, xuống dòng vừa phải. Chỉ dùng **đậm** cho từ khóa và gạch đầu dòng "- " khi liệt kê thật sự cần. Không bảng, không tiêu đề #. Tối đa 1–2 biểu tượng cảm xúc, dùng khi hợp.
 - Ví dụ tiếng Hoa viết trên một dòng riêng: 我想喝咖啡。(wǒ xiǎng hē kāfēi) — Mình muốn uống cà phê.`;
+
+/* ---- Tra cứu trực tuyến (không cần khóa): 萌典, Wiktionary; tuỳ chọn Tavily nếu có TAVILY_API_KEY ---- */
+const HAN = /[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]+/g;
+const tmo = (ms) => (typeof AbortSignal !== "undefined" && AbortSignal.timeout ? AbortSignal.timeout(ms) : undefined);
+
+async function moedict(word) {
+  for (const path of ["https://www.moedict.tw/uni/", "https://www.moedict.tw/a/"]) {
+    try {
+      const r = await fetch(path + encodeURIComponent(word) + ".json", { signal: tmo(3000) });
+      if (!r.ok) continue;
+      const d = await r.json();
+      const hs = (d.heteronyms || []).slice(0, 2);
+      if (!hs.length) continue;
+      const lines = hs.map(h => "[" + (h.pinyin || h.bopomofo || "") + "] " + (h.definitions || []).slice(0, 3).map(x => String(x.def || "").replace(/\s+/g, " ").slice(0, 120)).join(" / "));
+      return { name: "萌典 (moedict.tw)", url: "https://www.moedict.tw/" + encodeURIComponent(word), text: word + ": " + lines.join(" | ") };
+    } catch (e) { /* thử đường dẫn khác */ }
+  }
+  return null;
+}
+async function wiktionary(word) {
+  try {
+    const u = "https://vi.wiktionary.org/w/api.php?action=query&format=json&prop=extracts&explaintext=1&redirects=1&titles=" + encodeURIComponent(word);
+    const r = await fetch(u, { signal: tmo(3000) });
+    if (!r.ok) return null;
+    const d = await r.json();
+    const pages = d.query && d.query.pages ? Object.values(d.query.pages) : [];
+    const ex = pages[0] && pages[0].extract ? String(pages[0].extract).replace(/\n{2,}/g, "\n").slice(0, 600) : "";
+    if (!ex) return null;
+    return { name: "Wiktionary tiếng Việt", url: "https://vi.wiktionary.org/wiki/" + encodeURIComponent(word), text: word + ": " + ex };
+  } catch (e) { return null; }
+}
+async function tavily(env, query) {
+  if (!env.TAVILY_API_KEY) return [];
+  try {
+    const r = await fetch("https://api.tavily.com/search", {
+      method: "POST", signal: tmo(5000),
+      headers: { "content-type": "application/json", Authorization: "Bearer " + env.TAVILY_API_KEY },
+      body: JSON.stringify({ query, max_results: 3, search_depth: "basic" }),
+    });
+    if (!r.ok) return [];
+    const d = await r.json();
+    return (d.results || []).slice(0, 3).map(x => ({ name: x.title || "Web", url: x.url, text: String(x.content || "").slice(0, 400) }));
+  } catch (e) { return []; }
+}
+async function lookupOnline(env, text) {
+  const runs = Array.from(new Set((text.match(HAN) || []).filter(x => x.length <= 6))).slice(0, 3);
+  const jobs = [];
+  for (const w of runs) { jobs.push(moedict(w)); jobs.push(wiktionary(w)); }
+  if (/tra (mạng|internet|web)|tìm trên (mạng|internet|web)|mới nhất|hiện nay|năm nay|202\d/i.test(text)) jobs.push(tavily(env, text).then(a => a));
+  const res = (await Promise.allSettled(jobs)).map(x => x.status === "fulfilled" ? x.value : null).flat().filter(Boolean);
+  return res.slice(0, 7);
+}
 
 function cors(env, req) {
   const allow = (env.ALLOWED_ORIGINS || "https://tranducthinh210401.github.io").split(",").map(s => s.trim());
@@ -100,13 +153,17 @@ export default {
     let q = String(body.q || "").trim().slice(0, 400);
     const ctx = String(body.context || "").trim().slice(0, 2500);
     let msgs = null;
+    let sources = [];
     if (task === "chat") {
       msgs = (Array.isArray(body.messages) ? body.messages : [])
         .filter(m => m && (m.role === "user" || m.role === "assistant") && typeof m.content === "string" && m.content.trim())
         .slice(-12).map(m => ({ role: m.role, content: m.content.slice(0, 1500) }));
       while (msgs.length && msgs[0].role !== "user") msgs.shift();
-      if (ctx && msgs.length && msgs[msgs.length - 1].role === "user") {
-        msgs[msgs.length - 1].content += "\n\n<du_lieu_tham_khao>\n" + ctx + "\n</du_lieu_tham_khao>";
+      if (msgs.length && msgs[msgs.length - 1].role === "user") {
+        const last = msgs[msgs.length - 1];
+        if (ctx) last.content += "\n\n<du_lieu_tham_khao>\n" + ctx + "\n</du_lieu_tham_khao>";
+        sources = await lookupOnline(env, last.content.split("<du_lieu_tham_khao>")[0]);
+        if (sources.length) last.content += "\n\n<tra_cuu_internet>\n" + sources.map(x => "- (" + x.name + ") " + x.text).join("\n") + "\n</tra_cuu_internet>";
       }
       if (!msgs.length || msgs[msgs.length - 1].role !== "user") return json({ ok: false, error: "empty" }, 400, h);
     } else if (!q) return json({ ok: false, error: "empty" }, 400, h);
@@ -137,7 +194,7 @@ export default {
       let text = typeof r === "string" ? r : (r && (r.response || (r.choices && r.choices[0] && r.choices[0].message && r.choices[0].message.content))) || "";
       text = String(text).replace(/<think>[\s\S]*?<\/think>/g, "").trim();
       if (!text) return json({ ok: false, error: "empty_reply" }, 502, h);
-      if (task === "chat") return json({ ok: true, task, data: { reply: text } }, 200, h);
+      if (task === "chat") return json({ ok: true, task, data: { reply: text, sources: sources.map(x => ({ name: x.name, url: x.url })) } }, 200, h);
       return json({ ok: true, task, data: parseModel(text) }, 200, h);
     } catch (e) {
       /* Hết hạn mức miễn phí trong ngày của Workers AI */
