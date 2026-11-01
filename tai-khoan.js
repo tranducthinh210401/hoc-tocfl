@@ -140,6 +140,9 @@ var css='\
 .acc-toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#1d1d1f;color:#fff;padding:10px 16px;border-radius:12px;font:600 13.5px system-ui;z-index:9700;max-width:88vw;text-align:center}\
 .acc-code{display:flex;gap:8px;margin-top:10px}.acc-code input{flex:1;min-width:0;border:1.5px solid var(--border,rgba(0,0,0,.14));border-radius:12px;padding:11px 12px;font-family:inherit;font-weight:600;font-size:15px;line-height:1.2;background:var(--surface-2,#f5f5f7);color:inherit;text-transform:uppercase;letter-spacing:.05em;outline:none}.acc-code input:focus{border-color:var(--blue,#0071e3)}.acc-code button{border:0;background:linear-gradient(135deg,#0071e3,#4f46e5);color:#fff;border-radius:12px;padding:0 16px;font-family:inherit;font-weight:700;font-size:14px;cursor:pointer}\
 .acc-msg{min-height:18px;margin:6px 0 0;font-size:13px}.acc-note a{color:var(--blue,#0071e3);font-weight:600}\
+.acc-streak{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:18px;background:var(--surface-2,#f5f5f7)}.acc-streak.live{background:linear-gradient(135deg,#fff1dc,#ffd9c2);color:#5a2a0a}.acc-fire{font-size:44px;line-height:1}.acc-sn b{display:block;font-size:38px;line-height:1;font-weight:800}.acc-sn span{font-size:13px;opacity:.8}.acc-sr{margin-left:auto;text-align:center}.acc-sr small{display:block;font-size:11px;opacity:.7}.acc-sr b{font-size:20px}\
+.acc-week{display:flex;justify-content:space-between;gap:6px;margin:12px 0}.acc-wd{flex:1;text-align:center;font-size:20px;line-height:1.2;opacity:.45}.acc-wd.on{opacity:1}.acc-wd.td{opacity:1}.acc-wd small{display:block;font-size:11px;color:var(--text-secondary,#6e6e73);margin-top:2px}.acc-wd.td small{color:var(--blue,#0071e3);font-weight:700}\
+.acc-today{background:var(--surface-2,#f5f5f7);border-radius:14px;padding:12px 14px;margin-bottom:12px}.acc-tl{display:flex;justify-content:space-between;font-size:13.5px;font-weight:700}.acc-pb{height:10px;border-radius:99px;background:var(--border,rgba(0,0,0,.1));margin:8px 0;overflow:hidden}.acc-pb i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#ff9a3c,#ff5e3a);transition:width .4s}.acc-today p{margin:0;font-size:13px;color:var(--text-secondary,#6e6e73)}\
 .acc-h4{margin:18px 0 8px;font-size:13px;color:var(--text-secondary,#6e6e73);text-transform:uppercase;letter-spacing:.04em}.acc-chart{display:flex;align-items:flex-end;justify-content:space-between;gap:8px;height:110px;padding:0 4px}.acc-bar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:5px;height:100%}.acc-bar i{display:block;width:100%;max-width:34px;border-radius:8px 8px 3px 3px;background:linear-gradient(180deg,#4f46e5,#0071e3)}.acc-bar small{font-size:11px;color:var(--text-secondary,#6e6e73)}\
 @media (min-width:701px){.toolbar{padding-right:var(--acc-w,0px)!important}}\
 .acc-wrap.cp .acc-hi,.acc-wrap.cp .acc-caret{display:none}.acc-wrap.cp .acc-btn.in{padding:4px}.acc-wrap.cp .acc-btn:not(.in){padding:6px 8px}.acc-wrap.cp .acc-btn:not(.in) .acc-t{display:none}.acc-wrap.cp .acc-mh{display:block!important}\
@@ -241,10 +244,17 @@ async function activate(code){
 /* ---------- Đếm thời gian học mỗi ngày (chỉ tính lúc đang mở trang và có thao tác) ---------- */
 function dayKey(d){d=d||new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function studyMap(){try{return JSON.parse(lsGet('acc_study')||'{}')||{}}catch(e){return {}}}
-var lastAct=Date.now(),pend=0,flushAt=0;
-['pointerdown','keydown','scroll','touchstart','mousemove'].forEach(function(ev){window.addEventListener(ev,function(){lastAct=Date.now()},{passive:true,capture:true})});
+var lastAct=0,pend=0,flushAt=0;
+/* Chỉ tính khi có thao tác học thật (bấm, chạm, gõ phím) ở một chức năng học — không phải Trang chủ, không phải thao tác với tài khoản.
+   Cuộn / rê chuột / mở web để đó thì không tính. */
+function learningPanelOpen(){var h=document.getElementById('panel-home');return !h||!h.classList.contains('active')}
+['pointerdown','keydown','touchstart'].forEach(function(ev){window.addEventListener(ev,function(e){
+  var t=e.target;if(t&&t.closest&&t.closest('.acc-wrap,.acc-ov,.gt-ov'))return;
+  if(!learningPanelOpen())return;
+  lastAct=Date.now();
+},{passive:true,capture:true})});
 setInterval(function(){
-  if(document.visibilityState!=='visible'||Date.now()-lastAct>60000)return;
+  if(document.visibilityState!=='visible'||!learningPanelOpen()||Date.now()-lastAct>60000)return;
   pend+=5;
   if(pend>=30)flushStudy();
 },5000);
@@ -262,32 +272,56 @@ function fmtDur(s){
   if(mi>0)return mi+' phút';
   return s>0?'<1 phút':'0 phút';
 }
+var DAY_MIN=300;   /* một ngày được tính là "đã học" khi học từ 5 phút trở lên */
 function showProg(){
   flushStudy();
-  var m=studyMap(),days=Object.keys(m).filter(function(k){return m[k]>=60}),total=0,i;
+  var m=studyMap(),i,total=0;
   Object.keys(m).forEach(function(k){total+=m[k]||0});
-  var today=m[dayKey()]||0,avg=days.length?total/days.length:0;
-  /* chuỗi ngày liên tiếp tính đến hôm nay (hoặc hôm qua) */
-  var streak=0,d=new Date();if(!(m[dayKey(d)]>=60))d.setDate(d.getDate()-1);
-  while(m[dayKey(d)]>=60){streak++;d.setDate(d.getDate()-1)}
-  /* 7 ngày gần nhất */
-  var bars='',max=1,list=[];
-  for(i=6;i>=0;i--){var dd=new Date();dd.setDate(dd.getDate()-i);var s=m[dayKey(dd)]||0;list.push({d:dd,s:s});if(s>max)max=s}
+  var ok=function(d){return (m[dayKey(d)]||0)>=DAY_MIN};
+  var days=Object.keys(m).filter(function(k){return m[k]>=DAY_MIN});
+  var today=m[dayKey()]||0,avg=days.length?total/days.length:0,doneToday=today>=DAY_MIN;
+  /* chuỗi hiện tại: các ngày liên tiếp đủ 5 phút; hôm nay chưa đủ thì vẫn giữ chuỗi tính đến hôm qua */
+  var streak=0,d=new Date();if(!ok(d))d.setDate(d.getDate()-1);
+  while(ok(d)){streak++;d.setDate(d.getDate()-1)}
+  /* chuỗi dài nhất */
+  var best=0,run=0,keys=days.slice().sort(),prev=null;
+  keys.forEach(function(k){
+    var cur=new Date(k+'T00:00:00');
+    if(prev&&Math.round((cur-prev)/864e5)===1)run++;else run=1;
+    if(run>best)best=run;prev=cur;
+  });
+  best=Math.max(best,streak);
+  var left=Math.max(0,DAY_MIN-today),pct=Math.min(100,Math.round(today*100/DAY_MIN));
+  var msg=doneToday?'Hôm nay bạn đã đủ 5 phút, giữ vững chuỗi nhé! 🎉'
+    :(streak>0?'Còn '+fmtDur(left)+' nữa hôm nay để giữ chuỗi '+streak+' ngày':'Học đủ 5 phút hôm nay để bắt đầu chuỗi mới');
+  /* 7 ngày gần nhất: ngọn lửa nếu đủ 5 phút */
+  var week='',max=1,list=[],lab=['CN','T2','T3','T4','T5','T6','T7'];
+  for(i=6;i>=0;i--){var dd=new Date();dd.setDate(dd.getDate()-i);var s=m[dayKey(dd)]||0;list.push({d:dd,s:s,t:i===0});if(s>max)max=s}
   list.forEach(function(x){
-    var h=Math.max(3,Math.round(x.s*84/max)),lab=['CN','T2','T3','T4','T5','T6','T7'][x.d.getDay()];
-    bars+='<div class="acc-bar"><i style="height:'+(x.s?h:3)+'px" title="'+esc(fmtDur(x.s))+'"></i><small>'+lab+'</small></div>';
+    var on=x.s>=DAY_MIN;
+    week+='<div class="acc-wd'+(on?' on':'')+(x.t?' td':'')+'"><span>'+(on?'🔥':(x.t?'•':'○'))+'</span><small>'+(x.t?'Nay':lab[x.d.getDay()])+'</small></div>';
+  });
+  var bars='';
+  list.forEach(function(x){
+    var h=Math.max(3,Math.round(x.s*84/max));
+    bars+='<div class="acc-bar"><i style="height:'+(x.s?h:3)+'px" title="'+esc(fmtDur(x.s))+'"></i><small>'+lab[x.d.getDay()]+'</small></div>';
   });
   var S={};try{S=JSON.parse(lsGet('tv_flashcard_v1')||'{}')}catch(e){}
   var prog=S.prog||{},thuoc=0;Object.keys(prog).forEach(function(k){if(prog[k]&&prog[k].s==='thuoc')thuoc++});
-  modal('<h3>Bảng tiến độ</h3><div class="acc-stats">'
+  modal('<h3>Bảng tiến độ</h3>'
+   +'<div class="acc-streak'+(streak>0?' live':'')+'"><div class="acc-fire">'+(streak>0?'🔥':'🕯️')+'</div><div class="acc-sn"><b>'+streak+'</b><span>ngày liên tiếp</span></div>'
+   +'<div class="acc-sr"><small>Kỷ lục</small><b>'+best+'</b></div></div>'
+   +'<div class="acc-week">'+week+'</div>'
+   +'<div class="acc-today"><div class="acc-tl"><span>Hôm nay</span><span>'+Math.min(5,Math.floor(today/60))+'/5 phút</span></div><div class="acc-pb"><i style="width:'+pct+'%"></i></div><p>'+msg+'</p></div>'
+   +'<div class="acc-stats">'
    +'<div class="acc-st"><b>'+fmtDur(total)+'</b><span>Tổng thời gian học</span></div>'
-   +'<div class="acc-st"><b>'+days.length+'</b><span>Số ngày đã học</span></div>'
+   +'<div class="acc-st"><b>'+days.length+'</b><span>Số ngày đã học (từ 5 phút)</span></div>'
    +'<div class="acc-st"><b>'+fmtDur(today)+'</b><span>Hôm nay</span></div>'
-   +'<div class="acc-st"><b>'+streak+'</b><span>Ngày liên tiếp</span></div>'
    +'<div class="acc-st"><b>'+fmtDur(avg)+'</b><span>Trung bình mỗi ngày học</span></div>'
-   +'<div class="acc-st"><b>'+thuoc+'</b><span>Từ đã thuộc</span></div></div>'
+   +'<div class="acc-st"><b>'+thuoc+'</b><span>Từ đã thuộc</span></div>'
+   +'<div class="acc-st"><b>'+best+'</b><span>Chuỗi dài nhất</span></div></div>'
    +'<h4 class="acc-h4">7 ngày gần nhất</h4><div class="acc-chart">'+bars+'</div>'
-   +'<p class="acc-note">Thời gian chỉ tính khi bạn đang mở trang và có thao tác. Một ngày được tính là đã học khi học từ 1 phút trở lên.</p>');
+   +'<p class="acc-note">Chuỗi tăng 1 mỗi ngày bạn học đủ <b>5 phút</b>; bỏ lỡ một ngày là chuỗi về 0. Thời gian chỉ tính khi bạn đang học và có thao tác (bấm, gõ, chọn đáp án…) trong các chức năng học. Mở web mà không làm gì thì không tính.</p>');
 }
 
 /* ---------- Đăng nhập / đăng xuất / xóa ---------- */
