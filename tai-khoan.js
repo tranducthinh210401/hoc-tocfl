@@ -54,9 +54,21 @@ function pick(k,l,r){      /* l = cục bộ {v,t}, r = từ xa {v,t}; trả v�
   return l.t>r.t?l.v:r.v;
 }
 
+/* Trạng thái Pro: lưu cờ để lần sau trang mở đúng ngay; đổi trạng thái thì tải lại trang một lần */
+function syncPro(isPro){
+  var G=window.ACC_GATE;if(!G)return false;
+  if(G.pro===isPro)return false;
+  G.setPro(isPro);
+  var tag='acc_pro_reload';
+  try{ if(sessionStorage.getItem(tag)===String(isPro))return false; sessionStorage.setItem(tag,String(isPro)); }catch(e){}
+  location.reload();return true;
+}
+window.ACC_API={login:function(){login()},info:function(){if(user)showInfo()},loggedIn:function(){return !!user}};
 async function pull(){
   if(!user||!db)return;
   var ref=api.doc(db,'users',user.uid),snap=await api.getDoc(ref);
+  act=(snap.exists()&&snap.data().activated)||null;
+  if(syncPro(!!(act&&act.code)))return;
   var remote=snap.exists()?(snap.data().items||{}):{},local=localSnapshot(),changedLocal=false,out={},keys={};
   Object.keys(remote).concat(Object.keys(local)).forEach(function(k){keys[k]=1});
   applying=true;
@@ -72,7 +84,6 @@ async function pull(){
   });
   applying=false;
   await api.setDoc(ref,{items:out,updated:Date.now(),email:user.email||''},{merge:true});
-  act=(snap.exists()&&snap.data().activated)||null;
   lastSync=Date.now();
   if(changedLocal){
     var tag='tk_reload_'+user.uid;
@@ -125,6 +136,7 @@ var css='\
 .acc-code{display:flex;gap:8px;margin-top:10px}.acc-code input{flex:1;min-width:0;border:1.5px solid var(--border,rgba(0,0,0,.14));border-radius:12px;padding:11px 12px;font-family:inherit;font-weight:600;font-size:15px;line-height:1.2;background:var(--surface-2,#f5f5f7);color:inherit;text-transform:uppercase;letter-spacing:.05em;outline:none}.acc-code input:focus{border-color:var(--blue,#0071e3)}.acc-code button{border:0;background:linear-gradient(135deg,#0071e3,#4f46e5);color:#fff;border-radius:12px;padding:0 16px;font-family:inherit;font-weight:700;font-size:14px;cursor:pointer}\
 .acc-msg{min-height:18px;margin:6px 0 0;font-size:13px}.acc-note a{color:var(--blue,#0071e3);font-weight:600}\
 .acc-h4{margin:18px 0 8px;font-size:13px;color:var(--text-secondary,#6e6e73);text-transform:uppercase;letter-spacing:.04em}.acc-chart{display:flex;align-items:flex-end;justify-content:space-between;gap:8px;height:110px;padding:0 4px}.acc-bar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:5px;height:100%}.acc-bar i{display:block;width:100%;max-width:34px;border-radius:8px 8px 3px 3px;background:linear-gradient(180deg,#4f46e5,#0071e3)}.acc-bar small{font-size:11px;color:var(--text-secondary,#6e6e73)}\
+@media (min-width:701px){.toolbar{padding-right:var(--acc-w,0px)!important}}\
 @media (max-width:700px){.acc-wrap{top:8px;right:10px}.acc-btn{padding:6px 10px 6px 6px;font-size:13px}.acc-btn.in .acc-hi{display:none}.acc-btn.in{padding:4px 10px 4px 4px}.acc-mh{display:block!important}}\
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .acc-toast{background:#f5f5f7;color:#1d1d1f}}';
 var st=document.createElement('style');st.textContent=css;document.head.appendChild(st);
@@ -155,6 +167,9 @@ function render(){
     ({info:showInfo,prog:showProg,out:logout})[a.dataset.a]();
   };
 }
+function fit(){try{document.documentElement.style.setProperty('--acc-w',(wrap.offsetWidth+28)+'px')}catch(e){}}
+var _r=render;render=function(){_r();fit()};
+window.addEventListener('resize',fit);
 document.addEventListener('click',function(e){var m=wrap.querySelector('.acc-menu');if(m&&!wrap.contains(e.target))m.classList.remove('open')});
 
 function modal(html){
@@ -168,8 +183,8 @@ function modal(html){
 function fmtTime(t){return t?new Date(t).toLocaleString('vi-VN'):'Chưa đồng bộ'}
 function showInfo(){
   var actHtml=act&&act.code
-    ?'<div class="acc-row"><span>Trạng thái</span><span style="color:#1a9d4a;font-weight:700">✓ Đã kích hoạt</span></div><div class="acc-row"><span>Mã kích hoạt</span><span>'+esc(act.code)+'</span></div>'
-    :'<div class="acc-row"><span>Trạng thái</span><span>Dùng thử</span></div>'
+    ?'<div class="acc-row"><span>Trạng thái</span><span style="color:#1a9d4a;font-weight:700">✓ Tài khoản Pro</span></div><div class="acc-row"><span>Mã kích hoạt</span><span>'+esc(act.code)+'</span></div>'
+    :'<div class="acc-row"><span>Trạng thái</span><span>Dùng thử (chưa Pro)</span></div>'
      +'<div class="acc-code"><input type="text" id="acc-code" placeholder="Nhập mã kích hoạt" autocomplete="off" autocapitalize="characters" spellcheck="false"><button type="button" data-a="act">Kích hoạt</button></div>'
      +'<p class="acc-msg" id="acc-msg"></p>';
   var m=modal('<h3>Thông tin tài khoản</h3><div class="acc-prof">'+avatar()+'<div><b>'+esc(displayName())+'</b><span>'+esc(user.email||'')+'</span></div></div>'
@@ -205,7 +220,8 @@ async function activate(code){
   if(!d.usedBy)await api.updateDoc(cref,{usedBy:user.uid,usedAt:Date.now()});
   await api.setDoc(api.doc(db,'users',user.uid),{activated:{code:code,at:Date.now()}},{merge:true});
   act={code:code,at:Date.now()};
-  return 'Kích hoạt thành công 🎉';
+  if(window.ACC_GATE){window.ACC_GATE.setPro(true);try{sessionStorage.removeItem('acc_pro_reload')}catch(e){}setTimeout(function(){location.reload()},1100)}
+  return 'Kích hoạt Pro thành công 🎉 Đang mở khóa…';
 }
 
 /* ---------- Đếm thời gian học mỗi ngày (chỉ tính lúc đang mở trang và có thao tác) ---------- */
@@ -275,7 +291,9 @@ async function login(){
 }
 async function logout(){
   try{await push()}catch(e){}
-  await authApi.signOut(auth);toast('Đã đăng xuất');
+  await authApi.signOut(auth);
+  if(window.ACC_GATE&&window.ACC_GATE.pro){window.ACC_GATE.setPro(false);try{sessionStorage.removeItem('acc_pro_reload')}catch(e){}location.reload();return}
+  toast('Đã đăng xuất');
 }
 async function deleteAccount(){
   var uid=user.uid;
@@ -297,6 +315,7 @@ function ensure(){
     api=f;db=f.getFirestore(inst);
     a.onAuthStateChanged(auth,async function(u){
       user=u||null;render();
+      if(!user&&window.ACC_GATE&&window.ACC_GATE.pro){window.ACC_GATE.setPro(false);try{sessionStorage.removeItem('acc_pro_reload')}catch(e){}location.reload();return}
       if(user){try{await pull()}catch(e){toast('Chưa đồng bộ được dữ liệu')}}
     });
     a.getRedirectResult(auth).catch(function(){});

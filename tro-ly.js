@@ -220,7 +220,7 @@ function speak(txt,btn){
 
 /* ---------- Giao diện ---------- */
 var fab=document.createElement('button');fab.className='ta-fab';fab.type='button';fab.title='Trợ lý ảo Lona';fab.setAttribute('aria-label','Mở trợ lý ảo Lona');
-fab.innerHTML='<span class="ta-lbl">Trò chuyện với Lona</span>';
+fab.innerHTML='<span class="ta-lbl">'+(window.ACC_GATE&&!window.ACC_GATE.pro?'🔒 ':'')+'Trò chuyện với Lona</span>';
 document.body.appendChild(fab);
 var panel=document.createElement('div');panel.className='ta-panel';panel.setAttribute('role','dialog');panel.setAttribute('aria-label','Trợ lý ảo Lona');
 panel.innerHTML='<div class="ta-h"><img src="'+IMG+'" alt=""><div class="ta-ht"><b>Trợ lý ảo Lona</b><small>Trực tuyến · hỏi gì cũng được</small></div><button class="ta-x" type="button" aria-label="Đóng">×</button></div>'
@@ -261,6 +261,7 @@ setTimeout(place,1500);
 })();
 
 function toggle(o){
+  if(o&&window.ACC_GATE&&!window.ACC_GATE.pro){window.ACC_GATE.upsell('lona');return}
   panel.classList.toggle('open',o);fab.style.display=o?'none':'';
   var t=$('.ta-tip');if(t)t.remove();
   if(o){setTimeout(function(){try{cta.focus()}catch(e){}},60)}

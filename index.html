@@ -3747,6 +3747,7 @@ window.TVPos = (function(){
 })();
 </script>
 <script src="data.js?v=20261031"></script>
+<script src="gate.js?v=1"></script>
 <script>
 
 
@@ -3903,7 +3904,8 @@ const BOOK_LABEL = {A1:'Đương Đại 1 | 當代中文課程 1', A2:'Đương 
 /* Các cấp độ TOCFL: chưa có bài học, bổ sung sau bằng cách thêm {"type":"lesson","title":"[N1] 📖 BÀI 1: ..."} vào DATA */
 const EXTRA_BOOKS = ['N1','N2','L1','L2','L3','L4','L5'];
 function bookOf(l){ const m = (l||'').match(/^\[([^\]]+)\]/); return m ? m[1] : ''; }
-function lessonLabel(l){ if(['GP','N1','N2','L1','L2','L3','L4','L5','TD'].indexOf(bookOf(l))>=0) return (l||'').replace(/^\[[^\]]+\]\s*📖\s*/,''); const m = (l||'').match(/BÀI\s*(\d+):\s*(.*?)\s+[–-]\s/); return m ? 'Bài ' + m[1] + ' - ' + m[2] : l; }
+function lessonLabel(l){ return ((window.ACC_GATE && ACC_GATE.locked(l)) ? '🔒 ' : '') + lessonLabel0(l); }
+function lessonLabel0(l){ if(['GP','N1','N2','L1','L2','L3','L4','L5','TD'].indexOf(bookOf(l))>=0) return (l||'').replace(/^\[[^\]]+\]\s*📖\s*/,''); const m = (l||'').match(/BÀI\s*(\d+):\s*(.*?)\s+[–-]\s/); return m ? 'Bài ' + m[1] + ' - ' + m[2] : l; }
 /* filter: '' = tất cả · '@A1' = cả giáo trình A1 · còn lại = đúng 1 bài */
 function matchLesson(item, f){
   if(!f) return true;
@@ -3953,7 +3955,7 @@ function populateLessonFilter(selectEl, onChange){
   { const gi = books.indexOf('GP'); if(gi >= 0){ books.splice(gi, 1); books.push('GP'); } }   // Ngữ pháp luôn nằm cuối danh sách giáo trình
   books.forEach(b => {
     const o = document.createElement('option');
-    o.value = b; o.textContent = BOOK_LABEL[b] || b;
+    o.value = b; o.textContent = ((window.ACC_GATE && ACC_GATE.bookLocked(b)) ? '🔒 ' : '') + (BOOK_LABEL[b] || b);
     bookSel.appendChild(o);
   });
   function fill(b){
@@ -9549,7 +9551,7 @@ kbBuild();initScene();idle();
 })();
 </script>
 <script src="firebase-config.js?v=2"></script>
-<script src="tro-ly.js?v=20261101g" defer></script>
-<script src="tai-khoan.js?v=2" defer></script>
+<script src="tro-ly.js?v=20261101h" defer></script>
+<script src="tai-khoan.js?v=3" defer></script>
 </body>
 </html>
