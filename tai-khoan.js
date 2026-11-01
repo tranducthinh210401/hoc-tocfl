@@ -141,7 +141,8 @@ var css='\
 .acc-code{display:flex;gap:8px;margin-top:10px}.acc-code input{flex:1;min-width:0;border:1.5px solid var(--border,rgba(0,0,0,.14));border-radius:12px;padding:11px 12px;font-family:inherit;font-weight:600;font-size:15px;line-height:1.2;background:var(--surface-2,#f5f5f7);color:inherit;text-transform:uppercase;letter-spacing:.05em;outline:none}.acc-code input:focus{border-color:var(--blue,#0071e3)}.acc-code button{border:0;background:linear-gradient(135deg,#0071e3,#4f46e5);color:#fff;border-radius:12px;padding:0 16px;font-family:inherit;font-weight:700;font-size:14px;cursor:pointer}\
 .acc-msg{min-height:18px;margin:6px 0 0;font-size:13px}.acc-note a{color:var(--blue,#0071e3);font-weight:600}\
 .acc-h4{margin:18px 0 8px;font-size:13px;color:var(--text-secondary,#6e6e73);text-transform:uppercase;letter-spacing:.04em}.acc-chart{display:flex;align-items:flex-end;justify-content:space-between;gap:8px;height:110px;padding:0 4px}.acc-bar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:5px;height:100%}.acc-bar i{display:block;width:100%;max-width:34px;border-radius:8px 8px 3px 3px;background:linear-gradient(180deg,#4f46e5,#0071e3)}.acc-bar small{font-size:11px;color:var(--text-secondary,#6e6e73)}\
-@media (min-width:701px){#panel-home .toolbar{padding-right:var(--acc-w,0px)!important}}\
+@media (min-width:701px){.toolbar{padding-right:var(--acc-w,0px)!important}}\
+.acc-wrap.cp .acc-hi,.acc-wrap.cp .acc-caret{display:none}.acc-wrap.cp .acc-btn.in{padding:4px}.acc-wrap.cp .acc-btn:not(.in){padding:6px 8px}.acc-wrap.cp .acc-btn:not(.in) .acc-t{display:none}.acc-wrap.cp .acc-mh{display:block!important}\
 @media (max-width:700px){.acc-wrap{top:8px;right:10px}.acc-btn{padding:6px 10px 6px 6px;font-size:13px}.acc-btn.in .acc-hi{display:none}.acc-btn.in{padding:4px 10px 4px 4px}.acc-mh{display:block!important}}\
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .acc-toast{background:#f5f5f7;color:#1d1d1f}}';
 var st=document.createElement('style');st.textContent=css;document.head.appendChild(st);
@@ -176,7 +177,8 @@ function render(){
 }
 /* Chỉ hiện ở Trang chủ */
 var home=document.getElementById('panel-home');
-function vis(){wrap.style.display=(!home||home.classList.contains('active'))?'':'none'}
+/* Trang chủ: hiện đủ lời chào + tên. Các chức năng khác: chỉ còn ảnh nhỏ gọn trên thanh chọn bài */
+function vis(){wrap.classList.toggle('cp',!!home&&!home.classList.contains('active'));fit()}
 if(home&&window.MutationObserver)new MutationObserver(vis).observe(home,{attributes:true,attributeFilter:['class']});
 vis();
 function fit(){try{document.documentElement.style.setProperty('--acc-w',(wrap.offsetWidth+28)+'px')}catch(e){}}
