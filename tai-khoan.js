@@ -9,7 +9,7 @@ var FB='https://www.gstatic.com/firebasejs/10.14.1/';
 var ZALO='0939509695';
 
 /* Các khóa localStorage được đồng bộ */
-function synced(k){return /^(tv_flashcard_v1|tv_talk_v1|tv_dict_v1|wrCfg|ta_chat|ta_hist|hg-hide3|hg-mus|acc_study|[a-z]{2}-best)$/.test(k)}
+function synced(k){return /^(tv_flashcard_v1|tv_talk_v1|tv_dict_v1|wrCfg|ta_chat|ta_hist|hg-hide3|hg-mus|acc_study|acc_state|hoctocfl-theme|[a-z]{2}-best)$/.test(k)}
 var BEST=/-best$/;
 var TKEY='tk_t';             /* mốc thời gian sửa cục bộ từng khóa */
 function lsGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
