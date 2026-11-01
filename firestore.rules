@@ -1,0 +1,30 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Dữ liệu học của từng người: chỉ chính chủ đọc/ghi.
+    // Riêng trường "activated" chỉ được ghi khi mã kích hoạt tương ứng đã thuộc về người đó.
+    match /users/{uid} {
+      allow read, delete: if request.auth != null && request.auth.uid == uid;
+      allow create, update: if request.auth != null && request.auth.uid == uid
+        && (
+          // không đụng tới trường activated
+          request.resource.data.get('activated', null) == (resource == null ? null : resource.data.get('activated', null))
+          // hoặc kích hoạt bằng mã đã gán cho đúng người này
+          || get(/databases/$(database)/documents/codes/$(request.resource.data.activated.code)).data.usedBy == request.auth.uid
+        );
+    }
+
+    // Mã kích hoạt: Admin tạo trong Console, ví dụ codes/ABC123 với { usedBy: "" }.
+    // Người dùng chỉ đọc từng mã (không liệt kê được) và chỉ nhận mã chưa ai dùng.
+    match /codes/{code} {
+      allow get: if request.auth != null;
+      allow list: if false;
+      allow update: if request.auth != null
+        && resource.data.usedBy == ""
+        && request.resource.data.usedBy == request.auth.uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['usedBy', 'usedAt']);
+      allow create, delete: if false;
+    }
+  }
+}
