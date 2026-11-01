@@ -4110,12 +4110,80 @@ function playMixed(segs, btn, opts){
     finish(true);
   })();
 }
+/* ============ Phát file ghi âm tức thì (Web Audio): tải + giải mã trước, bấm là nói ngay ============ */
+const AC_CTOR = window.AudioContext || window.webkitAudioContext;
+let actx = null;
+const abuf = new Map(), apend = new Map();
+/* iPhone: Web Audio bị tắt tiếng khi gạt nút im lặng; đặt phiên âm thanh "playback" (và mở một thẻ audio im lặng) để vẫn nghe được như file thường */
+try{ if(navigator.audioSession) navigator.audioSession.type = 'playback'; }catch(e){}
+let unmuted = false;
+function unmuteIOS(){
+  if(unmuted) return; unmuted = true;
+  try{ const a = new Audio('data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA='); a.setAttribute('playsinline',''); a.volume = 0.01; const p = a.play(); if(p && p.catch) p.catch(()=>{}); }catch(e){}
+}
+function getCtx(){ if(!actx && AC_CTOR){ try{ actx = new AC_CTOR(); }catch(e){} } return actx; }
+['pointerdown','touchstart','keydown','click'].forEach(t => document.addEventListener(t, () => { unmuteIOS(); const c = getCtx(); if(c && c.state === 'suspended') c.resume().catch(()=>{}); }, {capture:true, passive:true}));
+function loadClip(url){
+  if(abuf.has(url)) return Promise.resolve(abuf.get(url));
+  if(apend.has(url)) return apend.get(url);
+  const c = getCtx(); if(!c) return Promise.reject(new Error('noctx'));
+  const p = fetch(url).then(r => { if(!r.ok) throw new Error('http'); return r.arrayBuffer(); })
+    .then(ab => new Promise((res, rej) => { try{ const q = c.decodeAudioData(ab, res, rej); if(q && q.then) q.then(res, rej); }catch(e){ rej(e); } }))
+    .then(b => { apend.delete(url); abuf.set(url, b); if(abuf.size > 90){ abuf.delete(abuf.keys().next().value); } return b; })
+    .catch(e => { apend.delete(url); throw e; });
+  apend.set(url, p); return p;
+}
+function clipOf(han){ return REC_BOOKS.indexOf(activeBook()) >= 0 ? WORD_AUDIO[audioKey(han)] : null; }
+/* Tải trước âm thanh của n từ kế tiếp trong danh sách (từ vị trí i) */
+function prefetchDeck(arr, i, n){
+  try{
+    if(!arr || !getCtx()) return;
+    let k = 0;
+    for(let j = Math.max(0, i); j < arr.length && k < (n || 6); j++){
+      const w = arr[j] && (arr[j].w || arr[j]); const clip = w && clipOf(w.han);
+      if(clip){ k++; if(!abuf.has(clip) && !apend.has(clip)) loadClip(clip).catch(()=>{}); }
+    }
+  }catch(e){}
+}
+/* Khi đổi giáo trình/bài: tải trước âm thanh 40 từ đầu của bài đang chọn (lúc trình duyệt rảnh) */
+function prefetchSelected(){
+  try{
+    const e = LESSON_SYNC[0]; if(!e) return;
+    const f = e.selectEl.value, arr = [];
+    for(let i = 0; i < DATA.length && arr.length < 40; i++){ const d = DATA[i]; if(d.type === 'word' && matchLesson(d, f)) arr.push(d); }
+    prefetchDeck(arr, 0, 40);
+  }catch(err){}
+}
+document.addEventListener('change', ev => { const id = ev.target && ev.target.id; if(id && /^(bookFilter|lessonFilter)/.test(id)) setTimeout(prefetchSelected, 80); });
+(window.requestIdleCallback || (f => setTimeout(f, 1500)))(() => setTimeout(prefetchSelected, 500));
+function stopCurrent(){
+  if(currentAudio){
+    try{ currentAudio.pause(); }catch(e){}
+    if(currentBtn){ currentBtn.classList.remove('playing'); currentBtn.disabled = false; }
+  }
+  try{ speechSynthesis.cancel(); }catch(e){}
+}
+function playClipFast(clip, btn, opts){
+  const b = abuf.get(clip), c = actx;
+  if(!b || !c || c.state === 'closed') return false;
+  if(c.state === 'suspended') c.resume().catch(()=>{});
+  stopCurrent();
+  const src = c.createBufferSource(); src.buffer = b; src.connect(c.destination);
+  const shim = { pause(){ try{ src.onended = null; src.stop(); }catch(e){} } };
+  currentAudio = shim; currentBtn = btn;
+  btn.disabled = false; btn.classList.add('playing');
+  src.onended = () => { if(currentAudio !== shim) return; btn.classList.remove('playing'); btn.disabled = false; if(opts.onEnd) opts.onEnd(); };
+  src.start(0);
+  return true;
+}
 function playWord(han, btn, opts){
   opts = opts || {};
   /* mẫu ngữ pháp song ngữ (Việt + Trung): mỗi đoạn đọc bằng đúng giọng của ngôn ngữ đó */
   if(hasLatin(han)){ const segs = splitMixed(han); if(segs.length){ playMixed(segs, btn, opts); return; } }
   const clip = REC_BOOKS.indexOf(activeBook()) >= 0 ? WORD_AUDIO[audioKey(han)] : null;
   if(clip){
+    if(playClipFast(clip, btn, opts)) return;      // đã tải sẵn: nói ngay
+    loadClip(clip).catch(()=>{});                  // chưa kịp: tải cho lần sau, lần này phát bằng đường cũ
     if(currentAudio){
       try{ currentAudio.pause(); }catch(e){}
       if(currentBtn){ currentBtn.classList.remove('playing'); currentBtn.disabled = false; }
@@ -4472,6 +4540,7 @@ function playWordTTS(han, btn, opts){
     stopSpeech();
     setDone(false);
     const it = deck[idx];
+    prefetchDeck(deck, idx, 8);
     card.setAttribute('aria-label', 'Thẻ từ vựng ' + (it ? it.han : '') + '; nhấn Space để lật');
     clearTimeout(backT);
     const wasFlipped = card.classList.contains('flipped');
