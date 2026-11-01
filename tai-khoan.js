@@ -111,7 +111,7 @@ document.addEventListener('visibilitychange',function(){if(document.visibilitySt
 
 /* ---------- Giao diện ---------- */
 var css='\
-.acc-wrap{position:fixed;top:10px;right:14px;z-index:8500;font-family:"Be Vietnam Pro",system-ui,-apple-system,sans-serif}\
+.acc-wrap{position:absolute;top:10px;right:14px;z-index:8500;font-family:"Be Vietnam Pro",system-ui,-apple-system,sans-serif}\
 .acc-btn{display:flex;align-items:center;gap:8px;border:1px solid var(--border,rgba(0,0,0,.14));background:var(--surface,#fff);color:var(--text,#1d1d1f);border-radius:999px;padding:7px 14px 7px 8px;font-family:inherit;font-weight:600;font-size:14px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.1);max-width:min(70vw,340px)}\
 .acc-btn:hover{box-shadow:0 4px 14px rgba(0,0,0,.16)}\
 .acc-btn.in{padding:4px 12px 4px 4px}\
