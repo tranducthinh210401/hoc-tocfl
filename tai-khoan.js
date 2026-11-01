@@ -116,6 +116,7 @@ var css='\
 .acc-btn:hover{box-shadow:0 4px 14px rgba(0,0,0,.16)}\
 .acc-btn.in{padding:4px 12px 4px 4px}\
 .acc-btn .acc-g{width:22px;height:22px;flex:none}\
+.acc-avw{position:relative;display:inline-flex;flex:none}.acc-crown{position:absolute;left:50%;top:-11px;transform:translateX(-50%) rotate(-8deg);font-style:normal;font-size:16px;line-height:1;filter:drop-shadow(0 1px 1px rgba(0,0,0,.35));pointer-events:none}.acc-prof .acc-crown{top:-14px;font-size:22px}.acc-avw.pro .acc-av{box-shadow:0 0 0 2px #f5b301}\
 .acc-av{width:30px;height:30px;border-radius:50%;object-fit:cover;background:linear-gradient(135deg,#0071e3,#4f46e5);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex:none;overflow:hidden}\
 .acc-hi{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.acc-hi small{font-weight:500;font-size:13px;color:var(--text-secondary,#6e6e73);margin-right:4px}\
 .acc-caret{font-size:10px;color:var(--text-tertiary,#86868b);flex:none}\
@@ -151,9 +152,11 @@ function toast(t){var d=document.createElement('div');d.className='acc-toast';d.
 var GICON='<svg class="acc-g" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.3l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.5z"/><path fill="#FBBC05" d="M10.5 28.6c-.5-1.5-.8-3-.8-4.6s.3-3.1.8-4.6l-7.9-6.1C.9 16.5 0 20.1 0 24s.9 7.5 2.6 10.7l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.5-5.8c-2.1 1.4-4.9 2.3-8.4 2.3-6.3 0-11.6-4.1-13.5-9.9l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>';
 
 function displayName(){return (user&&(user.displayName||(user.email||'').split('@')[0]))||'bạn'}
+function isPro(){return !!((act&&act.code)||(window.ACC_GATE&&window.ACC_GATE.pro))}
 function avatar(){
-  if(user&&user.photoURL)return '<img class="acc-av" referrerpolicy="no-referrer" src="'+esc(user.photoURL)+'" alt="">';
-  return '<span class="acc-av">'+esc(displayName().charAt(0).toUpperCase())+'</span>';
+  var inner=(user&&user.photoURL)?'<img class="acc-av" referrerpolicy="no-referrer" src="'+esc(user.photoURL)+'" alt="">'
+    :'<span class="acc-av">'+esc(displayName().charAt(0).toUpperCase())+'</span>';
+  return '<span class="acc-avw'+(isPro()?' pro':'')+'">'+inner+(isPro()?'<i class="acc-crown" title="Tài khoản Pro">👑</i>':'')+'</span>';
 }
 function render(){
   if(!user){
@@ -209,10 +212,10 @@ function showInfo(){
     if(a==='sync'){try{await push();toast('Đã đồng bộ ✓');m.close()}catch(x){toast('Chưa đồng bộ được, thử lại nhé')}}
     if(a==='act'){
       var inp=m.el.querySelector('#acc-code'),msg=m.el.querySelector('#acc-msg'),code=(inp.value||'').trim().toUpperCase();
-      if(!/^[A-Z0-9-]{4,32}$/.test(code)){msg.textContent='Mã chưa đúng định dạng.';return}
+      if(!/^[A-Z0-9-]{4,32}$/.test(code)){msg.style.color='#d12c2c';msg.textContent='Mã không hợp lệ.';return}
       msg.style.color='';msg.textContent='Đang kiểm tra…';
       try{var r=await activate(code);msg.style.color='#1a9d4a';msg.textContent=r;setTimeout(function(){m.close();showInfo()},900)}
-      catch(x){msg.style.color='#d12c2c';msg.textContent=(x&&x.message)||'Mã không hợp lệ hoặc đã được dùng.'}
+      catch(x){msg.style.color='#d12c2c';msg.textContent='Mã không hợp lệ.'}
     }
     if(a==='del'){
       if(!confirm('Xóa vĩnh viễn tài khoản và toàn bộ dữ liệu đã đồng bộ? Dữ liệu trên thiết bị này vẫn giữ lại.'))return;
@@ -223,9 +226,9 @@ function showInfo(){
 /* Kích hoạt: mỗi mã (do Admin tạo trong Firestore, collection "codes") dùng được cho một tài khoản */
 async function activate(code){
   var cref=api.doc(db,'codes',code),snap=await api.getDoc(cref);
-  if(!snap.exists())throw new Error('Mã không tồn tại.');
+  if(!snap.exists())throw new Error('invalid');
   var d=snap.data()||{};
-  if(d.usedBy&&d.usedBy!==user.uid)throw new Error('Mã này đã được dùng cho tài khoản khác.');
+  if(d.usedBy&&d.usedBy!==user.uid)throw new Error('invalid');
   if(!d.usedBy)await api.updateDoc(cref,{usedBy:user.uid,usedAt:Date.now()});
   await api.setDoc(api.doc(db,'users',user.uid),{activated:{code:code,at:Date.now()}},{merge:true});
   act={code:code,at:Date.now()};
