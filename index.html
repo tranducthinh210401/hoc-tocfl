@@ -11,7 +11,7 @@
 <link rel="icon" type="image/png" href="logo-fav-v2.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Noto+Serif+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Noto+Serif+TC:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'"><noscript><link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Noto+Serif+TC:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
 <title>Học TOCFL cùng Thịnh &amp; Loan</title>
 <style>
   :root{
@@ -1413,7 +1413,7 @@
 #panel-fruit .fr-pb{background:#ffffffe6;font-size:clamp(11px,1.5vw,14px);padding:5px 10px}
 #panel-fruit .mr-side{z-index:8}
 </style>
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" media="print" onload="this.media='all'"><noscript><link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"></noscript>
 <style>
 .c-mario{--g:linear-gradient(135deg,#ef4444,#b91c1c);--g1:#dc2626;}
 .mr-wrap{position:relative;max-width:980px;margin:0 auto;border:3px solid #1b2a52;border-radius:14px;overflow:hidden;background:#000;user-select:none;-webkit-user-select:none}
@@ -3746,8 +3746,8 @@ window.TVPos = (function(){
   return {get, MAP};
 })();
 </script>
-<script src="data.js?v=20261031"></script>
-<script src="gate.js?v=1"></script>
+<script src="data.js?v=20261102"></script>
+<script src="gate.js?v=2"></script>
 <script>
 
 
@@ -9535,11 +9535,11 @@ kbBuild();initScene();idle();
     chk();setTimeout(chk,300);setTimeout(chk,1200);
   }
   /* Kiểm tra trước Google Dịch có dùng được không: nếu lỗi thì chuyển ngay sang giọng máy, lần bấm đầu khỏi phải chờ */
-  try{
+  (window.requestIdleCallback||function(f){setTimeout(f,3000)})(function(){try{
     var pa=new Audio();pa.preload='auto';pa.muted=true;
     pa.addEventListener('error',function(){try{ttsDown=true}catch(e){}});
     pa.src=ttsUrl('你好');
-  }catch(e){}
+  }catch(e){}},{timeout:4000});
   /* Lần chạm đầu tiên: làm nóng bộ đọc của trình duyệt bằng một câu im lặng */
   function warm(){
     if(warmed)return;warmed=true;
@@ -9552,6 +9552,6 @@ kbBuild();initScene();idle();
 </script>
 <script src="firebase-config.js?v=2"></script>
 <script src="tro-ly.js?v=20261101h" defer></script>
-<script src="tai-khoan.js?v=4" defer></script>
+<script src="tai-khoan.js?v=5" defer></script>
 </body>
 </html>

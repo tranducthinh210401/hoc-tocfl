@@ -84,26 +84,30 @@ async function pull(){
   });
   applying=false;
   await api.setDoc(ref,{items:out,updated:Date.now(),email:user.email||''},{merge:true});
-  lastSync=Date.now();
+  lastSync=Date.now();lastPushed=JSON.stringify(localSnapshot());
   if(changedLocal){
     var tag='tk_reload_'+user.uid;
     try{ if(!sessionStorage.getItem(tag)){sessionStorage.setItem(tag,'1');location.reload();return} }catch(e){}
   }
   render();
 }
+/* Giảm số lần ghi lên máy chủ (gói miễn phí có hạn mức ghi mỗi ngày): gộp thay đổi, tối đa 1 lần / 3 phút khi đang học,
+   ghi ngay khi rời trang / chuyển tab; không ghi nếu dữ liệu không đổi. */
+var PUSH_EVERY=180000,lastPushed='';
 function schedulePush(){
-  if(!user)return;clearTimeout(pushTimer);pushTimer=setTimeout(push,3000);
+  if(!user||pushTimer)return;pushTimer=setTimeout(function(){pushTimer=0;push()},PUSH_EVERY);
 }
 async function push(){
   if(!user||!db)return;
   try{
-    var ref=api.doc(db,'users',user.uid);
-    await api.setDoc(ref,{items:localSnapshot(),updated:Date.now(),email:user.email||''},{merge:true});
-    lastSync=Date.now();
+    var ref=api.doc(db,'users',user.uid),items=localSnapshot(),sig=JSON.stringify(items);
+    if(sig===lastPushed){lastSync=Date.now();return}
+    await api.setDoc(ref,{items:items,updated:Date.now(),email:user.email||''},{merge:true});
+    lastPushed=sig;lastSync=Date.now();
   }catch(e){}
 }
-window.addEventListener('pagehide',function(){if(pushTimer){clearTimeout(pushTimer);push()}});
-document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden'&&pushTimer){clearTimeout(pushTimer);push()}});
+window.addEventListener('pagehide',function(){if(pushTimer){clearTimeout(pushTimer);pushTimer=0;push()}});
+document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden'&&pushTimer){clearTimeout(pushTimer);pushTimer=0;push()}});
 
 /* ---------- Giao diện ---------- */
 var css='\

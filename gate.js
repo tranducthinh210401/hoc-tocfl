@@ -1,5 +1,5 @@
 /* Khóa nội dung theo tài khoản Pro — © 2026 Học TOCFL cùng Thịnh & Loan
-   Chạy ngay sau data.js: tài khoản chưa Pro thì bỏ phần từ vựng của các bài bị khóa khỏi DATA.
+   Chạy ngay sau data.js: tài khoản Pro thì nạp thêm data-pro.js (từ vựng các bài khóa).
    Quy tắc: Đương Đại 1/2/3 (A1, A2, B1) chỉ mở 5 bài đầu · Novice 1–2 và Ngữ pháp mở hết · Level 1–5 và Lona cần Pro. */
 (function(){
 'use strict';
@@ -19,11 +19,9 @@ var G=window.ACC_GATE={
   bookLocked:function(b){return !pro&&bookLocked(b)},
   setPro:function(v){try{localStorage.setItem('acc_pro',v?'1':'0')}catch(e){}}
 };
-if(!pro&&typeof DATA!=='undefined'){
-  var w=0,i,it;
-  for(i=0;i<DATA.length;i++){it=DATA[i];if(it.type==='word'&&lessonLocked(it.lesson))continue;DATA[w++]=it}
-  DATA.length=w;
-}
+/* Dữ liệu chia 2 phần: data.js (miễn phí) luôn tải; data-pro.js (bài khóa) chỉ tải khi là tài khoản Pro.
+   Nhờ vậy người dùng thường tải ít hơn nhiều, trang mở nhanh hơn. Viết bằng document.write để chạy xong trước các script chính. */
+if(pro){document.write('<script src="data-pro.js?v=1"><\/script>')}
 
 /* ---------- Hộp thoại mời nâng cấp ---------- */
 var css='\
