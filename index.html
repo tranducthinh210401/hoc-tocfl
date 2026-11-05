@@ -954,7 +954,7 @@
   .ls-iw{font-size:22px;} #ls-iyou{margin-left:34px;font-size:14px;opacity:.95;}
   #ls-tbar{transition:width .2s linear;}
   /* ---- Gõ từ (game, gộp 2 tab cũ) ---- */
-  #panel-type [hidden],#ty-modal[hidden],#ty-info[hidden],#ty-dim[hidden]{display:none!important;}
+  #panel-type [hidden],  #panel-reflex [hidden],#ty-modal[hidden],#rx-modal[hidden],#ty-info[hidden],#rx-info[hidden],#ty-dim[hidden],#rx-dim[hidden]{display:none!important;}
   .ty-ic{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto;}
   .ty-ctrl{display:inline-flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;row-gap:6px;}
   .ty-ctrl .mt-link{display:inline-flex;align-items:center;gap:6px;}
@@ -965,7 +965,7 @@
   .ty-sw::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .15s;}
   .ty-dir.on .ty-sw{background:#58cc02;} .ty-dir.on .ty-sw::after{transform:translateX(18px);}
   .ty-trow{flex-wrap:nowrap;} .ty-trow .mt-coin{display:inline-flex;align-items:center;gap:6px;flex:0 0 auto;}
-  #ty-tbar{transition:width .2s linear;}
+  #ty-tbar,  #rx-tbar{transition:width .2s linear;}
   .ty-card{padding:30px 18px 30px;}
   .ty-prompt{font-size:20px;font-weight:800;line-height:1.5;max-width:680px;margin:2px auto 10px;overflow-wrap:anywhere;}
   .ty-prompt.han{font-family:var(--han-font);font-size:52px;line-height:1.2;font-weight:700;}
@@ -981,11 +981,11 @@
   .ty-ghost:hover:not(:disabled){border-color:var(--blue);color:var(--blue);} .ty-ghost:disabled{opacity:.5;cursor:not-allowed;}
   .ty-btns .mt-green{padding:14px 36px;border-radius:999px;}
   .mt-mode.g1{background:linear-gradient(135deg,#d6f8df,#a9efbf);border-color:#62d63a;color:#2c7a05;}
-  .mt-mode.g1 span{color:#3f9d0c;} #ty-modal .mt-mode.m2 span{color:#b4570f;}
+  .mt-mode.g1 span{color:#3f9d0c;} #ty-modal .mt-mode.m2 span, #rx-modal .mt-mode.m2 span{color:#b4570f;}
   /* trung hoà quy tắc header{padding:56px..} toàn cục đang rò vào tiêu đề hộp thoại / danh sách kết quả */
-  #ty-modal .mt-box header,#panel-type .mt-list header{padding:0;margin-left:0;margin-right:0;}
+  #ty-modal .mt-box header,  #rx-modal .mt-box header,#panel-type .mt-list header,#panel-reflex .mt-list header{padding:0;margin-left:0;margin-right:0;}
   .mt-mode .ty-ic{width:20px;height:20px;vertical-align:-4px;margin-right:8px;}
-  #ty-iyou{margin-left:34px;font-size:14px;opacity:.95;}
+  #ty-iyou,  #rx-iyou{margin-left:34px;font-size:14px;opacity:.95;}
 
   /* ===== Đồng bộ giao diện Nghe viết + Ghép cặp theo Gõ từ ===== */
   .mt-modal .mt-box header,#panel-listen .mt-list header,#panel-match .mt-list header{padding:0;margin-left:0;margin-right:0;}
@@ -1166,7 +1166,7 @@
 .mt-modal.inl .mt-box,.mt-modal.inl .sp-box{max-width:760px;width:100%;margin:0 auto;box-shadow:var(--shadow-md);}
 .mt-modal.inl .mt-x{display:none;}
 .mt-wrap:has(>.mt-modal.inl:not([hidden])){max-width:min(1500px,96%);}
-#panel-listen .mt-wrap,#panel-type .mt-wrap,#panel-match .mt-wrap,#panel-quiz .mt-wrap,#panel-special .mt-wrap{transition:none;}
+#panel-listen .mt-wrap,#panel-type .mt-wrap,#panel-reflex .mt-wrap,#panel-match .mt-wrap,#panel-quiz .mt-wrap,#panel-special .mt-wrap{transition:none;}
 .mt-modal.inl .mt-box,.mt-modal.inl .sp-box,#qg-modal.inl .mt-box{max-width:none!important;width:100%;padding:44px 48px;border-radius:32px;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));grid-auto-rows:auto;gap:24px;align-content:start;}
 .mt-modal.inl .mt-box>header,.mt-modal.inl .sp-box>.sp-bh,.mt-modal.inl .mt-box>.qg-modes{grid-column:1/-1;}
 .mt-modal.inl .mt-box>header,.mt-modal.inl .sp-box>.sp-bh{margin:0;}
@@ -1181,11 +1181,11 @@
 .mt-modal.inl .sp-opt{min-height:260px;margin:0;padding:34px 36px;border-radius:30px;height:100%;}
 .mt-modal.inl .sp-oico{flex:0 0 76px;height:76px;} .mt-modal.inl .sp-oico svg{width:34px;height:34px;}
 .mt-modal.inl .sp-ot b{font-size:26px;} .mt-modal.inl .sp-ot small{font-size:17px;}
-#vl-modal.inl .mt-box,#ls-modal.inl .mt-box,#ty-modal.inl .mt-box,#mt-modal.inl .mt-box{grid-template-columns:1fr 1fr;}
+#vl-modal.inl .mt-box,#ls-modal.inl .mt-box,#ty-modal.inl .mt-box,#rx-modal.inl .mt-box,#mt-modal.inl .mt-box{grid-template-columns:1fr 1fr;}
 #sp-modal.inl .sp-box{grid-template-columns:repeat(3,1fr);}
 .mt-modal.inl .mt-mode{min-height:300px;} #qg-modal.inl .mt-mode{min-height:230px;}
 .mt-modal.inl .sp-opt{min-height:320px;}
-@media (max-width:900px){#vl-modal.inl .mt-box,#ls-modal.inl .mt-box,#ty-modal.inl .mt-box,#mt-modal.inl .mt-box,#sp-modal.inl .sp-box{grid-template-columns:1fr;}}
+@media (max-width:900px){#vl-modal.inl .mt-box,#ls-modal.inl .mt-box,#ty-modal.inl .mt-box,#rx-modal.inl .mt-box,#mt-modal.inl .mt-box,#sp-modal.inl .sp-box{grid-template-columns:1fr;}}
 /* chữ to hơn trong các khung chọn */
 .mt-modal.inl .mt-box>header h3,.mt-modal.inl .sp-bh h3{font-size:36px;}
 .mt-modal.inl .mt-mode b{font-size:34px;margin-bottom:16px;}
@@ -1205,14 +1205,14 @@
 #sp-modal.inl .sp-opt{flex-direction:column;align-items:flex-start;justify-content:center;gap:clamp(8px,2vh,18px);min-height:clamp(220px,52vh,360px);padding:24px 28px;}
 #sp-modal.inl .sp-ot b{font-size:clamp(24px,4vh,32px);} #sp-modal.inl .sp-ot small{font-size:clamp(16px,2.6vh,20px);}
 #sp-modal.inl .sp-oico{flex:0 0 auto;width:clamp(60px,9vh,84px);height:clamp(60px,9vh,84px);}
-#vl-modal.inl .mt-mode,#ls-modal.inl .mt-mode,#ty-modal.inl .mt-mode,#mt-modal.inl .mt-mode{min-height:clamp(200px,48vh,330px);}
+#vl-modal.inl .mt-mode,#ls-modal.inl .mt-mode,#ty-modal.inl .mt-mode,#rx-modal.inl .mt-mode,#mt-modal.inl .mt-mode{min-height:clamp(200px,48vh,330px);}
 /* Listening / Gõ từ / Ghép cặp / Game đặc biệt: cùng cỡ khung và chữ với Quiz */
-#vl-modal.inl .mt-box,#ls-modal.inl .mt-box,#ty-modal.inl .mt-box,#mt-modal.inl .mt-box,#sp-modal.inl .sp-box{padding:clamp(16px,3vh,32px) clamp(20px,3vw,40px);gap:clamp(10px,2vh,20px);}
-#vl-modal.inl .mt-box>header h3,#ls-modal.inl .mt-box>header h3,#ty-modal.inl .mt-box>header h3,#mt-modal.inl .mt-box>header h3,#sp-modal.inl .sp-bh h3{font-size:clamp(24px,4.4vh,34px);}
-#vl-modal.inl .mt-mode,#ls-modal.inl .mt-mode,#ty-modal.inl .mt-mode,#mt-modal.inl .mt-mode{min-height:clamp(110px,calc((100vh - 300px)/2),240px);padding:clamp(12px,2.4vh,28px) 32px;}
-#vl-modal.inl .mt-mode b,#ls-modal.inl .mt-mode b,#ty-modal.inl .mt-mode b,#mt-modal.inl .mt-mode b{font-size:clamp(22px,3.8vh,32px);margin-bottom:clamp(4px,1vh,12px);}
-#vl-modal.inl .mt-mode span,#ls-modal.inl .mt-mode span,#ty-modal.inl .mt-mode span,#mt-modal.inl .mt-mode span{font-size:clamp(15px,2.5vh,21px);line-height:1.4;}
-#vl-modal.inl .mt-mode .ty-ic,#ls-modal.inl .mt-mode .ty-ic,#ty-modal.inl .mt-mode .ty-ic,#mt-modal.inl .mt-mode .ty-ic{width:clamp(22px,3.6vh,32px);height:clamp(22px,3.6vh,32px);}
+#vl-modal.inl .mt-box,#ls-modal.inl .mt-box,#ty-modal.inl .mt-box,#rx-modal.inl .mt-box,#mt-modal.inl .mt-box,#sp-modal.inl .sp-box{padding:clamp(16px,3vh,32px) clamp(20px,3vw,40px);gap:clamp(10px,2vh,20px);}
+#vl-modal.inl .mt-box>header h3,#ls-modal.inl .mt-box>header h3,#ty-modal.inl .mt-box>header h3,#rx-modal.inl .mt-box>header h3,#mt-modal.inl .mt-box>header h3,#sp-modal.inl .sp-bh h3{font-size:clamp(24px,4.4vh,34px);}
+#vl-modal.inl .mt-mode,#ls-modal.inl .mt-mode,#ty-modal.inl .mt-mode,#rx-modal.inl .mt-mode,#mt-modal.inl .mt-mode{min-height:clamp(110px,calc((100vh - 300px)/2),240px);padding:clamp(12px,2.4vh,28px) 32px;}
+#vl-modal.inl .mt-mode b,#ls-modal.inl .mt-mode b,#ty-modal.inl .mt-mode b,#rx-modal.inl .mt-mode b,#mt-modal.inl .mt-mode b{font-size:clamp(22px,3.8vh,32px);margin-bottom:clamp(4px,1vh,12px);}
+#vl-modal.inl .mt-mode span,#ls-modal.inl .mt-mode span,#ty-modal.inl .mt-mode span,#rx-modal.inl .mt-mode span,#mt-modal.inl .mt-mode span{font-size:clamp(15px,2.5vh,21px);line-height:1.4;}
+#vl-modal.inl .mt-mode .ty-ic,#ls-modal.inl .mt-mode .ty-ic,#ty-modal.inl .mt-mode .ty-ic,#rx-modal.inl .mt-mode .ty-ic,#mt-modal.inl .mt-mode .ty-ic{width:clamp(22px,3.6vh,32px);height:clamp(22px,3.6vh,32px);}
 #sp-modal.inl .sp-opt{min-height:clamp(110px,calc((100vh - 300px)/2),240px);padding:clamp(12px,2.4vh,28px) 32px;gap:clamp(8px,1.6vh,14px);justify-content:center;}
 #sp-modal.inl .sp-ot b{font-size:clamp(22px,3.8vh,32px);} #sp-modal.inl .sp-ot small{font-size:clamp(15px,2.5vh,21px);line-height:1.4;margin-top:clamp(4px,1vh,8px);}
 #sp-modal.inl .sp-oico{width:clamp(44px,6.5vh,64px);height:clamp(44px,6.5vh,64px);} #sp-modal.inl .sp-oico svg{width:50%;height:50%;}
@@ -1879,7 +1879,7 @@ body{background:var(--bg);color:var(--text);}
 :focus-visible{outline:2px solid var(--u-jade)!important;outline-offset:2px;}
 
 /* --- 1. Thanh bên: mọi chức năng cùng một kiểu, không còn cầu vồng --- */
-.c-home,.c-score,.c-flash,.c-list,.c-quiz,.c-listen,.c-type,.c-match,.c-special,.c-fruit,.c-mario,.c-fish,.c-hang{--g:var(--u-jade);--g1:var(--u-jade);}
+.c-home,.c-score,.c-dict,.c-flash,.c-list,.c-quiz,.c-listen,.c-type,.c-match,.c-special,.c-fruit,.c-mario,.c-fish,.c-hang{--g:var(--u-jade);--g1:var(--u-jade);}
 .sidebar{background:var(--surface);border-right:1px solid var(--border);}
 .brand{background:none;display:flex;flex-direction:column;align-items:center;gap:10px;padding:18px 16px 14px;border-bottom:1px solid var(--border-soft);}
 .brand-logo{width:76px;height:76px;margin:0;border:0;box-shadow:0 0 0 2px var(--u-jade);flex:none;}
@@ -2569,11 +2569,11 @@ html.sb-collapsed .brand-logo{width:46px;height:46px;border-width:2px;border-rad
   .mt-modal.inl .mt-box,.mt-modal.inl .sp-box{padding:16px 14px 14px!important;gap:12px!important;min-height:0!important;grid-template-columns:minmax(0,1fr)!important;}
   .mt-modal.inl .mt-box>header h3,.mt-modal.inl .sp-bh h3,
   #qg-modal.inl .mt-box>header h3,#qg-modal.inl .sp-bh h3,
-  #vl-modal.inl .mt-box>header h3,#ls-modal.inl .mt-box>header h3,#ty-modal.inl .mt-box>header h3,#mt-modal.inl .mt-box>header h3,#sp-modal.inl .sp-bh h3{font-size:22px!important;line-height:1.25;}
-  #vl-modal.inl .mt-mode,#ls-modal.inl .mt-mode,#ty-modal.inl .mt-mode,#mt-modal.inl .mt-mode,.mt-modal.inl .mt-mode{min-height:0!important;padding:16px 18px!important;border-radius:20px!important;}
-  #vl-modal.inl .mt-mode b,#ls-modal.inl .mt-mode b,#ty-modal.inl .mt-mode b,#mt-modal.inl .mt-mode b,.mt-modal.inl .mt-mode b{font-size:19px!important;margin-bottom:4px!important;}
-  #vl-modal.inl .mt-mode span,#ls-modal.inl .mt-mode span,#ty-modal.inl .mt-mode span,#mt-modal.inl .mt-mode span,.mt-modal.inl .mt-mode span{font-size:14px!important;line-height:1.45!important;}
-  #vl-modal.inl .mt-mode .ty-ic,#ls-modal.inl .mt-mode .ty-ic,#ty-modal.inl .mt-mode .ty-ic,#mt-modal.inl .mt-mode .ty-ic,.mt-modal.inl .mt-mode .ty-ic{width:22px!important;height:22px!important;margin-right:8px!important;vertical-align:-4px!important;}
+  #vl-modal.inl .mt-box>header h3,#ls-modal.inl .mt-box>header h3,#ty-modal.inl .mt-box>header h3,#rx-modal.inl .mt-box>header h3,#mt-modal.inl .mt-box>header h3,#sp-modal.inl .sp-bh h3{font-size:22px!important;line-height:1.25;}
+  #vl-modal.inl .mt-mode,#ls-modal.inl .mt-mode,#ty-modal.inl .mt-mode,#rx-modal.inl .mt-mode,#mt-modal.inl .mt-mode,.mt-modal.inl .mt-mode{min-height:0!important;padding:16px 18px!important;border-radius:20px!important;}
+  #vl-modal.inl .mt-mode b,#ls-modal.inl .mt-mode b,#ty-modal.inl .mt-mode b,#rx-modal.inl .mt-mode b,#mt-modal.inl .mt-mode b,.mt-modal.inl .mt-mode b{font-size:19px!important;margin-bottom:4px!important;}
+  #vl-modal.inl .mt-mode span,#ls-modal.inl .mt-mode span,#ty-modal.inl .mt-mode span,#rx-modal.inl .mt-mode span,#mt-modal.inl .mt-mode span,.mt-modal.inl .mt-mode span{font-size:14px!important;line-height:1.45!important;}
+  #vl-modal.inl .mt-mode .ty-ic,#ls-modal.inl .mt-mode .ty-ic,#ty-modal.inl .mt-mode .ty-ic,#rx-modal.inl .mt-mode .ty-ic,#mt-modal.inl .mt-mode .ty-ic,.mt-modal.inl .mt-mode .ty-ic{width:22px!important;height:22px!important;margin-right:8px!important;vertical-align:-4px!important;}
   /* thẻ có biểu tượng tròn: xếp ngang (icon trái – chữ phải) */
   #sp-modal.inl .sp-opt,#qg-modal.inl .qm-opt,.mt-modal.inl .sp-opt{flex-direction:row!important;align-items:center!important;justify-content:flex-start!important;
     min-height:0!important;height:auto!important;padding:14px 16px!important;border-radius:20px!important;gap:14px!important;}
@@ -2914,6 +2914,114 @@ html.sb-collapsed .brand-logo{width:46px;height:46px;border-width:2px;border-rad
   html body .sidebar .brand{flex-direction:row;width:auto;gap:8px;padding:0 10px;}
   html body .sidebar .brand .brand-logo{display:block!important;width:36px;height:36px;margin:0;flex:none;border-width:2px;border-radius:28%;box-shadow:0 0 0 1px var(--border-soft);}
 }
+
+/* ===== Từ điển Việt ⇄ Đài (tab "dict") ===== */
+.c-dict,#panel-dict{--c:#c77a2e;}
+:root[data-theme="dark"] .c-dict,:root[data-theme="dark"] #panel-dict{--c:#e8a25f;}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .c-dict,:root:not([data-theme="light"]) #panel-dict{--c:#e8a25f;}}
+.c-dict{--g:var(--u-jade);--g1:var(--u-jade);}
+.dk-wrap{max-width:980px;width:100%;margin:0 auto;padding:0 0 40px;}
+.dk-title{margin:6px 0 6px;font-size:30px;font-weight:800;letter-spacing:-.3px;color:var(--text);}
+.dk-sub{margin:0 0 20px;font-size:15px;color:var(--text-secondary);line-height:1.5;}
+.dk-card{background:var(--surface);border:1px solid var(--border-soft);border-radius:22px;box-shadow:var(--shadow-sm);}
+.dk-search{padding:18px;margin-bottom:16px;}
+.dk-seg{display:inline-flex;gap:4px;padding:4px;border-radius:14px;background:var(--bg);border:1px solid var(--border-soft);margin-bottom:12px;flex-wrap:wrap;}
+.dk-seg button{appearance:none;border:0;background:transparent;color:var(--text-secondary);font:inherit;font-size:13.5px;font-weight:700;padding:8px 14px;border-radius:10px;cursor:pointer;line-height:1.2;}
+.dk-seg button[aria-pressed="true"]{background:var(--c);color:#fff;box-shadow:0 2px 8px color-mix(in srgb,var(--c) 40%,transparent);}
+.dk-seg button:focus-visible{outline:2px solid var(--c);outline-offset:2px;}
+.dk-row{display:flex;gap:10px;align-items:stretch;}
+.dk-input{flex:1;min-width:0;height:56px;border-radius:16px;border:2px solid var(--border);background:var(--surface-2);color:var(--text);padding:0 18px;font-size:19px;font-weight:600;outline:none;font-family:inherit;transition:border-color .15s,box-shadow .15s;}
+.dk-input:focus{border-color:var(--c);box-shadow:0 0 0 4px color-mix(in srgb,var(--c) 16%,transparent);}
+.dk-go{appearance:none;border:0;cursor:pointer;flex:none;min-width:104px;padding:0 22px;border-radius:16px;background:var(--c);color:#fff;font:inherit;font-size:15px;font-weight:800;transition:transform .12s,filter .15s;}
+.dk-go:hover{filter:brightness(1.06);} .dk-go:active{transform:scale(.97);}
+.dk-go[disabled]{opacity:.6;cursor:progress;}
+.dk-hint{margin:12px 2px 0;font-size:13px;color:var(--text-tertiary);display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
+.dk-hint b{color:var(--text-secondary);font-weight:700;}
+.dk-sug{appearance:none;border:1px solid var(--border);background:var(--surface);color:var(--text);font:inherit;font-size:13px;font-weight:600;padding:5px 11px;border-radius:999px;cursor:pointer;}
+.dk-sug:hover{border-color:var(--c);color:var(--c);}
+.dk-out{display:flex;flex-direction:column;gap:14px;}
+.dk-status{font-size:13px;color:var(--text-secondary);padding:2px 4px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;}
+.dk-src{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;background:color-mix(in srgb,var(--c) 11%,var(--surface));color:var(--c);border:1px solid color-mix(in srgb,var(--c) 25%,transparent);}
+.dk-src.off{background:var(--bg);color:var(--text-tertiary);border-color:var(--border-soft);text-decoration:line-through;}
+.dk-warn{padding:12px 16px;border-radius:14px;background:var(--red-tint);color:var(--red);font-size:14px;font-weight:600;}
+.dk-empty{padding:34px 20px;text-align:center;color:var(--text-secondary);font-size:15px;}
+.dk-load{padding:26px;text-align:center;color:var(--text-secondary);font-size:15px;}
+.dk-load i{display:inline-block;width:16px;height:16px;border-radius:50%;border:3px solid color-mix(in srgb,var(--c) 25%,transparent);border-top-color:var(--c);animation:dkspin .8s linear infinite;vertical-align:-3px;margin-right:8px;}
+@keyframes dkspin{to{transform:rotate(360deg)}}
+.dk-entry{padding:20px 22px 18px;}
+.dk-tr{padding:20px 22px;background:linear-gradient(180deg,color-mix(in srgb,var(--c) 8%,var(--surface)),var(--surface) 70%);border-color:color-mix(in srgb,var(--c) 25%,var(--border-soft));}
+.dk-line{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;line-height:1.45;}
+.dk-line.big .dk-han{font-size:34px;}
+.dk-han{font-family:var(--han-font);font-size:24px;font-weight:600;color:var(--text);}
+.dk-py{font-size:17px;color:var(--c);font-weight:600;letter-spacing:.1px;}
+.dk-sep{color:var(--text-tertiary);font-weight:700;}
+.dk-gloss{font-size:18px;font-weight:700;color:var(--text);}
+.dk-vi{font-size:15.5px;color:var(--text);font-weight:500;}
+.dk-spk{appearance:none;border:0;flex:none;width:34px;height:34px;border-radius:50%;background:color-mix(in srgb,var(--c) 14%,var(--surface));color:var(--c);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;align-self:center;padding:0;transition:transform .12s,background .15s;}
+.dk-spk svg{width:18px;height:18px;}
+.dk-spk:hover{background:var(--c);color:#fff;} .dk-spk:active{transform:scale(.92);}
+.dk-spk.sm{width:28px;height:28px;} .dk-spk.sm svg{width:15px;height:15px;}
+.dk-spk.playing{background:var(--c);color:#fff;animation:dkpulse 1s ease-in-out infinite;}
+@keyframes dkpulse{50%{box-shadow:0 0 0 6px color-mix(in srgb,var(--c) 22%,transparent)}}
+.dk-spk:focus-visible{outline:2px solid var(--c);outline-offset:2px;}
+.dk-badges{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 2px;}
+.dk-badge{font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--bg);color:var(--text-secondary);border:1px solid var(--border-soft);}
+.dk-badge.lv{background:color-mix(in srgb,var(--c) 12%,var(--surface));color:var(--c);border-color:color-mix(in srgb,var(--c) 28%,transparent);}
+.dk-badge.zy{font-family:var(--han-font);}
+.dk-sec{margin-top:18px;}
+.dk-sec h4{margin:0 0 8px;font-size:12.5px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--text-tertiary);}
+.dk-senses{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px;counter-reset:dks;}
+.dk-senses li{counter-increment:dks;position:relative;padding-left:30px;}
+.dk-senses li::before{content:counter(dks);position:absolute;left:0;top:1px;width:22px;height:22px;border-radius:50%;background:color-mix(in srgb,var(--c) 14%,var(--surface));color:var(--c);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+.dk-pos{display:inline-block;font-size:11.5px;font-weight:800;color:var(--c);margin-right:7px;}
+.dk-zh{display:block;margin-top:2px;font-family:var(--han-font);font-size:14px;color:var(--text-tertiary);line-height:1.5;}
+.dk-exs{display:flex;flex-direction:column;gap:10px;}
+.dk-ex{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:14px;background:var(--surface-2);border:1px solid var(--border-soft);}
+.dk-ex .dk-spk{margin-top:2px;}
+.dk-ex .dk-han{font-size:19px;}
+.dk-ex .dk-py{font-size:14.5px;}
+.dk-ex-t{flex:1;min-width:0;line-height:1.55;}
+.dk-ex .dk-han b,.dk-han b{color:var(--c);font-weight:700;}
+.dk-tag{font-size:11px;color:var(--text-tertiary);font-weight:700;margin-left:6px;}
+.dk-chips{display:flex;flex-wrap:wrap;gap:8px;}
+.dk-chip{display:inline-flex;align-items:center;gap:7px;padding:4px 12px 4px 5px;border-radius:999px;border:1px solid var(--border);background:var(--surface);font-size:14.5px;line-height:1.35;}
+.dk-chip button.dk-q{appearance:none;border:0;background:transparent;color:inherit;font:inherit;cursor:pointer;padding:3px 0;text-align:left;}
+.dk-chip button.dk-q:hover .dk-han{color:var(--c);}
+.dk-chip .dk-han{font-size:17px;} .dk-chip .dk-py{font-size:13.5px;} .dk-chip .dk-vi{font-size:13.5px;}
+.dk-chip.ant{border-color:color-mix(in srgb,var(--red) 28%,var(--border));}
+.dk-none{font-size:13.5px;color:var(--text-tertiary);}
+.dk-foot{margin-top:18px;padding-top:12px;border-top:1px solid var(--border-soft);display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12.5px;color:var(--text-tertiary);}
+.dk-foot a{color:var(--c);font-weight:700;text-decoration:none;} .dk-foot a:hover{text-decoration:underline;}
+.dk-note{font-size:12.5px;color:var(--text-tertiary);margin-top:10px;line-height:1.5;}
+.dk-more h3{margin:6px 4px 0;font-size:13px;font-weight:800;color:var(--text-secondary);}
+.dk-list{display:flex;flex-direction:column;}
+.dk-li{display:flex;align-items:center;gap:10px;padding:10px 4px;border-top:1px solid var(--border-soft);}
+.dk-li:first-child{border-top:0;}
+.dk-li .dk-q{appearance:none;border:0;background:transparent;font:inherit;color:inherit;text-align:left;cursor:pointer;flex:1;min-width:0;padding:0;line-height:1.5;}
+.dk-li .dk-q:hover .dk-han{color:var(--c);}
+.dk-li .dk-han{font-size:19px;}
+.dk-hist{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:10px;}
+.dk-hist small{font-size:12px;color:var(--text-tertiary);font-weight:700;margin-right:2px;}
+@media (max-width:760px){
+  .dk-title{font-size:23px;} .dk-sub{font-size:14px;margin-bottom:14px;}
+  .dk-search{padding:14px;border-radius:20px;} .dk-row{flex-wrap:wrap;} .dk-input{height:52px;font-size:17px;flex-basis:100%;} .dk-go{height:48px;flex:1;}
+  .dk-entry,.dk-tr{padding:16px 15px 14px;border-radius:20px;}
+  .dk-line.big .dk-han{font-size:28px;} .dk-gloss{font-size:16.5px;}
+  .dk-seg{width:100%;} .dk-seg button{flex:1;padding:8px 6px;font-size:12.5px;}
+}
+
+.dk-rads{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px;}
+.dk-rad{padding:12px 14px;border-radius:14px;background:var(--surface-2);border:1px solid var(--border-soft);}
+.dk-rad .dk-han{font-size:26px;}
+.dk-radl{margin-top:8px;padding-top:8px;border-top:1px dashed var(--border);}
+.dk-radl .dk-han{font-size:22px;color:var(--c);}
+.dk-radk{font-size:12px;font-weight:800;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.5px;}
+.dk-sk{margin-top:10px;}
+.dk-p{font-size:13.5px;line-height:1.55;margin-top:3px;color:var(--text-secondary,var(--text-tertiary));}
+.dk-st{margin:4px 0 0;padding-left:18px;font-size:13.5px;line-height:1.6;color:var(--text-secondary,var(--text-tertiary));}
+.dk-st ul{margin:2px 0 4px;padding-left:16px;}
+.dk-st .dk-han{font-size:17px;}
+.dk-sum{margin-top:12px;padding:10px 12px;border-radius:12px;background:var(--surface-2);border:1px solid var(--border-soft);font-size:13.5px;line-height:1.6;}
 </style>
 </head>
 <body>
@@ -2924,8 +3032,10 @@ html.sb-collapsed .brand-logo{width:46px;height:46px;border-width:2px;border-rad
   <nav class="tabs">
     <button class="tab-btn c-home active" data-tab="home" data-short="Trang chủ"><span class="ico"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg></span><span class="tt">Trang chủ</span><span class="td">Tổng quan tất cả chức năng</span></button>
     <button class="tab-btn c-score" data-tab="score" data-short="Tính điểm"><span class="ico"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="11" x2="8.01" y2="11"/><line x1="12" y1="11" x2="12.01" y2="11"/><line x1="16" y1="11" x2="16.01" y2="11"/><line x1="8" y1="15" x2="8.01" y2="15"/><line x1="12" y1="15" x2="12.01" y2="15"/><line x1="16" y1="15" x2="16.01" y2="15"/><line x1="8" y1="18.5" x2="12" y2="18.5"/></svg></span><span class="tt">Tính điểm thi</span><span class="td">Nhập điểm Nghe – Đọc để biết cấp độ TOCFL</span></button>
+    <button class="tab-btn c-dict" data-tab="dict" data-short="Từ điển"><span class="ico"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M9 7h7M9 11h5"/></svg></span><span class="tt">Từ điển Việt – Đài</span><span class="td">Dịch hai chiều Việt ⇄ Hán phồn thể, có loa, pinyin, ví dụ</span></button>
     <button class="tab-btn c-flash" data-tab="flash" data-short="Flashcard"><span class="ico"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></span><span class="tt">Flashcard</span><span class="td">Lật thẻ để học từ vựng</span></button>
     <button class="tab-btn c-talk" data-tab="talk" data-short="Hội thoại"><span class="ico"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="13" y2="13"/></svg></span><span class="tt">Hội thoại</span><span class="td">Nghe và đọc hội thoại theo từng bài</span></button>
+    <button class="tab-btn c-reflex" data-tab="reflex" data-short="Luyện phản xạ"><span class="ico"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span><span class="tt">Luyện phản xạ</span><span class="td">Nhìn câu tiếng Việt, gõ chữ Hán, máy chấm đúng sai</span></button>
     <button class="tab-btn c-list" data-tab="list" data-short="Từ vựng"><span class="ico"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span><span class="tt">Danh sách từ vựng</span><span class="td">Xem và đánh dấu từ đã thuộc</span></button>
     <button class="tab-btn c-quiz" data-tab="quiz" data-short="Quiz"><span class="ico"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span><span class="tt">Quiz</span><span class="td">Trắc nghiệm chọn đáp án</span></button>
     <button class="tab-btn c-listen" data-tab="listen" data-short="Nghe viết"><span class="ico"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg></span><span class="tt">Listening</span><span class="td">Nghe từ, gõ chữ Hán / pinyin, chép chính tả</span></button>
@@ -3002,6 +3112,36 @@ html.sb-collapsed .brand-logo{width:46px;height:46px;border-width:2px;border-rad
         <button type="button" class="sc-x" id="sc-x" aria-label="Đóng">&times;</button>
         <div id="sc-mbody"></div>
       </div>
+    </div>
+  </div>
+
+  <!-- TAB: Từ điển Việt – Đài -->
+  <div class="panel" id="panel-dict">
+    <div class="toolbar">
+      <div class="tb-brand mid"><b>Học TOCFL<em>cùng Thịnh &amp; Loan</em></b></div>
+    </div>
+    <div class="dk-wrap">
+      <h2 class="dk-title">Từ điển Việt – Đài</h2>
+      <p class="dk-sub">Dịch hai chiều tiếng Việt ⇄ tiếng Trung phồn thể (cách dùng của Đài Loan). Mỗi từ có loa, pinyin, nghĩa, câu ví dụ, từ đồng nghĩa và trái nghĩa.</p>
+      <div class="dk-card dk-search">
+        <div class="dk-seg" role="group" aria-label="Chiều dịch">
+          <button type="button" data-dir="auto" aria-pressed="true">Tự nhận diện</button>
+          <button type="button" data-dir="vi2zh" aria-pressed="false">Việt → Đài</button>
+          <button type="button" data-dir="zh2vi" aria-pressed="false">Đài → Việt</button>
+        </div>
+        <form class="dk-row" id="dk-form" autocomplete="off">
+          <input class="dk-input" id="dk-input" type="text" inputmode="text" enterkeyhint="search" placeholder="Nhập từ hoặc câu: xin chào, 學習, tôi muốn đặt phòng…" aria-label="Nhập từ hoặc câu cần dịch" spellcheck="false">
+          <button class="dk-go" id="dk-go" type="submit">Tra từ</button>
+        </form>
+        <div class="dk-hint" id="dk-sugs"><b>Thử:</b>
+          <button type="button" class="dk-sug" data-q="cảm ơn">cảm ơn</button>
+          <button type="button" class="dk-sug" data-q="學習">學習</button>
+          <button type="button" class="dk-sug" data-q="quan tâm">quan tâm</button>
+          <button type="button" class="dk-sug" data-q="我想預訂一間房間">我想預訂一間房間</button>
+        </div>
+        <div class="dk-hist" id="dk-hist" hidden></div>
+      </div>
+      <div class="dk-out" id="dk-out" aria-live="polite"></div>
     </div>
   </div>
 
@@ -3403,7 +3543,62 @@ html.sb-collapsed .brand-logo{width:46px;height:46px;border-width:2px;border-rad
     </div>
   </div>
 
-  <!-- TAB 6: Ghép cặp -->
+  <!-- TAB: Luyện phản xạ (nhìn câu tiếng Việt, gõ chữ Hán, thanh xanh/đỏ như Gõ từ) -->
+  <div class="panel" id="panel-reflex">
+    <div class="toolbar">
+      <div class="sel-group"><select id="rx-book" aria-label="Giáo trình phản xạ"></select><select id="rx-part" aria-label="Phần luyện"></select></div>
+      <div class="tb-brand"><b>Học TOCFL<em>cùng Thịnh &amp; Loan</em></b><span class="tb-fn" style="color:#0f766e">Luyện phản xạ</span></div>
+    </div>
+    <div class="mt-wrap">
+      <div class="mt-card ls-card" id="rx-empty" hidden style="text-align:center;padding:48px 20px"><div class="ls-hint" id="rx-emptytxt" style="font-size:17px"></div></div>
+      <div id="rx-game" hidden>
+        <div class="mt-top">
+          <div class="mt-row"><span id="rx-count">Câu 1 / 10</span>
+            <span class="ty-ctrl">
+              <button class="mt-link" id="rx-again" type="button"><svg class="ty-ic" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>Chơi lại</button><button class="mt-link" id="rx-exit" type="button">Thoát</button>
+            </span></div>
+          <div class="mt-pb"><div class="mt-bar"><i id="rx-pbar"></i></div></div>
+        </div>
+        <div class="mt-card ls-card ty-card">
+          <div class="ty-prompt" id="rx-prompt"></div>
+          <div class="ty-meta"><div class="ls-tag" id="rx-tag">DỊCH SANG CHỮ HÁN</div></div>
+          <div class="ls-hint" id="rx-hint">Chưa có gợi ý</div>
+          <input class="ls-input" id="rx-input" type="text" lang="zh-Hant" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Đáp án của bạn" placeholder="Gõ câu tiếng Trung...">
+          <div class="ty-btns">
+            <div class="ty-b"><button class="ty-ghost" id="rx-showbtn" type="button"><svg class="ty-ic" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>Xem đáp án</button><small>Ctrl + E</small></div>
+            <div class="ty-b"><button class="ty-ghost" id="rx-hintbtn" type="button"><svg class="ty-ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg><span id="rx-hintlbl">Gợi ý (3)</span></button><small>Ctrl + Space</small></div>
+            <div class="ty-b"><button class="mt-green" id="rx-check" type="button">Kiểm tra</button><small>Enter</small></div>
+          </div>
+        </div>
+      </div>
+      <div id="rx-end" hidden>
+        <div class="mt-top mt-sum"><div class="mt-ring" id="rx-ring"><span id="rx-pct"></span></div><div><div class="mt-et" id="rx-et"></div><div class="mt-es" id="rx-es"></div></div></div>
+        <div class="mt-lists">
+          <section class="mt-list ok"><header><span class="mt-ic">✓</span><div><b>Trả lời đúng (<span id="rx-okn"></span>)</b><small>Những câu bạn gõ đúng</small></div></header>
+            <div class="mt-tw"><table><thead><tr><th></th><th>Câu tiếng Trung</th><th>Tiếng Việt</th></tr></thead><tbody id="rx-oktb"></tbody></table></div></section>
+          <section class="mt-list no"><header><span class="mt-ic">✕</span><div><b>Trả lời sai (<span id="rx-non"></span>)</b><small>Cần ôn lại</small></div></header>
+            <div class="mt-tw"><table><thead><tr><th>Đáp án</th><th>Tiếng Việt</th></tr></thead><tbody id="rx-notb"></tbody></table></div></section>
+        </div>
+        <div class="mt-acts"><button class="mt-green" id="rx-retry" type="button">↺ Làm lại câu sai (<span id="rx-retryn"></span>)</button><button class="mt-green" id="rx-next" type="button">⟳ Chơi tiếp</button><button class="mt-other" id="rx-other" type="button">⌂ Thoát</button></div>
+      </div>
+      <div class="mt-modal inl" id="rx-modal" hidden>
+        <div class="mt-box"><header><h3>Chọn chế độ Luyện phản xạ</h3><button class="mt-x" id="rx-x" type="button" aria-label="Đóng">×</button></header>
+          <button class="mt-mode g1 rx-mode" data-m="seq" type="button"><b><svg class="ty-ic" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>Theo thứ tự</b><span>Nhìn câu tiếng Việt, gõ chữ Hán, làm lần lượt từ câu đầu</span></button>
+          <button class="mt-mode m2 rx-mode" data-m="rnd" type="button"><b><svg class="ty-ic" viewBox="0 0 24 24"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>Ngẫu nhiên</b><span>Trộn thứ tự câu để luyện phản xạ thật sự</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mt-dim" id="rx-dim" hidden></div>
+  <div class="mt-info" id="rx-info" hidden>
+    <div class="mt-info-l">
+      <div><button class="mt-ib" id="rx-isp" type="button">🔊</button> Đáp án: <b class="ls-iw" id="rx-iw" lang="zh-Hant"></b></div>
+      <div class="mt-ipy" id="rx-ialt"></div>
+      <div><b>Nghĩa:</b> <span id="rx-imean"></span></div>
+      <div id="rx-iyou"></div>
+    </div>
+    <div class="mt-info-r"><button class="mt-pause" id="rx-ipause" type="button" aria-label="Tạm dừng">⏸</button><button class="mt-cont" id="rx-icont" type="button">Tiếp tục (2s)</button></div>
+  </div>
   <div class="panel" id="panel-match">
     <div class="toolbar">
       <div class="sel-group"><select id="bookFilter-match" aria-label="Giáo trình"></select><select id="lessonFilter-match" aria-label="Bài học"></select><select id="partFilter-match" aria-label="Phạm vi ôn"></select></div>
@@ -3732,7 +3927,12 @@ window.TVPos = (function(){
     'Trợ từ':'#14b8a6',
     'Chỉ định từ':'#334155',
     'Giới từ':'#4f46e5',
-    'Liên từ':'#c026d3'
+    'Liên từ':'#c026d3',
+    'Động từ hành động':'#dc2626',
+    'Động từ trạng thái / Tính từ':'#ea580c',
+    'Động từ trạng thái ly hợp':'#c2410c',
+    'Hạn định từ':'#334155',
+    'Cụm từ cố định':'#d97706'
   };
   const norm = l => String(l || '').split(',')[0].trim();   // nhãn kép "A, B" lấy màu của nhãn đầu
   const rgb = h => { const n = parseInt(h.slice(1), 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; };
@@ -3746,7 +3946,7 @@ window.TVPos = (function(){
   return {get, MAP};
 })();
 </script>
-<script src="data.js?v=20261102"></script>
+<script src="data.js?v=20261105"></script>
 <script src="gate.js?v=2"></script>
 <script src="state.js?v=2"></script>
 <script>
@@ -3901,12 +4101,12 @@ function buildMeaningMatcher(nghia){
   };
 }
 
-const BOOK_LABEL = {A1:'Đương Đại 1 | 當代中文課程 1', A2:'Đương Đại 2 | 當代中文課程 2', B1:'Đương Đại 3 | 當代中文課程 3', GP:'Ngữ Pháp', N1:'準備級一級(Novice 1)', N2:'準備級二級(Novice 2)', L1:'入門級(Level 1)', L2:'基礎級(Level 2)', L3:'進階級(Level 3)', L4:'高階級(Level 4)', L5:'流利級(Level 5)'};
+const BOOK_LABEL = {A1:'Đương Đại 1 | 當代中文課程 1', A2:'Đương Đại 2 | 當代中文課程 2', B1:'Đương Đại 3 | 當代中文課程 3', GP:'Ngữ Pháp', N1:'準備級一級(Novice 1)', N2:'準備級二級(Novice 2)', L1:'入門級(Level 1)', L2:'基礎級(Level 2)', L3:'進階級(Level 3)', L4:'高階級(Level 4)', L5:'流利級(Level 5)', BA:'TOCFL Band A đầy đủ'};
 /* Các cấp độ TOCFL: chưa có bài học, bổ sung sau bằng cách thêm {"type":"lesson","title":"[N1] 📖 BÀI 1: ..."} vào DATA */
 const EXTRA_BOOKS = ['N1','N2','L1','L2','L3','L4','L5'];
 function bookOf(l){ const m = (l||'').match(/^\[([^\]]+)\]/); return m ? m[1] : ''; }
 function lessonLabel(l){ return ((window.ACC_GATE && ACC_GATE.locked(l)) ? '🔒 ' : '') + lessonLabel0(l); }
-function lessonLabel0(l){ if(['GP','N1','N2','L1','L2','L3','L4','L5','TD'].indexOf(bookOf(l))>=0) return (l||'').replace(/^\[[^\]]+\]\s*📖\s*/,''); const m = (l||'').match(/BÀI\s*(\d+):\s*(.*?)\s+[–-]\s/); return m ? 'Bài ' + m[1] + ' - ' + m[2] : l; }
+function lessonLabel0(l){ if(['GP','N1','N2','L1','L2','L3','L4','L5','TD','BA'].indexOf(bookOf(l))>=0) return (l||'').replace(/^\[[^\]]+\]\s*📖\s*/,''); const m = (l||'').match(/BÀI\s*(\d+):\s*(.*?)\s+[–-]\s/); return m ? 'Bài ' + m[1] + ' - ' + m[2] : l; }
 /* filter: '' = tất cả · '@A1' = cả giáo trình A1 · còn lại = đúng 1 bài */
 function matchLesson(item, f){
   if(!f) return true;
@@ -9067,12 +9267,14 @@ kbBuild();initScene();idle();
 (function(){
   var D={
     score:['study','Nhập điểm Nghe – Đọc để biết cấp độ TOCFL','Công cụ tra cứu điểm chuẩn và đánh giá cấp độ chứng chỉ TOCFL. Nhập điểm hai phần thi Nghe và Đọc, hệ thống cho biết cấp độ bạn đạt được theo quy định mới nhất.',['Nhập điểm Nghe và điểm Đọc','Xem ngay cấp độ tương ứng','Có nút Làm mới để nhập lại']],
+    dict:['study','Dịch Việt ⇄ Đài, có loa, pinyin, ví dụ','Từ điển hai chiều tiếng Việt và tiếng Trung phồn thể (Đài Loan). Mỗi từ có loa nghe phát âm đặt trước chữ Hán, pinyin ngay sau chữ Hán, nghĩa tiếng Việt, câu ví dụ, từ đồng nghĩa và trái nghĩa. Dịch cả câu.',['Gõ tiếng Việt hoặc chữ Hán, tự nhận diện chiều dịch','Dữ liệu từ 教育部國語辭典 và từ vựng TOCFL trong app','Bấm vào từ đồng/trái nghĩa để tra tiếp']],
     flash:['study','Lật thẻ để học từ vựng','Học từ bằng thẻ ghi nhớ: mặt trước là chữ Hán, lật sang mặt sau để xem pinyin, từ loại, cấp TOCFL, nghĩa tiếng Việt và các câu ví dụ.',['Bấm loa để nghe từ và nghe cả câu ví dụ','Lưu từ cần ôn lại vào mục Đã lưu','Công tắc Thuộc đồng bộ với Danh sách từ vựng']],
     talk:['study','Nghe và đọc hội thoại theo từng bài','Mỗi bài có các đoạn hội thoại hiển thị như khung chat: chữ Hán kèm pinyin phía trên và nghĩa tiếng Việt bên dưới. Bấm phát để nghe cả đoạn, hoặc bấm vào từng câu để nghe riêng.',['Bấm ▶ để nghe lần lượt từng câu, có nút lặp lại','Bấm vào một câu để nghe riêng câu đó','Cài đặt: bật/tắt pinyin và dịch nghĩa để tự kiểm tra']],
     list:['study','Xem và đánh dấu từ đã thuộc','Bảng toàn bộ từ vựng của bài đang chọn, kèm pinyin, từ loại và nghĩa. Dùng để tra cứu nhanh và theo dõi tiến độ học của bạn.',['Bật công tắc Thuộc để đánh dấu từ đã nhớ','Bấm loa để nghe phát âm','Đồng bộ trạng thái Thuộc với Flashcard']],
     quiz:['practice','Trắc nghiệm chọn đáp án','Mỗi câu có 4 lựa chọn, chọn đáp án đúng. Có tính giờ, chấm điểm và tổng kết kết quả cuối lượt.',['4 chế độ: Từ → Nghĩa, Nghĩa → Từ, Hỗn hợp, Ngữ cảnh','Có tính giờ và chấm điểm','Xem lại các câu làm sai ở cuối lượt']],
     listen:['practice','Nghe từ, gõ chữ Hán hoặc pinyin, chép chính tả','Luyện nghe: nghe phát âm rồi gõ lại từ tiếng Trung hoặc pinyin, hoặc luyện viết chính tả theo các bài hội thoại. Có tính giờ, gợi ý và chấm điểm.',['Nghe lại nhiều lần bằng nút loa hoặc Ctrl + X','Chép chính tả hội thoại, không tính dấu câu','Chọn gõ chữ Hán hoặc pinyin']],
     type:['practice','Gõ từ tiếng Trung hoặc pinyin','Luyện gõ: nhìn nghĩa để gõ từ tiếng Trung, hoặc nhìn từ để gõ pinyin. Có tính giờ, gợi ý và chấm điểm.',['Đổi chiều luyện bằng công tắc chế độ','Có tính giờ, gợi ý và chấm điểm']],
+    reflex:['practice','Nhìn câu tiếng Việt, gõ câu tiếng Trung','Luyện phản xạ dịch câu: màn hình hiện một câu tiếng Việt, bạn gõ lại bằng chữ Hán. Không tính giờ, bạn gõ thong thả; máy chấm ngay và phát âm đáp án.',['Chọn giáo trình và bài ở thanh phía trên','Có gợi ý (3 lượt) và nút Xem đáp án','Đúng hiện thanh xanh, sai hiện thanh đỏ kèm đáp án','Cuối lượt có thể làm lại các câu sai']],
     match:['practice','Nối từ với nghĩa hoặc pinyin','Trò chơi nối cặp: ghép từ tiếng Trung với nghĩa hoặc pinyin tương ứng trước khi hết giờ.',['Ghép nhanh để được điểm cao','Có tính giờ và tổng kết kết quả']],
     special:['games','Hỗn hợp, Dịch câu, Arcade và 4 game mới','Trộn ngẫu nhiên nhiều dạng bài: trắc nghiệm, nghe viết, gõ từ; luyện dịch câu ví dụ; chơi Flappy Bird (bay qua cột rồi trả lời từ vựng) hoặc Vẹt Bay Trên Mây (chuyển làn để bay vào từ đúng nghĩa). Ngoài ra có thêm Ném Hoa Quả, Mario vượt chướng ngại, Cá lớn nuốt cá bé và Hangman.',['Bài có bao nhiêu từ/câu thì hỏi bấy nhiêu câu','Có chế độ dịch câu ví dụ hai chiều','Game mới: Ném Hoa Quả, Mario, Cá lớn nuốt cá bé, Hangman']],
   };
@@ -9620,6 +9822,817 @@ kbBuild();initScene();idle();
   }
   ['pointerdown','keydown','touchstart'].forEach(function(t){document.addEventListener(t,warm,true)});
 })();
+</script>
+<style id="rx-css">
+#panel-reflex,.c-reflex{--c:#0f766e;}
+:root[data-theme="dark"] #panel-reflex,:root[data-theme="dark"] .c-reflex{--c:#2dd4bf;}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #panel-reflex,:root:not([data-theme="light"]) .c-reflex{--c:#2dd4bf;}}
+#panel-reflex [hidden],#rx-modal[hidden],#rx-info[hidden],#rx-dim[hidden],#rx-ialt[hidden]{display:none!important;}
+/* Luyện phản xạ: thanh giáo trình + thanh chọn bài luôn đứng yên ở đầu trang (đúng vị trí như cũ), không cuộn mất khi kéo xuống */
+html body #panel-reflex .toolbar{position:sticky;top:0;z-index:40;}
+@media (min-width:761px){
+  #panel-reflex .toolbar{flex-wrap:nowrap;}
+  #panel-reflex .sel-group{flex:0 1 auto;flex-wrap:nowrap;min-width:0;order:1;}
+  #panel-reflex .toolbar .tb-brand{flex:1 1 200px;min-width:200px;}
+  #panel-reflex .sel-group select{min-width:0;text-overflow:ellipsis;white-space:nowrap;}
+  #panel-reflex #rx-book{width:clamp(200px,28vw,430px);}
+  #panel-reflex #rx-part{width:clamp(160px,17vw,260px);}
+}
+#panel-reflex .ty-prompt{font-size:clamp(20px,3.4vw,28px);line-height:1.5;margin:6px auto 12px;}
+#panel-reflex .ls-card .ls-tag{margin-bottom:10px;}
+#panel-reflex .mt-tw td.h{white-space:normal;font-size:18px;min-width:150px;}
+#panel-reflex .mt-tw td small{display:block;color:#b91c1c;margin-top:3px;font-size:12.5px;}
+#rx-iw{font-size:22px;} #rx-ialt{margin-left:34px;font-size:14px;opacity:.95;} #rx-iyou{margin-left:34px;font-size:14px;opacity:.95;}
+#rx-tbar{transition:width .2s linear;}
+#rx-modal.inl .mt-mode b .ty-ic{width:20px;height:20px;vertical-align:-4px;margin-right:8px;}
+</style>
+<script>
+/* ============ Luyện phản xạ: nhìn câu tiếng Việt → gõ chữ Hán → máy chấm (thanh xanh + phát âm / thanh đỏ). Bộ câu riêng, không dùng giáo trình từ vựng ============ */
+(function(){
+  const RX = [
+    /* ===== Thêm giáo trình cho Luyện phản xạ tại đây (đang để trắng) =====
+       Mỗi giáo trình: {"t":"Tên giáo trình","p":[ {"t":"Phần 1: ...","q":[ CÂU, CÂU, ... ]}, ... ]}
+       Mỗi câu: {"n":1,"v":"Câu tiếng Việt","h":"gợi ý (có thể để rỗng)","a":"Đáp án chữ Hán|Đáp án khác (ngăn bằng |)"}
+    */
+  {"t":"Bài 1: 歡迎你來臺灣 – Chào mừng bạn đến Đài Loan","p":[{"t":"Phần 1: Câu cơ bản","q":[{"n":1,"v":"Xin chào!","h":"你好","a":"你好！"},{"n":2,"v":"Bạn khỏe không?","h":"你好、嗎","a":"你好嗎？"},{"n":3,"v":"Tôi khỏe, cảm ơn bạn.","h":"我、很好、謝謝","a":"我很好，謝謝你。|我很好，謝謝。"},{"n":4,"v":"Không có gì.","h":"不客氣","a":"不客氣。"},{"n":5,"v":"Xin hỏi, bạn họ gì?","h":"請問、你、姓","a":"請問，你姓什麼？"},{"n":6,"v":"Tôi họ Trần.","h":"我、姓","a":"我姓陳。"},{"n":7,"v":"Bạn tên là gì?","h":"你、叫、什麼","a":"你叫什麼名字？|你叫什麼？"},{"n":8,"v":"Tôi tên là Tiểu Minh.","h":"我、叫、小","a":"我叫小明。"},{"n":9,"v":"Bạn là người Đài Loan phải không?","h":"你、是、臺灣、嗎","a":"你是臺灣人嗎？"},{"n":10,"v":"Vâng, đúng vậy.","h":"是的、對","a":"是的，對。|對，是的。|是的。"}]},{"t":"Phần 2: Giới thiệu bản thân và người khác","q":[{"n":11,"v":"Bạn là người nước nào?","h":"你、是、哪國、人","a":"你是哪國人？"},{"n":12,"v":"Tôi là người Nhật Bản.","h":"我、日本國","a":"我是日本人。|我是日本國人。"},{"n":13,"v":"Anh ấy là người Mỹ.","h":"他、美國人","a":"他是美國人。"},{"n":14,"v":"Bạn là học sinh phải không?","h":"你、是、學生、嗎","a":"你是學生嗎？"},{"n":15,"v":"Vâng, tôi là học sinh.","h":"是的、我、學生","a":"是的，我是學生。"},{"n":16,"v":"Anh ấy họ gì?","h":"他、姓、什麼","a":"他姓什麼？"},{"n":17,"v":"Anh ấy họ Lý.","h":"他、姓","a":"他姓李。"},{"n":18,"v":"Còn bạn thì sao?","h":"你、呢","a":"你呢？"},{"n":19,"v":"Các bạn khỏe không?","h":"你們、好、嗎","a":"你們好嗎？"},{"n":20,"v":"Chào mừng các bạn!","h":"歡迎、你們","a":"歡迎你們！"}]},{"t":"Phần 3: Giao tiếp lịch sự","q":[{"n":21,"v":"Xin mời vào!","h":"請、來","a":"請進！|請進來！"},{"n":22,"v":"Xin mời ngồi!","h":"請、坐","a":"請坐！"},{"n":23,"v":"Xin mời uống trà.","h":"請、喝、茶","a":"請喝茶。"},{"n":24,"v":"Trà rất ngon!","h":"茶、很、好喝","a":"茶很好喝！"},{"n":25,"v":"Bạn có thích trà không?","h":"你、喜歡、茶、嗎","a":"你喜歡茶嗎？"},{"n":26,"v":"Tôi thích trà Ô Long.","h":"我、喜歡、烏龍茶","a":"我喜歡烏龍茶。"},{"n":27,"v":"Bạn thích cà phê hay trà?","h":"你、喜歡、咖啡、茶","a":"你喜歡咖啡還是茶？"},{"n":28,"v":"Tôi không thích cà phê.","h":"我、不、喜歡、咖啡","a":"我不喜歡咖啡。"},{"n":29,"v":"Cà phê rất ngon.","h":"咖啡、很、好喝","a":"咖啡很好喝。"},{"n":30,"v":"Cảm ơn bạn!","h":"謝謝","a":"謝謝你！|謝謝！"}]},{"t":"Phần 4: Luyện phản xạ tổng hợp","q":[{"n":31,"v":"Xin hỏi, bạn tên là gì?","h":"請問、你、叫、什麼","a":"請問，你叫什麼名字？|請問，你叫什麼？"},{"n":32,"v":"Tôi họ Nguyễn, tên là Tiểu Hoa.","h":"我、姓、叫、小","a":"我姓阮，叫小花。|我姓阮，名叫小花。"},{"n":33,"v":"Xin chào, tôi là người Đài Loan.","h":"你好、我、是、臺灣人","a":"你好，我是臺灣人。"},{"n":34,"v":"Bạn có phải là người Nhật Bản không?","h":"你、是、日本人、嗎","a":"你是日本人嗎？"},{"n":35,"v":"Không phải, tôi là người Mỹ.","h":"不、我、美國人","a":"不是，我是美國人。"},{"n":36,"v":"Anh ấy có thích uống trà không?","h":"他、喜歡、喝、茶、嗎","a":"他喜歡喝茶嗎？"},{"n":37,"v":"Anh ấy thích uống trà Ô Long.","h":"他、喜歡、喝、烏龍茶","a":"他喜歡喝烏龍茶。"},{"n":38,"v":"Bạn có thích uống cà phê không?","h":"你、喜歡、喝、咖啡、嗎","a":"你喜歡喝咖啡嗎？"},{"n":39,"v":"Không, tôi không thích uống cà phê.","h":"不、我、喜歡、喝、咖啡","a":"不，我不喜歡喝咖啡。"},{"n":40,"v":"Xin mời uống trà, trà rất ngon.","h":"請、喝、茶、很、好喝","a":"請喝茶，茶很好喝。"}]},{"t":"Phần 5: Tình huống giao tiếp","q":[{"n":41,"v":"A: Xin chào! Bạn khỏe không?","h":"你好、好、嗎","a":"你好！你好嗎？"},{"n":42,"v":"B: Tôi khỏe, cảm ơn bạn. Còn bạn?","h":"我、很好、謝謝、你、呢","a":"我很好，謝謝你。你呢？"},{"n":43,"v":"A: Xin hỏi, bạn là người nước nào?","h":"請問、你、是、哪國人","a":"請問，你是哪國人？"},{"n":44,"v":"B: Tôi là người Đài Loan. Bạn thì sao?","h":"我、臺灣人、你、呢","a":"我是臺灣人。你呢？"},{"n":45,"v":"A: Chào mừng bạn! Xin mời uống trà.","h":"歡迎、你、請、喝、茶","a":"歡迎你！請喝茶。"},{"n":46,"v":"B: Cảm ơn! Trà rất ngon.","h":"謝謝、茶、很、好喝","a":"謝謝！茶很好喝。"},{"n":47,"v":"A: Bạn có thích cà phê không?","h":"你、喜歡、咖啡、嗎","a":"你喜歡咖啡嗎？"},{"n":48,"v":"B: Không, tôi thích trà Ô Long.","h":"不、我、喜歡、烏龍茶","a":"不，我喜歡烏龍茶。"},{"n":49,"v":"A: Xin lỗi!","h":"對不起","a":"對不起！"},{"n":50,"v":"B: Không sao, không có gì đâu.","h":"不客氣","a":"沒關係，不客氣。|不客氣。"}]}]},
+  {"t":"Bài 2: 我的家人 – Gia đình của tôi","p":[{"t":"Phần 1: Gia đình và người thân","q":[{"n":1,"v":"Đây là gia đình tôi.","h":"家、我、的","a":"這是我的家。|這是我家。"},{"n":2,"v":"Gia đình bạn có những ai?","h":"你、家人、有、誰","a":"你家人有誰？|你家有哪些人？"},{"n":3,"v":"Nhà tôi có bốn người.","h":"我、家、有、四、個、人","a":"我家有四個人。"},{"n":4,"v":"Bạn có anh trai không?","h":"你、有、哥哥、嗎","a":"你有哥哥嗎？"},{"n":5,"v":"Tôi có một chị gái.","h":"我、有、一、姐姐","a":"我有一個姐姐。"},{"n":6,"v":"Tôi có hai em gái.","h":"我、有、兩、個、妹妹","a":"我有兩個妹妹。"},{"n":7,"v":"Đây là bố tôi.","h":"這、是、我、的、爸爸","a":"這是我的爸爸。|這是我爸爸。"},{"n":8,"v":"Đây là mẹ của bạn phải không?","h":"這、是、你、的、嗎","a":"這是你的媽媽嗎？|這是你媽媽嗎？"},{"n":9,"v":"Bạn có anh chị em không?","h":"你、有、兄弟、姐妹、嗎","a":"你有兄弟姐妹嗎？"},{"n":10,"v":"Tôi không có anh chị em.","h":"我、沒、有、兄弟、姐妹","a":"我沒有兄弟姐妹。"}]},{"t":"Phần 2: Miêu tả nhà cửa","q":[{"n":11,"v":"Nhà bạn rất đẹp!","h":"你、的、房子、很、漂亮","a":"你的房子很漂亮！|你家很漂亮！"},{"n":12,"v":"Nhà bạn có đẹp không?","h":"你、的、房子、漂亮、嗎","a":"你的房子漂亮嗎？|你的房子漂不漂亮？"},{"n":13,"v":"Nhà tôi có rất nhiều sách.","h":"我、的、家、有、多、書","a":"我的家有很多書。|我家有很多書。"},{"n":14,"v":"Đây là ảnh gia đình tôi.","h":"這、是、我、的、家人、照片","a":"這是我的家人照片。|這是我家人的照片。"},{"n":15,"v":"Bức ảnh này rất đẹp.","h":"這、張、照片、很、好看","a":"這張照片很好看。"},{"n":16,"v":"Đây là ảnh của ai?","h":"這、張、照片、是、誰、的","a":"這張照片是誰的？"},{"n":17,"v":"Bạn có ảnh gia đình không?","h":"你、有、家人、照片、嗎","a":"你有家人的照片嗎？|你有家人照片嗎？"},{"n":18,"v":"Tôi có ba bức ảnh.","h":"我、有、三、張、照片","a":"我有三張照片。"},{"n":19,"v":"Cả nhà tôi đều rất đẹp.","h":"我、的、家人、都、漂亮","a":"我的家人都很漂亮。|我的家人都漂亮。"},{"n":20,"v":"Bạn có thích chụp ảnh không?","h":"你、喜歡、照相、嗎","a":"你喜歡照相嗎？"}]},{"t":"Phần 3: Hỏi về người khác","q":[{"n":21,"v":"Đây là ai?","h":"這、是、誰","a":"這是誰？"},{"n":22,"v":"Đây là chị gái tôi.","h":"這、是、我、的、姐姐","a":"這是我的姐姐。|這是我姐姐。"},{"n":23,"v":"Đây là em gái tôi.","h":"這、是、我、的、妹妹","a":"這是我的妹妹。|這是我妹妹。"},{"n":24,"v":"Bố bạn là giáo viên phải không?","h":"你、的、爸爸、是、老師、嗎","a":"你的爸爸是老師嗎？|你爸爸是老師嗎？"},{"n":25,"v":"Anh trai tôi là giáo viên.","h":"我、的、哥哥、是、老師","a":"我的哥哥是老師。|我哥哥是老師。"},{"n":26,"v":"Mẹ bạn tên là gì?","h":"你、的、名字","a":"你的媽媽叫什麼名字？|你媽媽的名字是什麼？"},{"n":27,"v":"Xin hỏi, bác tên là gì ạ?","h":"請問、您、名字","a":"請問，您叫什麼名字？|請問您的名字是什麼？"},{"n":28,"v":"Bác gái, mời vào!","h":"伯母、請進","a":"伯母，請進！"},{"n":29,"v":"Mời bác ngồi!","h":"請、坐、您","a":"您請坐！|請坐，您請坐！"},{"n":30,"v":"Cảm ơn!","h":"謝謝","a":"謝謝！"}]},{"t":"Phần 4: Sách và hoạt động hằng ngày","q":[{"n":31,"v":"Tôi thích đọc sách.","h":"我、喜歡、看書","a":"我喜歡看書。"},{"n":32,"v":"Anh trai tôi đang đọc sách.","h":"我、的、哥哥、看書","a":"我的哥哥在看書。|我哥哥在看書。"},{"n":33,"v":"Bạn có bao nhiêu quyển sách?","h":"你、有、幾、本、書","a":"你有幾本書？"},{"n":34,"v":"Tôi có hai quyển sách.","h":"我、有、兩、本、書","a":"我有兩本書。"},{"n":35,"v":"Bạn có mấy anh chị em?","h":"你、有、幾、個、兄弟、姐妹","a":"你有幾個兄弟姐妹？"},{"n":36,"v":"Tôi có một anh trai và hai em gái.","h":"我、有、一、個、哥哥、兩、個、妹妹","a":"我有一個哥哥和兩個妹妹。|我有一個哥哥，兩個妹妹。"},{"n":37,"v":"Bạn có bao nhiêu người trong gia đình?","h":"你、家人、有、幾、個","a":"你家人有幾個？|你家有幾個人？"},{"n":38,"v":"Gia đình tôi có sáu người.","h":"我、的、家、有、六、個、人","a":"我的家有六個人。|我家有六個人。"},{"n":39,"v":"Bạn có nhiều ảnh không?","h":"你、有、多、照片、嗎","a":"你有很多照片嗎？|你有多少照片？"},{"n":40,"v":"Tôi có rất nhiều ảnh gia đình.","h":"我、有、很、多、家人、照片","a":"我有很多家人的照片。|我有很多家人照片。"}]},{"t":"Phần 5: Luyện phản xạ tổng hợp","q":[{"n":41,"v":"Đây là ảnh gia đình bạn phải không?","h":"這、是、你、的、家人、照片、嗎","a":"這是你的家人照片嗎？|這是你家人的照片嗎？"},{"n":42,"v":"Đúng vậy, đây là ảnh gia đình tôi.","h":"是的、這、是、我、的、家人、照片","a":"是的，這是我的家人照片。|是的，這是我家人的照片。"},{"n":43,"v":"Gia đình bạn có bao nhiêu người?","h":"你、的、家、有、幾、個、人","a":"你的家有幾個人？|你家有幾個人？"},{"n":44,"v":"Gia đình tôi có năm người.","h":"我、的、家、有、五、個、人","a":"我的家有五個人。|我家有五個人。"},{"n":45,"v":"Chị gái bạn có xinh không?","h":"你、的、姐姐、漂亮、嗎","a":"你的姐姐漂亮嗎？|你姐姐漂亮嗎？"},{"n":46,"v":"Chị gái tôi rất xinh.","h":"我、的、姐姐、很、漂亮","a":"我的姐姐很漂亮。|我姐姐很漂亮。"},{"n":47,"v":"Đây là sách của ai?","h":"這、是、誰、的、書","a":"這是誰的書？"},{"n":48,"v":"Đây là sách của tôi.","h":"這、是、我、的、書","a":"這是我的書。"},{"n":49,"v":"Bác gái, đây là ảnh gia đình cháu.","h":"伯母、這、是、我、的、家人、照片","a":"伯母，這是我的家人照片。|伯母，這是我家人的照片。"},{"n":50,"v":"Mời bác vào nhà, nhà cháu rất đẹp.","h":"請進、房子、很、漂亮","a":"請進，我的房子很漂亮。|請進，我家很漂亮。"}]}]},
+  {"t":"Bài 3: 週末做什麼? – Cuối tuần làm gì?","p":[{"t":"Phần 1: Sở thích và hoạt động cuối tuần","q":[{"n":1,"v":"Cuối tuần bạn thường làm gì?","h":"週末、常、做什麼","a":"週末你常做什麼？"},{"n":2,"v":"Tôi nghe nhạc.","h":"我、聽、音樂","a":"我聽音樂。"},{"n":3,"v":"Tôi thích nghe nhạc.","h":"我、喜歡、聽、音樂","a":"我喜歡聽音樂。"},{"n":4,"v":"Bạn có thích chơi thể thao không?","h":"你、喜歡、運動、嗎","a":"你喜歡運動嗎？"},{"n":5,"v":"Tôi thường chơi bóng rổ.","h":"我、常、打、籃球","a":"我常打籃球。"},{"n":6,"v":"Bạn có chơi quần vợt không?","h":"你、打、網球、嗎","a":"你打網球嗎？"},{"n":7,"v":"Tôi thích chơi bóng chày.","h":"我、喜歡、打、棒球","a":"我喜歡打棒球。"},{"n":8,"v":"Tôi cũng thích bơi lội.","h":"我、也、喜歡、游泳","a":"我也喜歡游泳。"},{"n":9,"v":"Bạn có thích đá bóng không?","h":"你、喜歡、踢、足球、嗎","a":"你喜歡踢足球嗎？"},{"n":10,"v":"Tôi cảm thấy chơi bóng rổ rất vui.","h":"我、覺得、打、籃球、好玩","a":"我覺得打籃球很好玩。|我覺得打籃球好玩。"}]},{"t":"Phần 2: Hỏi và trả lời về sở thích","q":[{"n":11,"v":"Bạn thích nghe nhạc hay xem phim?","h":"你、喜歡、聽音樂、看電影、還是","a":"你喜歡聽音樂還是看電影？"},{"n":12,"v":"Tôi thích nghe nhạc.","h":"我、喜歡、聽音樂","a":"我喜歡聽音樂。"},{"n":13,"v":"Bạn cảm thấy bơi lội thế nào?","h":"你、覺得、游泳、怎麼樣","a":"你覺得游泳怎麼樣？"},{"n":14,"v":"Tôi cảm thấy bơi lội rất vui.","h":"我、覺得、游泳、很好玩","a":"我覺得游泳很好玩。"},{"n":15,"v":"Bạn thường chơi thể thao vào cuối tuần phải không?","h":"你、週末、常、運動、嗎","a":"你週末常運動嗎？"},{"n":16,"v":"Tôi thường nghe nhạc và bơi lội.","h":"我、常、聽音樂、和、游泳","a":"我常聽音樂和游泳。"},{"n":17,"v":"Anh ấy thích chơi bóng đá, tôi cũng thích.","h":"他、喜歡、踢足球、我、也","a":"他喜歡踢足球，我也喜歡。"},{"n":18,"v":"Bạn có thường nghe nhạc không?","h":"你、常、聽音樂、嗎","a":"你常聽音樂嗎？"},{"n":19,"v":"Tôi không thường chơi bóng chày.","h":"我、不、常、打、棒球","a":"我不常打棒球。"},{"n":20,"v":"Chơi quần vợt rất vui!","h":"打、網球、很、好玩","a":"打網球很好玩！"}]},{"t":"Phần 3: Hẹn gặp và lên kế hoạch","q":[{"n":21,"v":"Ngày mai bạn có rảnh không?","h":"明天、你、有空、嗎","a":"明天你有空嗎？"},{"n":22,"v":"Ngày mai buổi sáng chúng ta đi bơi nhé!","h":"明天、早上、我們、去、游泳、吧","a":"明天早上我們去游泳吧！"},{"n":23,"v":"Ngày mai buổi sáng đi chơi bóng rổ thế nào?","h":"明天、早上、打、籃球、怎麼樣","a":"明天早上打籃球怎麼樣？"},{"n":24,"v":"Được đấy!","h":"好啊","a":"好啊！"},{"n":25,"v":"Ngày mai chúng ta cùng đi nhé!","h":"明天、我們、一起、去、吧","a":"明天我們一起去吧！"},{"n":26,"v":"Tối nay bạn muốn làm gì?","h":"今天、晚上、你、想、做什麼","a":"今天晚上你想做什麼？"},{"n":27,"v":"Tối nay chúng ta cùng xem phim nhé!","h":"今天、晚上、我們、一起、看電影、吧","a":"今天晚上我們一起看電影吧！"},{"n":28,"v":"Ngày mai buổi sáng bạn muốn đi bơi hay chơi bóng rổ?","h":"明天、早上、你、想、游泳、還是、打籃球","a":"明天早上你想游泳還是打籃球？"},{"n":29,"v":"Chúng ta cùng đi ăn tối nhé!","h":"我們、一起、吃、晚飯、吧","a":"我們一起吃晚飯吧！"},{"n":30,"v":"Tối nay cùng đi ăn tối, được không?","h":"今天、晚上、一起、吃晚飯、好不好","a":"今天晚上一起吃晚飯，好不好？"}]},{"t":"Phần 4: Học tiếng Trung và giao tiếp","q":[{"n":31,"v":"Bạn có muốn học tiếng Trung không?","h":"你、想、學、中文、嗎","a":"你想學中文嗎？"},{"n":32,"v":"Tôi muốn học tiếng Trung.","h":"我、想、學、中文","a":"我想學中文。"},{"n":33,"v":"Chúng ta cùng học tiếng Trung nhé!","h":"我們、一起、學、中文、吧","a":"我們一起學中文吧！"},{"n":34,"v":"Ngày mai chúng ta cùng học tiếng Trung, được không?","h":"明天、我們、一起、學、中文、好不好","a":"明天我們一起學中文，好不好？"},{"n":35,"v":"Bạn muốn học tiếng Trung vào buổi sáng hay buổi tối?","h":"你、想、學、中文、早上、晚上、還是","a":"你想早上學中文還是晚上學中文？|你想早上還是晚上學中文？"},{"n":36,"v":"Tôi muốn vừa nghe nhạc vừa học tiếng Trung.","h":"我、想、聽音樂、學中文","a":"我想一邊聽音樂一邊學中文。"},{"n":37,"v":"Bạn cảm thấy học tiếng Trung thế nào?","h":"你、覺得、學、中文、怎麼樣","a":"你覺得學中文怎麼樣？"},{"n":38,"v":"Tôi cảm thấy học tiếng Trung rất vui.","h":"我、覺得、學、中文、很好玩","a":"我覺得學中文很好玩。"},{"n":39,"v":"Bạn có thể cùng tôi đi ăn tối không?","h":"你、可以、和、我、一起、吃晚飯、嗎","a":"你可以和我一起吃晚飯嗎？"},{"n":40,"v":"Được, chúng ta cùng đi ăn tối nhé!","h":"好啊、我們、一起、吃晚飯、吧","a":"好啊，我們一起吃晚飯吧！"}]},{"t":"Phần 5: Ăn uống và giao tiếp hằng ngày","q":[{"n":41,"v":"Bạn thích ăn món Việt Nam không?","h":"你、喜歡、吃、越南菜、嗎","a":"你喜歡吃越南菜嗎？"},{"n":42,"v":"Tôi thích món ăn Việt Nam.","h":"我、喜歡、越南菜","a":"我喜歡越南菜。"},{"n":43,"v":"Tối nay chúng ta cùng ăn món Việt Nam nhé!","h":"今天、晚上、我們、一起、吃、越南菜、吧","a":"今天晚上我們一起吃越南菜吧！"},{"n":44,"v":"Bạn muốn ăn tối hay xem phim?","h":"你、想、吃晚飯、還是、看電影","a":"你想吃晚飯還是看電影？"},{"n":45,"v":"Ngày mai chúng ta cùng đi xem phim nhé, được không?","h":"明天、我們、一起、看電影、好不好","a":"明天我們一起看電影，好不好？"},{"n":46,"v":"Bạn có thể đi bơi vào sáng mai không?","h":"明天、早上、你、可以、去、游泳、嗎","a":"明天早上你可以去游泳嗎？"},{"n":47,"v":"Cuối tuần chúng ta cùng chơi bóng rổ nhé!","h":"週末、我們、一起、打、籃球、吧","a":"週末我們一起打籃球吧！"},{"n":48,"v":"Bạn cảm thấy xem phim thế nào?","h":"你、覺得、看電影、怎麼樣","a":"你覺得看電影怎麼樣？"},{"n":49,"v":"Ngày mai bạn muốn cùng tôi đi đâu?","h":"明天、你、想、和、我、一起、去","a":"明天你想和我一起去哪裡？"},{"n":50,"v":"Cuối tuần này chúng ta cùng đi ăn tối và xem phim nhé, được không?","h":"週末、我們、一起、吃晚飯、看電影、好不好","a":"這個週末我們一起吃晚飯、看電影，好不好？"}]}]},
+  {"t":"Bài 4: 請問一共多少錢？ – Cho Hỏi Tổng Cộng Bao Nhiêu Tiền?","p":[{"t":"Phần 1: 25 câu dễ","q":[{"n":1,"v":"Tổng cộng bao nhiêu tiền?","h":"一共、多少、錢","a":"一共多少錢？"},{"n":2,"v":"Ông chủ, xin hỏi bánh bao bao nhiêu tiền?","h":"老闆、請問、包子、多少、錢","a":"老闆，請問包子多少錢？"},{"n":3,"v":"Tôi muốn mua một cái bánh bao lớn.","h":"我、要、買、一、個、包子、大","a":"我要買一個大包子。"},{"n":4,"v":"Tôi muốn một ly trà nóng.","h":"我、要、一、杯、熱、茶","a":"我要一杯熱茶。"},{"n":5,"v":"Cho tôi một cái bánh bao nhỏ.","h":"請、給、我、一、個、包子、小","a":"請給我一個小包子。"},{"n":6,"v":"Cái này bao nhiêu tiền?","h":"這、多少、錢","a":"這個多少錢？|這多少錢？"},{"n":7,"v":"Tôi muốn mua điện thoại mới.","h":"我、要、買、新、手機","a":"我要買新手機。|我要買新的手機。"},{"n":8,"v":"Điện thoại này quá cũ rồi.","h":"這、手機、太、舊、了","a":"這支手機太舊了。|這個手機太舊了。"},{"n":9,"v":"Điện thoại này đắt quá!","h":"這、手機、太、貴、了","a":"這支手機太貴了！|這個手機太貴了！"},{"n":10,"v":"Cái này rẻ.","h":"這、便宜","a":"這個便宜。|這個很便宜。"},{"n":11,"v":"Tôi muốn mua cái này.","h":"我、要、買、這","a":"我要買這個。"},{"n":12,"v":"Tôi muốn một ly cà phê nóng.","h":"我、要、一、杯、熱、咖啡","a":"我要一杯熱咖啡。"},{"n":13,"v":"Tổng cộng một trăm đồng.","h":"一共、一百、塊","a":"一共一百塊。"},{"n":14,"v":"Tôi muốn mua hai cái bánh bao.","h":"我、要、買、兩、個、包子","a":"我要買兩個包子。"},{"n":15,"v":"Cho tôi một ly trà Ô Long.","h":"請、給、我、一、杯、烏龍茶","a":"請給我一杯烏龍茶。"},{"n":16,"v":"Tôi muốn mang đi.","h":"我、要、外帶","a":"我要外帶。"},{"n":17,"v":"Tôi muốn ăn tại đây.","h":"我、要、內用","a":"我要內用。"},{"n":18,"v":"Được, cảm ơn!","h":"好的、謝謝","a":"好的，謝謝！"},{"n":19,"v":"Tôi muốn mua một cây bút mới.","h":"我、要、買、一、支、新","a":"我要買一支新筆。|我要買一支新的筆。"},{"n":20,"v":"Cái điện thoại đó bao nhiêu tiền?","h":"那、手機、多少、錢","a":"那支手機多少錢？|那個手機多少錢？"},{"n":21,"v":"Một nghìn đồng.","h":"一、千、塊","a":"一千塊。"},{"n":22,"v":"Một vạn đồng.","h":"一、萬、塊","a":"一萬塊。"},{"n":23,"v":"Tôi muốn một phần cỡ vừa.","h":"我、要、中","a":"我要中的。|我要中份。"},{"n":24,"v":"Ông chủ, cho tôi một cái bánh bao.","h":"老闆、請、給、我、一、個、包子","a":"老闆，請給我一個包子。"},{"n":25,"v":"Tại sao cái này đắt như vậy?","h":"為什麼、這、貴","a":"為什麼這個這麼貴？|為什麼這個那麼貴？"}]},{"t":"Phần 2: 25 câu khó hơn","q":[{"n":26,"v":"Ông chủ, bánh bao lớn và bánh bao nhỏ, mỗi loại bao nhiêu tiền?","h":"老闆、包子、大、小、多少、錢","a":"老闆，大包子和小包子各多少錢？"},{"n":27,"v":"Tôi muốn mua một cái bánh bao lớn và một ly trà nóng.","h":"我、要、買、一、個、包子、大、一、杯、熱、茶","a":"我要買一個大包子和一杯熱茶。"},{"n":28,"v":"Điện thoại mới này đắt quá, có cái nào rẻ hơn không?","h":"新、手機、太、貴、了、便宜","a":"這支新手機太貴了，有便宜一點的嗎？"},{"n":29,"v":"Điện thoại này cũ quá rồi, tôi muốn mua một cái mới.","h":"這、手機、太、舊、了、我、要、買、新","a":"這支手機太舊了，我要買新的。"},{"n":30,"v":"Tôi muốn mua điện thoại có thể lên mạng.","h":"我、要、買、手機、能、上網","a":"我要買能上網的手機。"},{"n":31,"v":"Điện thoại này có thể lên mạng không?","h":"這、手機、能、上網、嗎","a":"這支手機能上網嗎？"},{"n":32,"v":"Tại sao điện thoại này đắt như vậy?","h":"為什麼、這、手機、這麼、貴","a":"為什麼這支手機這麼貴？"},{"n":33,"v":"Cái đó quá đắt, tôi không muốn mua.","h":"那、太、貴、了、我、不、要、買","a":"那個太貴了，我不要買。"},{"n":34,"v":"Ông chủ, nếu tôi mua hai cái bánh bao thì tổng cộng bao nhiêu tiền?","h":"老闆、我、買、兩、個、包子、一共、多少、錢","a":"老闆，我買兩個包子，一共多少錢？"},{"n":35,"v":"Tôi muốn mua ba ly cà phê nóng, tất cả bao nhiêu tiền?","h":"我、要、買、三、杯、熱、咖啡、一共、多少、錢","a":"我要買三杯熱咖啡，一共多少錢？"},{"n":36,"v":"Tôi muốn mua một cái bánh bao cỡ vừa và một ly trà.","h":"我、要、買、包子、中、一、杯、茶","a":"我要買一個中包子和一杯茶。"},{"n":37,"v":"Tôi muốn mang đi, làm ơn giúp tôi hâm nóng bánh bao.","h":"我、要、外帶、請、幫、我、微波、包子","a":"我要外帶，請幫我微波包子。"},{"n":38,"v":"Làm ơn giúp tôi hâm nóng cái này.","h":"請、幫、我、微波、這","a":"請幫我微波這個。"},{"n":39,"v":"Tôi muốn mua một cây bút mới, cây bút này cũ quá rồi.","h":"我、要、買、一、支、新、這、太、舊、了","a":"我要買一支新筆，這支筆太舊了。|我要買一支新的筆，這支筆太舊了。"},{"n":40,"v":"Điện thoại đó có thể lên mạng, nhưng đắt quá.","h":"那、手機、能、上網、但是、太、貴、了","a":"那支手機能上網，但是太貴了。"},{"n":41,"v":"Ông chủ, điện thoại này bán bao nhiêu tiền?","h":"老闆、這、手機、賣、多少、錢","a":"老闆，這支手機賣多少錢？"},{"n":42,"v":"Cái điện thoại đó rẻ hơn cái này phải không?","h":"那、手機、比、這、便宜、嗎","a":"那支手機比這支便宜嗎？"},{"n":43,"v":"Tôi muốn mua một cái điện thoại mới, nhưng cái này đắt quá.","h":"我、要、買、新、手機、但是、這、太、貴、了","a":"我要買一支新手機，但是這支太貴了。"},{"n":44,"v":"Ở đây có những loại bánh bao nào?","h":"這裡、有、什麼、種、包子","a":"這裡有什麼種類的包子？"},{"n":45,"v":"Tôi muốn biết điện thoại này có thể lên mạng không.","h":"我、想、知道、這、手機、能、上網、嗎","a":"我想知道這支手機能上網嗎？|我想知道這支手機能不能上網？"},{"n":46,"v":"Cái điện thoại này bán một vạn đồng, đắt quá!","h":"這、手機、賣、一、萬、塊、太、貴、了","a":"這支手機賣一萬塊，太貴了！"},{"n":47,"v":"Tôi mua hai cái bánh bao và một ly trà, tổng cộng bao nhiêu tiền?","h":"我、買、兩、個、包子、一、杯、茶、一共、多少、錢","a":"我買兩個包子和一杯茶，一共多少錢？"},{"n":48,"v":"Tại sao cái điện thoại mới này lại đắt hơn cái cũ?","h":"為什麼、新、手機、比、舊、貴","a":"為什麼新手機比舊手機貴？"},{"n":49,"v":"Tôi muốn mua điện thoại mới, nhưng tôi không biết cái nào rẻ.","h":"我、要、買、新、手機、但是、不、知道、哪、便宜","a":"我要買新手機，但是我不知道哪一支便宜。|我要買新的手機，但是我不知道哪一支比較便宜。"},{"n":50,"v":"Ông chủ, làm ơn giúp tôi hâm nóng hai cái bánh bao, tôi muốn mang đi.","h":"老闆、請、幫、我、微波、兩、個、包子、我、要、外帶","a":"老闆，請幫我微波兩個包子，我要外帶。"}]}]},
+  {"t":"Bài 5: 牛肉麵真好吃 – Mì Bò Ăn Thật Ngon","p":[{"t":"Phần 1: 25 câu dễ","q":[{"n":1,"v":"Mì bò này thật sự rất ngon.","h":"牛肉、麵、真、好吃","a":"這個牛肉麵真的很好吃。|這碗牛肉麵真好吃。"},{"n":2,"v":"Tôi muốn ăn mì bò.","h":"我、想、吃、牛肉、麵","a":"我想吃牛肉麵。"},{"n":3,"v":"Món ăn vặt Đài Loan rất nổi tiếng.","h":"台灣、小吃、有名","a":"臺灣小吃很有名。"},{"n":4,"v":"Món ăn vặt này ngon lắm.","h":"這、小吃、真、好吃","a":"這個小吃真好吃。|這個小吃真的很好吃。"},{"n":5,"v":"Tôi biết nhà hàng này.","h":"我、知道、這、餐廳","a":"我知道這家餐廳。|我知道這間餐廳。"},{"n":6,"v":"Nhà hàng này rất nổi tiếng.","h":"這、家、餐廳、很、有名","a":"這家餐廳很有名。"},{"n":7,"v":"Tôi muốn gọi một bát mì bò.","h":"我、要、點、一、碗、牛肉、麵","a":"我要點一碗牛肉麵。"},{"n":8,"v":"Món canh này ngon thật!","h":"這、湯、真、好喝","a":"這個湯真好喝！|這碗湯真好喝！"},{"n":9,"v":"Mì này cay quá!","h":"這、麵、太、辣、了","a":"這個麵太辣了！|這碗麵太辣了！"},{"n":10,"v":"Tôi sợ ăn cay.","h":"我、怕、辣","a":"我怕辣。"},{"n":11,"v":"Tôi không biết làm bánh ngọt.","h":"我、不、知道、做、甜點","a":"我不知道怎麼做甜點。|我不會做甜點。"},{"n":12,"v":"Tôi biết nấu ăn.","h":"我、會、做飯","a":"我會做飯。"},{"n":13,"v":"Hôm qua tôi đã ăn ở nhà hàng.","h":"昨天、我、在、餐廳、吃飯","a":"昨天我在餐廳吃飯。"},{"n":14,"v":"Món bánh bao nhỏ này ngon thật!","h":"這、小籠包、真、好吃","a":"這個小籠包真好吃！"},{"n":15,"v":"Tôi không thích đậu phụ thối.","h":"我、不、喜歡、臭豆腐","a":"我不喜歡臭豆腐。"},{"n":16,"v":"Món này hơi cay.","h":"這、菜、有一點、辣","a":"這道菜有一點辣。|這個菜有一點辣。"},{"n":17,"v":"Món ăn này cũng không tệ.","h":"這、菜、也、不錯","a":"這道菜也不錯。|這個菜也不錯。"},{"n":18,"v":"Tuyệt quá!","h":"太好了","a":"太好了！"},{"n":19,"v":"Đúng vậy, mì bò rất ngon.","h":"是啊、牛肉、麵、很好吃","a":"是啊，牛肉麵很好吃。"},{"n":20,"v":"Tôi muốn gọi một bát canh.","h":"我、要、點、一、碗、湯","a":"我要點一碗湯。"},{"n":21,"v":"Nhà hàng này nổi tiếng nhất.","h":"這、家、餐廳、最、有名","a":"這家餐廳最有名。"},{"n":22,"v":"Tôi muốn ăn món ăn vặt nổi tiếng nhất.","h":"我、想、吃、小吃、最、有名","a":"我想吃最有名的小吃。"},{"n":23,"v":"Bạn có thể dạy tôi làm bánh ngọt không?","h":"你、可以、教、我、做、甜點、嗎","a":"你可以教我做甜點嗎？"},{"n":24,"v":"Tôi có thể tự nấu ăn.","h":"我、可以、自己、做飯","a":"我可以自己做飯。"},{"n":25,"v":"Tôi biết nhà hàng đó.","h":"我、知道、那、家、餐廳","a":"我知道那家餐廳。"}]},{"t":"Phần 2: 25 câu khó hơn","q":[{"n":26,"v":"Nghe nói mì bò ở nhà hàng này rất nổi tiếng.","h":"聽說、這、家、餐廳、牛肉、麵、很、有名","a":"聽說這家餐廳的牛肉麵很有名。"},{"n":27,"v":"Tôi muốn đến nhà hàng đó ăn mì bò.","h":"我、想、到、那、家、餐廳、吃、牛肉、麵","a":"我想到那家餐廳吃牛肉麵。"},{"n":28,"v":"Mì bò ở đây ngon thật, bạn nhất định phải thử!","h":"這裡、牛肉、麵、真、好吃、你、一定、要、吃","a":"這裡的牛肉麵真好吃，你一定要吃吃看！|這裡的牛肉麵真好吃，你一定要吃！"},{"n":29,"v":"Tôi sợ ăn cay, cho nên tôi không gọi món này.","h":"我、怕、辣、所以、不、點、這、道、菜","a":"我怕辣，所以不點這道菜。"},{"n":30,"v":"Hôm qua tôi đến một nhà hàng nổi tiếng để ăn mì bò.","h":"昨天、我、到、一、家、有名、餐廳、吃、牛肉、麵","a":"昨天我到一家有名的餐廳吃牛肉麵。"},{"n":31,"v":"Nhà hàng này có rất nhiều món ăn vặt nổi tiếng.","h":"這、家、餐廳、有、很多、有名、小吃","a":"這家餐廳有很多有名的小吃。"},{"n":32,"v":"Tôi muốn gọi một bát mì bò, nhưng tôi sợ nó quá cay.","h":"我、想、點、一、碗、牛肉、麵、可是、我、怕、太、辣","a":"我想點一碗牛肉麵，可是我怕太辣。|我想點一碗牛肉麵，可是我怕太辣了。"},{"n":33,"v":"Món canh này ngon thật, tôi muốn gọi thêm một bát.","h":"這、湯、真、好喝、我、想、再、點、一、碗","a":"這個湯真好喝，我想再點一碗。"},{"n":34,"v":"Bạn biết nhà hàng nào bán bánh bao nhỏ ngon không?","h":"你、知道、哪、家、餐廳、小籠包、好吃、嗎","a":"你知道哪家餐廳的小籠包好吃嗎？"},{"n":35,"v":"Tôi nghe nói đậu phụ thối là món ăn vặt rất nổi tiếng ở Đài Loan.","h":"我、聽說、臭豆腐、是、台灣、有名、小吃","a":"我聽說臭豆腐是臺灣很有名的小吃。|我聽說臭豆腐是臺灣有名的小吃。"},{"n":36,"v":"Hôm qua tôi ăn mì bò, nhưng nó hơi cay.","h":"昨天、我、吃、牛肉、麵、可是、有一點、辣","a":"昨天我吃牛肉麵，可是有一點辣。"},{"n":37,"v":"Tôi không biết làm bánh ngọt, bạn có thể dạy tôi không?","h":"我、不、會、做、甜點、你、可以、教、我、嗎","a":"我不會做甜點，你可以教我嗎？"},{"n":38,"v":"Mẹ tôi nấu ăn rất ngon, tôi muốn học mẹ.","h":"媽媽、做飯、真、好吃、我、想、學","a":"媽媽做飯真好吃，我想跟她學。|媽媽做飯真好吃，我想學。"},{"n":39,"v":"Tôi thích tự nấu ăn, bởi vì tôi có thể làm món mình thích.","h":"我、喜歡、自己、做飯、因為、可以、做、喜歡、的、菜","a":"我喜歡自己做飯，因為可以做喜歡的菜。"},{"n":40,"v":"Nhà hàng đó nổi tiếng nhất, chúng ta nhất định phải đến ăn thử.","h":"那、家、餐廳、最、有名、我們、一定、要、到、吃","a":"那家餐廳最有名，我們一定要到那裡吃。|那家餐廳最有名，我們一定要到那裡去吃。"},{"n":41,"v":"Món bánh bao nhỏ này không tệ, nhưng hơi đắt.","h":"這、小籠包、不錯、可是、有一點、貴","a":"這個小籠包不錯，可是有一點貴。"},{"n":42,"v":"Tôi muốn gọi một bát mì bò và một bát canh.","h":"我、要、點、一、碗、牛肉、麵、和、一、碗、湯","a":"我要點一碗牛肉麵和一碗湯。"},{"n":43,"v":"Bạn biết làm món ăn vặt Đài Loan không?","h":"你、會、做、台灣、小吃、嗎","a":"你會做臺灣小吃嗎？"},{"n":44,"v":"Mì bò ở nhà hàng này ngon đến mức tôi muốn ăn thêm một bát.","h":"這、家、餐廳、牛肉、麵、真、好吃、我、還、想、吃、一、碗","a":"這家餐廳的牛肉麵真好吃，我還想吃一碗。"},{"n":45,"v":"Tôi thích bánh ngọt, nhưng tôi không biết tự làm.","h":"我、喜歡、甜點、可是、不、會、自己、做","a":"我喜歡甜點，可是不會自己做。"},{"n":46,"v":"Nghe nói nhà hàng đó có món canh rất nổi tiếng.","h":"聽說、那、家、餐廳、有、一、種、湯、很、有名","a":"聽說那家餐廳有一種湯很有名。"},{"n":47,"v":"Tôi sợ đậu phụ thối có mùi khó chịu, cho nên tôi không muốn ăn.","h":"我、怕、臭豆腐、所以、不、想、吃","a":"我怕臭豆腐，所以不想吃。"},{"n":48,"v":"Tuyệt quá! Bạn có thể dạy tôi làm món bánh ngọt này.","h":"太好了、你、可以、教、我、做、這、甜點","a":"太好了！你可以教我做這個甜點。"},{"n":49,"v":"Hôm qua tôi đến nhà hàng đó, nhưng mì bò không ngon lắm.","h":"昨天、我、到、那、家、餐廳、可是、牛肉、麵、不、太、好吃","a":"昨天我到那家餐廳，可是牛肉麵不太好吃。"},{"n":50,"v":"Tôi nghe nói nhà hàng này nổi tiếng nhất ở đây, chúng ta nhất định phải đến thử!","h":"我、聽說、這、家、餐廳、最、有名、我們、一定、要、到、試試","a":"我聽說這家餐廳最有名，我們一定要到那裡試試。"}]}]},
+  {"t":"Bài 6: 他們學校在山上 – Trường Học Của Họ Ở Trên Núi","p":[{"t":"Phần 1: 25 câu dễ","q":[{"n":1,"v":"Trường học của họ ở trên núi.","h":"他們、學校、在、山上","a":"他們學校在山上。|他們的學校在山上。"},{"n":2,"v":"Trường học ở đâu?","h":"學校、在、哪裡","a":"學校在哪裡？"},{"n":3,"v":"Ở đó rất xa.","h":"那裡、很、遠","a":"那裡很遠。"},{"n":4,"v":"Phong cảnh ở đó rất đẹp.","h":"那裡、風景、很、美","a":"那裡風景很美。|那裡的風景很美。"},{"n":5,"v":"Phía trước trường học có biển.","h":"學校、前面、有、海","a":"學校前面有海。"},{"n":6,"v":"Phía sau trường học có núi.","h":"學校、後面、有、山","a":"學校後面有山。"},{"n":7,"v":"Phong cảnh ở đây thật sự rất đẹp.","h":"這裡、風景、真的、很、美","a":"這裡風景真的很美。|這裡的風景真的很美。"},{"n":8,"v":"Bây giờ tôi đang ở thư viện.","h":"現在、我、在、圖書館","a":"現在我在圖書館。"},{"n":9,"v":"Cửa hàng ở gần đây.","h":"商店、在、這裡、附近","a":"商店在這裡附近。|商店在這附近。"},{"n":10,"v":"Ký túc xá ở tầng dưới.","h":"宿舍、在、樓下","a":"宿舍在樓下。"},{"n":11,"v":"Tôi đang tìm bạn.","h":"我、在、找、朋友","a":"我在找朋友。"},{"n":12,"v":"Học sinh đang học ở trường.","h":"學生、在、學校、上課","a":"學生在學校上課。"},{"n":13,"v":"Tôi nghe nói trường học ở gần đây.","h":"我、聽說、學校、在、這裡、附近","a":"我聽說學校在這裡附近。|我聽說學校在這附近。"},{"n":14,"v":"Ở đây rất thuận tiện.","h":"這裡、很、方便","a":"這裡很方便。"},{"n":15,"v":"Bên ngoài có rất nhiều người.","h":"外面、有、很多、人","a":"外面有很多人。"},{"n":16,"v":"Đồ ở bên trong.","h":"東西、在、裡面","a":"東西在裡面。"},{"n":17,"v":"Tôi ăn cơm ở nhà ăn.","h":"我、在、吃飯","a":"我在餐廳吃飯。|我在學校餐廳吃飯。"},{"n":18,"v":"Thư viện ở bên cạnh lớp học.","h":"圖書館、在、教室、旁邊","a":"圖書館在教室旁邊。"},{"n":19,"v":"Hồ bơi ở đâu?","h":"游泳池、在、哪裡","a":"游泳池在哪裡？"},{"n":20,"v":"Trường học có một tòa nhà lớn.","h":"學校、有、一、棟、大樓","a":"學校有一棟大樓。"},{"n":21,"v":"Bạn tôi đang ở trong lớp học.","h":"我、朋友、在、教室、裡面","a":"我朋友在教室裡面。"},{"n":22,"v":"Cửa hàng ở phía trước tòa nhà.","h":"商店、在、大樓、前面","a":"商店在大樓前面。"},{"n":23,"v":"Ký túc xá ở gần trường học.","h":"宿舍、在、學校、附近","a":"宿舍在學校附近。"},{"n":24,"v":"Trường học này thật sự rất đẹp.","h":"這、學校、真的、很、美","a":"這個學校真的很美。|這所學校真的很美。"},{"n":25,"v":"Tôi đang tìm thư viện.","h":"我、在、找、圖書館","a":"我在找圖書館。"}]},{"t":"Phần 2: 25 câu khó hơn","q":[{"n":26,"v":"Tôi nghe nói trường học của họ ở trên núi.","h":"我、聽說、他們、學校、在、山上","a":"我聽說他們學校在山上。|我聽說他們的學校在山上。"},{"n":27,"v":"Trường học ở xa, nhưng phong cảnh ở đó rất đẹp.","h":"學校、很、遠、可是、那裡、風景、很、美","a":"學校很遠，可是那裡風景很美。|學校很遠，可是那裡的風景很美。"},{"n":28,"v":"Phía trước trường học có biển, phía sau có núi.","h":"學校、前面、有、海、後面、有、山","a":"學校前面有海，後面有山。"},{"n":29,"v":"Bây giờ tôi đang tìm thư viện, bạn biết thư viện ở đâu không?","h":"現在、我、在、找、圖書館、你、知道、圖書館、在、哪裡、嗎","a":"現在我在找圖書館，你知道圖書館在哪裡嗎？"},{"n":30,"v":"Tôi nghe nói gần trường học có một cửa hàng rất thuận tiện.","h":"我、聽說、學校、附近、有、一、家、商店、很、方便","a":"我聽說學校附近有一家商店很方便。"},{"n":31,"v":"Tòa nhà lớn ở bên cạnh thư viện.","h":"大樓、在、圖書館、旁邊","a":"大樓在圖書館旁邊。"},{"n":32,"v":"Bạn tôi đang học trong lớp học ở tầng dưới.","h":"我、朋友、在、樓下、教室、上課","a":"我朋友在樓下的教室上課。"},{"n":33,"v":"Ký túc xá ở gần trường học, cho nên đi học rất thuận tiện.","h":"宿舍、在、學校、附近、所以、上課、很、方便","a":"宿舍在學校附近，所以上課很方便。"},{"n":34,"v":"Tôi nghe nói phong cảnh ở trường học của họ thật sự rất đẹp.","h":"我、聽說、他們、學校、風景、真的、很、美","a":"我聽說他們學校的風景真的很美。"},{"n":35,"v":"Bên ngoài thư viện có một cửa hàng, bên trong có rất nhiều sách.","h":"圖書館、外面、有、一、家、商店、裡面、有、很多、書","a":"圖書館外面有一家商店，裡面有很多書。"},{"n":36,"v":"Tôi muốn tìm bạn, nhưng không biết bạn ấy đang ở đâu.","h":"我、想、找、朋友、可是、不、知道、他、在、哪裡","a":"我想找朋友，可是不知道他在哪裡。"},{"n":37,"v":"Hồ bơi ở phía sau tòa nhà lớn, bên cạnh có một lớp học.","h":"游泳池、在、大樓、後面、旁邊、有、一、間、教室","a":"游泳池在大樓後面，旁邊有一間教室。"},{"n":38,"v":"Trường học ở gần đây, bạn không cần đi xa.","h":"學校、在、這裡、附近、不、用、走、很、遠","a":"學校在這裡附近，不用走很遠。|學校在這附近，不用走很遠。"},{"n":39,"v":"Tôi nghe nói trường học này có một thư viện rất lớn.","h":"我、聽說、這、學校、有、一、個、很、大、圖書館","a":"我聽說這個學校有一個很大的圖書館。"},{"n":40,"v":"Học sinh đang ăn cơm ở bên ngoài ký túc xá.","h":"學生、在、宿舍、外面、吃飯","a":"學生在宿舍外面吃飯。"},{"n":41,"v":"Bây giờ tôi đang ở thư viện, còn bạn tôi đang học trong lớp.","h":"現在、我、在、圖書館、我、朋友、在、教室、上課","a":"現在我在圖書館，我朋友在教室上課。"},{"n":42,"v":"Tôi nghe nói phía trước trường học có biển, phong cảnh rất đẹp.","h":"我、聽說、學校、前面、有、海、風景、很、美","a":"我聽說學校前面有海，風景很美。"},{"n":43,"v":"Tòa nhà lớn này có mấy tầng?","h":"這、棟、大樓、有、幾、樓","a":"這棟大樓有幾樓？"},{"n":44,"v":"Cửa hàng ở tầng dưới của tòa nhà, rất thuận tiện.","h":"商店、在、大樓、樓下、很、方便","a":"商店在大樓樓下，很方便。"},{"n":45,"v":"Tôi không biết thư viện ở đâu, nên đang tìm bạn để hỏi.","h":"我、不、知道、圖書館、在、哪裡、所以、找、朋友、問","a":"我不知道圖書館在哪裡，所以找朋友問。"},{"n":46,"v":"Trường học của họ ở trên núi, phía trước có biển và phía sau có núi.","h":"他們、學校、在、山上、前面、有、海、後面、有、山","a":"他們學校在山上，前面有海，後面有山。|他們的學校在山上，前面有海，後面有山。"},{"n":47,"v":"Ký túc xá, thư viện và hồ bơi đều ở gần trường học.","h":"宿舍、圖書館、游泳池、都、在、學校、附近","a":"宿舍、圖書館、游泳池都在學校附近。"},{"n":48,"v":"Tôi nghe nói khu vực gần trường học có rất nhiều cửa hàng và nhà hàng.","h":"我、聽說、學校、附近、有、很多、商店、餐廳","a":"我聽說學校附近有很多商店和餐廳。"},{"n":49,"v":"Bạn tôi đang tìm lớp học, nhưng bạn ấy không biết lớp học ở tầng nào.","h":"我、朋友、在、找、教室、可是、不、知道、教室、在、幾、樓","a":"我朋友在找教室，可是不知道教室在幾樓。"},{"n":50,"v":"Trường học này ở gần biển, phong cảnh thật sự rất đẹp và cuộc sống ở đây cũng rất thuận tiện.","h":"這、學校、在、海、附近、風景、真的、很、美、這裡、生活、也、很、方便","a":"這個學校在海附近，風景真的很美，這裡生活也很方便。|這個學校在海邊，風景真的很美，這裡生活也很方便。"}]}]},
+  {"t":"Bài 7: 早上九點去KTV – Đi Karaoke Lúc 9 Giờ Sáng","p":[{"t":"Phần 1: 25 câu dễ","q":[{"n":1,"v":"Bạn có muốn đi KTV hát không?","h":"你、想、去、KTV、唱歌、嗎","a":"你想去KTV唱歌嗎？"},{"n":2,"v":"Chúng ta mấy giờ gặp nhau?","h":"我們、幾、點、見面","a":"我們幾點見面？"},{"n":3,"v":"Tôi muốn gặp bạn vào buổi trưa.","h":"我、想、中午、跟、你、見面","a":"我想中午跟你見面。"},{"n":4,"v":"Ngân hàng ở đâu?","h":"銀行、在、哪裡","a":"銀行在哪裡？"},{"n":5,"v":"Ngày kia chúng ta gặp nhau nhé!","h":"後天、我們、見面、吧","a":"後天我們見面吧！"},{"n":6,"v":"Lần sau gặp lại nhé!","h":"下次、再見","a":"下次再見！"},{"n":7,"v":"Không thành vấn đề!","h":"沒問題","a":"沒問題！"},{"n":8,"v":"Đúng rồi, bạn có rảnh không?","h":"對了、你、有空、嗎","a":"對了，你有空嗎？"},{"n":9,"v":"Gặp lại sau nhé!","h":"再見","a":"再見！"},{"n":10,"v":"Tôi đang ăn trưa.","h":"我、在、吃、午餐","a":"我在吃午餐。"},{"n":11,"v":"Tôi vừa tan học.","h":"我、剛、下課","a":"我剛下課。"},{"n":12,"v":"Bây giờ là hai giờ rưỡi chiều.","h":"現在、下午、兩、點、半","a":"現在是下午兩點半。|現在下午兩點半。"},{"n":13,"v":"Cuộc thi kết thúc lúc mấy giờ?","h":"比賽、幾、點、結束","a":"比賽幾點結束？"},{"n":14,"v":"Gần đây tôi rất bận.","h":"最近、我、很、忙","a":"最近我很忙。"},{"n":15,"v":"Mỗi ngày tôi đều học tiếng Trung.","h":"我、每、天、都、學、中文","a":"我每天都學中文。"},{"n":16,"v":"Tôi muốn học thư pháp.","h":"我、想、學、書法","a":"我想學書法。"},{"n":17,"v":"Bạn viết chữ này như thế nào?","h":"你、這、字、怎麼、寫","a":"你這個字怎麼寫？"},{"n":18,"v":"Tôi có thể hỏi bạn một câu không?","h":"我、可以、問、你、一、個、問題、嗎","a":"我可以問你一個問題嗎？"},{"n":19,"v":"Đợi một chút nhé!","h":"等一下","a":"等一下！"},{"n":20,"v":"Hôm nay tôi có việc.","h":"今天、我、有事","a":"今天我有事。"},{"n":21,"v":"Lớp học bắt đầu lúc mấy giờ?","h":"課、幾、點、開始","a":"課幾點開始？"},{"n":22,"v":"Lớp học kết thúc lúc mấy giờ?","h":"課、幾、點、結束","a":"課幾點結束？"},{"n":23,"v":"Bạn có thể hát không?","h":"你、可以、唱歌、嗎","a":"你可以唱歌嗎？"},{"n":24,"v":"Môn thư pháp rất thú vị.","h":"書法、課、很、有意思","a":"書法課很有意思。"},{"n":25,"v":"Tôi muốn hỏi bạn một chút.","h":"我、想、問、你、一下","a":"我想問你一下。"}]},{"t":"Phần 2: 25 câu khó hơn","q":[{"n":26,"v":"Ngày kia chúng ta gặp nhau lúc mười hai giờ trưa nhé!","h":"後天、我們、中午、十二、點、見面、吧","a":"後天我們中午十二點見面吧！"},{"n":27,"v":"Tôi vừa tan học, bây giờ muốn đi ăn trưa.","h":"我、剛、下課、現在、想、去、吃、午餐","a":"我剛下課，現在想去吃午餐。"},{"n":28,"v":"Gần đây bạn rất bận phải không?","h":"最近、你、很、忙、嗎","a":"最近你很忙嗎？"},{"n":29,"v":"Mỗi ngày bạn học thư pháp bao lâu?","h":"你、每、天、學、書法、學、多、久","a":"你每天學書法學多久？"},{"n":30,"v":"Lớp thư pháp bắt đầu lúc một giờ rưỡi chiều.","h":"書法、課、下午、一、點、半、開始","a":"書法課下午一點半開始。"},{"n":31,"v":"Cuộc thi kết thúc rồi, chúng ta đi KTV hát nhé!","h":"比賽、結束、了、我們、去、KTV、唱歌、吧","a":"比賽結束了，我們去KTV唱歌吧！"},{"n":32,"v":"Ngày kia bạn có rảnh không? Chúng ta gặp nhau nhé!","h":"後天、你、有空、嗎、我們、見面、吧","a":"後天你有空嗎？我們見面吧！"},{"n":33,"v":"Tôi vừa tan học, nhưng hôm nay còn có việc phải làm.","h":"我、剛、下課、可是、今天、還、有事","a":"我剛下課，可是今天還有事。"},{"n":34,"v":"Đúng rồi, ngân hàng ở gần trường học phải không?","h":"對了、銀行、在、學校、附近、嗎","a":"對了，銀行在學校附近嗎？"},{"n":35,"v":"Tôi muốn hỏi bạn một chút, bạn có thời gian không?","h":"我、想、問、你、一下、你、有空、嗎","a":"我想問你一下，你有空嗎？"},{"n":36,"v":"Lần sau chúng ta gặp nhau sau khi lớp học kết thúc nhé!","h":"下次、我們、等、課、結束、再、見面、吧","a":"下次我們等課結束再見面吧！"},{"n":37,"v":"Mỗi ngày tôi đều viết chữ Hán, bởi vì tôi thích thư pháp.","h":"我、每、天、都、寫、中文字、因為、我、喜歡、書法","a":"我每天都寫中文字，因為我喜歡書法。"},{"n":38,"v":"Bạn có thể đợi tôi nửa tiếng không?","h":"你、可以、等、我、半、個、小時、嗎","a":"你可以等我半個小時嗎？"},{"n":39,"v":"Tôi nghe nói cuộc thi thư pháp rất thú vị.","h":"我、聽說、書法、比賽、很、有意思","a":"我聽說書法比賽很有意思。"},{"n":40,"v":"Gần đây tôi rất bận, cho nên không có thời gian đi KTV.","h":"最近、我、很、忙、所以、沒、有、時間、去、KTV","a":"最近我很忙，所以沒有時間去KTV。"},{"n":41,"v":"Ngày kia buổi chiều chúng ta gặp nhau, sau đó cùng đi ăn tối nhé!","h":"後天、下午、我們、見面、然後、一起、去、吃、晚飯","a":"後天下午我們見面，然後一起去吃晚飯。"},{"n":42,"v":"Tôi vừa tan học lúc mười hai giờ, bây giờ muốn đi ăn trưa.","h":"我、剛、十二、點、下課、現在、想、去、吃、午餐","a":"我十二點剛下課，現在想去吃午餐。"},{"n":43,"v":"Bạn có thể dạy tôi viết chữ Hán không?","h":"你、可以、教、我、寫、中文字、嗎","a":"你可以教我寫中文字嗎？"},{"n":44,"v":"Lớp học bắt đầu lúc hai giờ, chúng ta gặp nhau lúc một giờ rưỡi nhé!","h":"課、兩、點、開始、我們、一、點、半、見面、吧","a":"課兩點開始，我們一點半見面吧！"},{"n":45,"v":"Đợi một chút, tôi có việc muốn hỏi bạn.","h":"等一下、我、有事、想、問、你","a":"等一下，我有事想問你。"},{"n":46,"v":"Cuộc thi kết thúc lúc mấy giờ? Tôi muốn đến xem.","h":"比賽、幾、點、結束、我、想、去、看","a":"比賽幾點結束？我想去看。"},{"n":47,"v":"Gần đây tôi bận học thư pháp mỗi ngày, nhưng tôi thấy rất thú vị.","h":"最近、我、每天、忙、學、書法、可是、我、覺得、很、有意思","a":"最近我每天都忙著學書法，可是我覺得很有意思。|最近我每天忙著學書法，可是我覺得很有意思。"},{"n":48,"v":"Ngày kia nếu bạn có rảnh, chúng ta gặp nhau ở ngân hàng nhé!","h":"後天、如果、你、有空、我們、在、銀行、見面、吧","a":"後天如果你有空，我們在銀行見面吧！"},{"n":49,"v":"Tôi vừa tan học, nhưng bạn tôi vẫn đang học trong lớp.","h":"我、剛、下課、可是、我、朋友、還、在、教室、上課","a":"我剛下課，可是我朋友還在教室上課。"},{"n":50,"v":"Đúng rồi, lần sau chúng ta có thể gặp nhau sau khi cuộc thi kết thúc, rồi cùng đi KTV hát.","h":"對了、下次、我們、可以、等、比賽、結束、再、去、KTV、唱歌","a":"對了，下次我們可以等比賽結束再去KTV唱歌。"}]}]},
+  {"t":"Bài 8: 坐火車去台南 – Đi Tàu Hoả Đến Đài Nam","p":[{"t":"Phần 1: 25 câu dễ","q":[{"n":1,"v":"Tôi đi Đài Nam bằng tàu hỏa.","h":"我、坐、火車、去、臺南","a":"我坐火車去臺南。"},{"n":2,"v":"Đi tàu hỏa rất chậm.","h":"坐、火車、很、慢","a":"坐火車很慢。"},{"n":3,"v":"Từ đây đến Đài Nam mất bao nhiêu tiếng?","h":"從、這裡、到、臺南、幾、鐘頭","a":"從這裡到臺南要幾個鐘頭？|從這裡到臺南幾個鐘頭？"},{"n":4,"v":"Đi tàu cao tốc nhanh hơn đi tàu hỏa.","h":"坐、高鐵、比、坐、火車、快","a":"坐高鐵比坐火車快。"},{"n":5,"v":"Vé tàu hỏa bao nhiêu tiền?","h":"火車、車票、多少、錢","a":"火車車票多少錢？"},{"n":6,"v":"Đi tàu cao tốc rất nhanh.","h":"坐、高鐵、非常、快","a":"坐高鐵非常快。"},{"n":7,"v":"Đi tàu hỏa rất chậm, nhưng rất thoải mái.","h":"坐、火車、很、慢、但是、很、舒服","a":"坐火車很慢，但是很舒服。"},{"n":8,"v":"Nhà ga ở đâu?","h":"車站、在、哪裡","a":"車站在哪裡？"},{"n":9,"v":"Bạn muốn đi tàu hỏa hay tàu cao tốc?","h":"你、想、坐、火車、或是、高鐵","a":"你想坐火車或是高鐵？|你想坐火車還是高鐵？"},{"n":10,"v":"Tôi mua vé tàu trên mạng.","h":"我、在、網路上、買、車票","a":"我在網路上買車票。"},{"n":11,"v":"Cửa hàng tiện lợi ở gần đây.","h":"便利商店、在、這裡、附近","a":"便利商店在這裡附近。"},{"n":12,"v":"Tôi đi tham quan cùng bạn học.","h":"我、跟、同學、去、參觀","a":"我跟同學去參觀。"},{"n":13,"v":"Tôi muốn tham quan bảo tàng Cố Cung.","h":"我、想、參觀、故宮、博物院","a":"我想參觀故宮博物院。"},{"n":14,"v":"Tôi thích chơi cùng bạn học.","h":"我、喜歡、跟、同學、玩","a":"我喜歡跟同學玩。"},{"n":15,"v":"Bạn đi học bằng xe máy à?","h":"你、騎、機車、去、學校、嗎","a":"你騎機車去學校嗎？"},{"n":16,"v":"Bạn tôi chở tôi bằng xe máy.","h":"我、朋友、騎、機車、載、我","a":"我朋友騎機車載我。"},{"n":17,"v":"Tôi đi tàu điện ngầm đến trường.","h":"我、坐、捷運、去、學校","a":"我坐捷運去學校。"},{"n":18,"v":"Đi taxi rất thoải mái.","h":"坐、計程車、很、舒服","a":"坐計程車很舒服。"},{"n":19,"v":"Tôi đi xe buýt đến nhà ga.","h":"我、坐、公共汽車、去、車站","a":"我坐公共汽車去車站。"},{"n":20,"v":"Từ đây đến trường mất khoảng một tiếng.","h":"從、這裡、到、學校、差不多、一、鐘頭","a":"從這裡到學校差不多一個鐘頭。"},{"n":21,"v":"Bạn muốn đi bằng cách nào?","h":"你、想、怎麼、去","a":"你想怎麼去？"},{"n":22,"v":"Đi tàu điện ngầm nhanh hơn đi xe buýt.","h":"坐、捷運、比、坐、公共汽車、快","a":"坐捷運比坐公共汽車快。"},{"n":23,"v":"Tôi không thể đi cùng bạn.","h":"我、不行、跟、你、一起、去","a":"我不行跟你一起去。|我不能跟你一起去。"},{"n":24,"v":"Tôi muốn tìm hiểu về Trung Quốc cổ đại.","h":"我、想、了解、中國、古代","a":"我想了解中國古代。"},{"n":25,"v":"Bạn có thể chở tôi đến cửa hàng tiện lợi không?","h":"你、可以、騎、機車、載、我、去、便利商店、嗎","a":"你可以騎機車載我去便利商店嗎？"}]},{"t":"Phần 2: 25 câu khó hơn","q":[{"n":26,"v":"Tôi muốn đi Đài Nam bằng tàu hỏa cùng bạn học.","h":"我、想、跟、同學、坐、火車、去、臺南","a":"我想跟同學坐火車去臺南。"},{"n":27,"v":"Đi tàu cao tốc nhanh hơn, nhưng vé cũng đắt hơn.","h":"坐、高鐵、比較、快、但是、車票、也、比較、貴","a":"坐高鐵比較快，但是車票也比較貴。"},{"n":28,"v":"Đi tàu hỏa tuy chậm nhưng rất thoải mái.","h":"坐、火車、很、慢、但是、非常、舒服","a":"坐火車很慢，但是非常舒服。"},{"n":29,"v":"Tôi muốn mua vé tàu cao tốc trên mạng.","h":"我、想、在、網路上、買、高鐵、車票","a":"我想在網路上買高鐵車票。"},{"n":30,"v":"Từ Đài Bắc đến Đài Nam đi tàu cao tốc mất khoảng hai tiếng.","h":"從、臺北、到、臺南、坐、高鐵、差不多、兩、鐘頭","a":"從臺北到臺南坐高鐵差不多兩個鐘頭。"},{"n":31,"v":"Bạn muốn đi tàu hỏa hay đi xe buýt đến Đài Nam?","h":"你、想、坐、火車、或是、坐、公共汽車、去、臺南","a":"你想坐火車或是坐公共汽車去臺南？|你想坐火車還是坐公共汽車去臺南？"},{"n":32,"v":"Tôi và bạn học muốn đi tham quan bảo tàng Cố Cung.","h":"我、跟、同學、想、去、參觀、故宮、博物院","a":"我跟同學想去參觀故宮博物院。"},{"n":33,"v":"Trong bảo tàng Cố Cung có rất nhiều đồ cổ của Trung Quốc.","h":"故宮、博物院、裡面、有、很多、中國、古代、的、東西","a":"故宮博物院裡面有很多中國古代的東西。"},{"n":34,"v":"Tôi thường đi xe máy đến cửa hàng tiện lợi gần nhà.","h":"我、常常、騎、機車、去、家、附近、的、便利商店","a":"我常常騎機車去家附近的便利商店。"},{"n":35,"v":"Bạn tôi có thể chở tôi đến nhà ga bằng xe máy.","h":"我、朋友、可以、騎、機車、載、我、去、車站","a":"我朋友可以騎機車載我去車站。"},{"n":36,"v":"Đi tàu điện ngầm nhanh hơn đi xe buýt, nhưng đôi khi rất đông.","h":"坐、捷運、比、坐、公共汽車、快、但是、有時候、很、多人","a":"坐捷運比坐公共汽車快，但是有時候很多人。"},{"n":37,"v":"Từ đây đến bảo tàng Cố Cung đi taxi mất khoảng nửa tiếng.","h":"從、這裡、到、故宮、博物院、坐、計程車、差不多、半、個、鐘頭","a":"從這裡到故宮博物院坐計程車差不多半個鐘頭。"},{"n":38,"v":"Tôi muốn đi tham quan Đài Nam, nhưng không biết đi bằng cách nào nhanh hơn.","h":"我、想、去、臺南、參觀、但是、不、知道、怎麼、去、比較、快","a":"我想去臺南參觀，但是不知道怎麼去比較快。"},{"n":39,"v":"Nếu đi tàu cao tốc thì nhanh hơn, nhưng vé đắt hơn tàu hỏa.","h":"坐、高鐵、比較、快、但是、車票、比、火車、貴","a":"坐高鐵比較快，但是車票比火車貴。"},{"n":40,"v":"Bạn có thể mua vé tàu ở cửa hàng tiện lợi hoặc trên mạng.","h":"你、可以、在、便利商店、或是、網路上、買、車票","a":"你可以在便利商店或是網路上買車票。"},{"n":41,"v":"Tôi muốn cùng bạn học đi tham quan những nơi có phong cảnh đẹp.","h":"我、想、跟、同學、去、參觀、風景、美、的、地方","a":"我想跟同學去參觀風景美的地方。"},{"n":42,"v":"Tôi nghe nói bảo tàng Cố Cung có rất nhiều đồ cổ Trung Quốc.","h":"我、聽說、故宮、博物院、有、很多、中國、古代、的、東西","a":"我聽說故宮博物院有很多中國古代的東西。"},{"n":43,"v":"Từ ký túc xá đến nhà ga rất gần, đi bộ cũng được.","h":"從、宿舍、到、車站、很、近、走路、也、可以","a":"從宿舍到車站很近，走路也可以。"},{"n":44,"v":"Tôi muốn đi tàu điện ngầm đến nhà ga, sau đó đi tàu cao tốc đến Đài Nam.","h":"我、想、坐、捷運、去、車站、然後、坐、高鐵、到、臺南","a":"我想坐捷運去車站，然後坐高鐵到臺南。"},{"n":45,"v":"Bạn có thể chở bạn học của bạn đến bảo tàng Cố Cung bằng xe máy không?","h":"你、可以、騎、機車、載、你、同學、去、故宮、博物院、嗎","a":"你可以騎機車載你同學去故宮博物院嗎？"},{"n":46,"v":"Đi taxi và đi xe buýt mất thời gian gần như nhau, nhưng taxi thoải mái hơn.","h":"坐、計程車、和、坐、公共汽車、差不多、但是、計程車、比較、舒服","a":"坐計程車和坐公共汽車差不多，但是計程車比較舒服。"},{"n":47,"v":"Tôi muốn đi Đài Nam chơi với bạn học vào cuối tuần, nhưng chưa biết đi tàu hỏa hay tàu cao tốc.","h":"我、想、週末、跟、同學、去、臺南、玩、但是、不、知道、坐、火車、還是、高鐵","a":"我想週末跟同學去臺南玩，但是不知道坐火車還是高鐵。"},{"n":48,"v":"Tàu hỏa rất chậm, nhưng vé rẻ hơn tàu cao tốc.","h":"火車、非常、慢、但是、車票、比、高鐵、便宜","a":"火車非常慢，但是車票比高鐵便宜。"},{"n":49,"v":"Tôi muốn tham quan bảo tàng Cố Cung để tìm hiểu về lịch sử Trung Quốc cổ đại.","h":"我、想、參觀、故宮、博物院、了解、中國、古代、的、歷史","a":"我想參觀故宮博物院，了解中國古代的歷史。"},{"n":50,"v":"Từ đây đến Đài Nam có thể đi tàu hỏa hoặc tàu cao tốc; tàu cao tốc nhanh hơn, nhưng tàu hỏa cũng rất thoải mái.","h":"從、這裡、到、臺南、可以、坐、火車、或是、高鐵、高鐵、比較、快、但是、火車、也、很、舒服","a":"從這裡到臺南可以坐火車或是高鐵，高鐵比較快，但是火車也很舒服。"}]}]},
+  {"t":"Bài 9: 放假去哪裡玩 – Được Nghỉ Đi Đâu Chơi","p":[{"t":"Phần 1: 25 câu dễ","q":[{"n":1,"v":"Hôm nay là thứ mấy?","h":"今天、星期、幾","a":"今天星期幾？"},{"n":2,"v":"Hôm nay là thứ Hai.","h":"今天、星期一","a":"今天星期一。"},{"n":3,"v":"Tôi dự định về nước vào tháng sau.","h":"我、打算、下個月、回國","a":"我打算下個月回國。"},{"n":4,"v":"Tôi thích xem tivi.","h":"我、喜歡、看、電視","a":"我喜歡看電視。"},{"n":5,"v":"Tôi muốn xem bộ phim này.","h":"我、想、看、這、部、影片","a":"我想看這部影片。"},{"n":6,"v":"Tôi dự định đi du lịch Đài Loan.","h":"我、打算、去、台灣、旅行","a":"我打算去臺灣旅行。"},{"n":7,"v":"Tôi phải làm bài tập.","h":"我、要、做、功課","a":"我要做功課。"},{"n":8,"v":"Hôm nay tôi muốn ra ngoài.","h":"今天、我、想、出去","a":"今天我想出去。"},{"n":9,"v":"Tôi khoảng ba giờ mới tan học.","h":"我、大概、三、點、下課","a":"我大概三點才下課。|我大概三點下課。"},{"n":10,"v":"Ngày mai tôi được nghỉ.","h":"明天、我、放假","a":"明天我放假。"},{"n":11,"v":"Đôi khi tôi xem tivi.","h":"我、有時候、看、電視","a":"我有時候看電視。"},{"n":12,"v":"Bạn đi du lịch bao lâu?","h":"你、旅行、多、久","a":"你旅行多久？"},{"n":13,"v":"Tôi muốn đi Đài Đông chơi.","h":"我、想、去、台東、玩","a":"我想去臺東玩。"},{"n":14,"v":"Cô ấy là người Đài Loan.","h":"她、是、台灣人","a":"她是臺灣人。"},{"n":15,"v":"Hôm nay là ngày mấy tháng mấy?","h":"今天、幾、月、幾、號","a":"今天幾月幾號？"},{"n":16,"v":"Tôi muốn mang theo một quyển sách.","h":"我、想、帶、一、本、書","a":"我想帶一本書。"},{"n":17,"v":"Tôi còn phải làm bài tập.","h":"我、還、要、做、功課","a":"我還要做功課。"},{"n":18,"v":"Bạn có đề nghị gì không?","h":"你、有、什麼、建議","a":"你有什麼建議？"},{"n":19,"v":"Tôi nghĩ bạn nên nghỉ ngơi.","h":"我、覺得、你、應該、休息","a":"我覺得你應該休息。"},{"n":20,"v":"Tôi muốn đi dạo phố.","h":"我、想、去、逛街","a":"我想去逛街。"},{"n":21,"v":"Hôm nay là ngày đặc biệt.","h":"今天、是、特別、的、日子","a":"今天是特別的日子。"},{"n":22,"v":"Tôi muốn đến quán trà.","h":"我、想、去、茶館","a":"我想去茶館。"},{"n":23,"v":"Tôi đã quyết định rồi.","h":"我、已經、決定、了","a":"我已經決定了。"},{"n":24,"v":"Nếu ngày mai được nghỉ, tôi sẽ đi chơi.","h":"要是、明天、放假、我、就、出去、玩","a":"要是明天放假，我就出去玩。"},{"n":25,"v":"Nếu bạn rảnh, chúng ta đi uống trà nhé!","h":"要是、你、有空、我們、就、去、喝茶、吧","a":"要是你有空，我們就去喝茶吧！"}]},{"t":"Phần 2: 25 câu khó hơn","q":[{"n":26,"v":"Bạn dự định đi du lịch vào thứ mấy?","h":"你、打算、星期、幾、去、旅行","a":"你打算星期幾去旅行？"},{"n":27,"v":"Tôi dự định ngày 15 tháng 7 về nước.","h":"我、打算、七、月、十五、號、回國","a":"我打算七月十五號回國。"},{"n":28,"v":"Nếu ngày mai được nghỉ, tôi sẽ ở nhà xem phim.","h":"要是、明天、放假、我、就、在、家、看、影片","a":"要是明天放假，我就在家看影片。"},{"n":29,"v":"Tôi thường làm bài tập sau khi tan học.","h":"我、常常、下課、以後、做、功課","a":"我常常下課以後做功課。"},{"n":30,"v":"Bạn dự định đi Đài Đông du lịch bao lâu?","h":"你、打算、去、台東、旅行、多、久","a":"你打算去臺東旅行多久？"},{"n":31,"v":"Tôi muốn đi dạo phố cùng cô ấy vào ngày nghỉ.","h":"我、想、放假、的、時候、跟、她、去、逛街","a":"我想放假的時候跟她去逛街。"},{"n":32,"v":"Đôi khi tôi xem tivi, đôi khi tôi ra ngoài chơi.","h":"我、有時候、看、電視、有時候、出去、玩","a":"我有時候看電視，有時候出去玩。"},{"n":33,"v":"Tôi dự định mang theo máy ảnh để quay phim trong chuyến du lịch.","h":"我、打算、帶、相機、去、旅行、拍、影片","a":"我打算帶相機去旅行拍影片。"},{"n":34,"v":"Hôm nay là thứ Sáu, bạn có dự định gì không?","h":"今天、星期五、你、有、什麼、打算","a":"今天星期五，你有什麼打算？"},{"n":35,"v":"Tôi nghĩ bạn nên làm bài tập trước rồi mới ra ngoài.","h":"我、覺得、你、應該、先、做、功課、再、出去","a":"我覺得你應該先做功課再出去。"},{"n":36,"v":"Nếu ngày mai trời đẹp, chúng ta sẽ đến Đài Đông du lịch.","h":"要是、明天、天氣、好、我們、就、去、台東、旅行","a":"要是明天天氣好，我們就去臺東旅行。"},{"n":37,"v":"Cô ấy dự định tháng 8 về nước, nhưng vẫn chưa quyết định ngày nào.","h":"她、打算、八、月、回國、可是、還、沒、決定、幾、號","a":"她打算八月回國，可是還沒決定幾號。"},{"n":38,"v":"Bạn có thể đề nghị một quán trà đặc biệt cho tôi không?","h":"你、可以、幫、我、建議、一、家、特別、的、茶館、嗎","a":"你可以幫我建議一家特別的茶館嗎？"},{"n":39,"v":"Tôi muốn đi dạo phố, nhưng còn phải làm bài tập.","h":"我、想、去、逛街、可是、還、要、做、功課","a":"我想去逛街，可是還要做功課。"},{"n":40,"v":"Nếu thứ Bảy được nghỉ, tôi dự định đi xem phim với bạn học.","h":"要是、星期六、放假、我、打算、跟、同學、去、看、影片","a":"要是星期六放假，我打算跟同學去看影片。"},{"n":41,"v":"Bạn dự định tháng mấy đi du lịch? Bạn đã quyết định ngày chưa?","h":"你、打算、幾、月、去、旅行、你、決定、日期、了、嗎","a":"你打算幾月去旅行？你決定日期了嗎？"},{"n":42,"v":"Tôi thường xem tivi sau khi làm xong bài tập.","h":"我、常常、做完、功課、以後、看、電視","a":"我常常做完功課以後看電視。"},{"n":43,"v":"Tôi nghe nói Đài Đông có phong cảnh rất đẹp, bạn nên đến đó du lịch.","h":"我、聽說、台東、風景、很、美、你、應該、去、那裡、旅行","a":"我聽說臺東風景很美，你應該去那裡旅行。"},{"n":44,"v":"Nếu cô ấy có thời gian, cô ấy sẽ cùng tôi đến quán trà.","h":"要是、她、有空、她、就、跟、我、去、茶館","a":"要是她有空，她就跟我去茶館。"},{"n":45,"v":"Tôi dự định nghỉ hè sẽ đi du lịch Đài Loan khoảng một tuần.","h":"我、打算、暑假、去、台灣、旅行、大概、一、個、星期","a":"我打算暑假去臺灣旅行大概一個星期。"},{"n":46,"v":"Hôm nay là ngày 10 tháng 6, còn ba ngày nữa tôi sẽ về nước.","h":"今天、六、月、十、號、再、三、天、我、就、回國","a":"今天六月十號，再三天我就回國。"},{"n":47,"v":"Cô ấy không chỉ thích xem phim mà còn thích đi dạo phố.","h":"她、不但、喜歡、看、影片、也、喜歡、逛街","a":"她不但喜歡看影片，也喜歡逛街。"},{"n":48,"v":"Nếu ngày mai bạn không bận, chúng ta hãy cùng nhau quyết định lịch đi du lịch nhé!","h":"要是、明天、你、不、忙、我們、就、一起、決定、旅行、的、時間、吧","a":"要是明天你不忙，我們就一起決定旅行的時間吧。"},{"n":49,"v":"Tôi còn chưa quyết định tháng mấy về nước, có lẽ là tháng 9.","h":"我、還、沒、決定、幾、月、回國、大概、九、月","a":"我還沒決定幾月回國，大概九月。"},{"n":50,"v":"Nếu cuối tuần được nghỉ, tôi dự định cùng bạn học đến Đài Đông du lịch, tham quan những nơi đặc biệt và uống trà ở quán trà.","h":"要是、週末、放假、我、打算、跟、同學、去、台東、旅行、參觀、特別、的、地方、在、茶館、喝茶","a":"要是週末放假，我打算跟同學去臺東旅行，參觀特別的地方，在茶館喝茶。"}]}]},
+  {"t":"Bài 10: 臺灣的水果很好吃 – Hoa Quả Đài Loan Ăn Rất Ngon","p":[{"t":"Phần 1: 25 câu dễ","q":[{"n":1,"v":"Tôi thích ăn trái cây.","h":"我、喜歡、吃、水果","a":"我喜歡吃水果。"},{"n":2,"v":"Dưa hấu rất ngọt.","h":"西瓜、很、甜","a":"西瓜很甜。"},{"n":3,"v":"Quả cam này rất thơm.","h":"這、橘子、很、香","a":"這橘子很香。|這個橘子很香。"},{"n":4,"v":"Tôi muốn ăn một quả táo.","h":"我、想、吃、一、顆、蘋果","a":"我想吃一顆蘋果。"},{"n":5,"v":"Chuối rất ngọt.","h":"香蕉、很、甜","a":"香蕉很甜。"},{"n":6,"v":"Quả nho này hơi chua.","h":"這、葡萄、有一點、酸","a":"這葡萄有一點酸。|這個葡萄有一點酸。"},{"n":7,"v":"Tôi muốn uống nước ép trái cây.","h":"我、想、喝、果汁","a":"我想喝果汁。"},{"n":8,"v":"Màu sắc của quả dâu tây là màu đỏ.","h":"草莓、的、顏色、是、紅色","a":"草莓的顏色是紅色。"},{"n":9,"v":"Tôi thích màu xanh lá cây.","h":"我、喜歡、綠色","a":"我喜歡綠色。"},{"n":10,"v":"Con khỉ thích ăn chuối.","h":"猴子、喜歡、吃、香蕉","a":"猴子喜歡吃香蕉。"},{"n":11,"v":"Mùa hè rất nóng.","h":"夏天、很、熱","a":"夏天很熱。"},{"n":12,"v":"Vỏ dưa hấu có màu xanh lá cây.","h":"西瓜、的、外皮、是、綠色","a":"西瓜的外皮是綠色。"},{"n":13,"v":"Tôi muốn uống sữa.","h":"我、想、喝、牛奶","a":"我想喝牛奶。"},{"n":14,"v":"Bầu trời có màu xanh.","h":"天空、是、藍色","a":"天空是藍色。"},{"n":15,"v":"Tuyết có màu trắng.","h":"雪、是、白色","a":"雪是白色。"},{"n":16,"v":"Em trai tôi cao.","h":"我、弟弟、很、高","a":"我弟弟很高。"},{"n":17,"v":"Khách sạn này rất sạch sẽ.","h":"這、家、旅館、很、乾淨","a":"這家旅館很乾淨。"},{"n":18,"v":"Căn phòng này rất gọn gàng.","h":"這、房間、很、整齊","a":"這房間很整齊。|這個房間很整齊。"},{"n":19,"v":"Cửa sổ có màu trắng.","h":"窗戶、是、白色","a":"窗戶是白色。"},{"n":20,"v":"Tôi rất vui.","h":"我、很、開心","a":"我很開心。"},{"n":21,"v":"Cô ấy đang cười.","h":"她、在、笑","a":"她在笑。"},{"n":22,"v":"Cậu ấy đang khóc.","h":"他、在、哭","a":"他在哭。"},{"n":23,"v":"Hôm nay tôi mặc quần áo màu đen.","h":"今天、我、穿、黑色、衣服","a":"今天我穿黑色衣服。"},{"n":24,"v":"Vợ tôi thích uống cà phê.","h":"我、太太、喜歡、喝、咖啡","a":"我太太喜歡喝咖啡。"},{"n":25,"v":"Tháng trước tôi sống ở khách sạn.","h":"上個月、我、住、在、旅館","a":"上個月我住在旅館。"}]},{"t":"Phần 2: 25 câu khó hơn","q":[{"n":26,"v":"Tôi chưa từng ăn đu đủ, hôm nay muốn ăn thử.","h":"我、以前、沒、吃、過、木瓜、今天、想、吃吃看","a":"我以前沒吃過木瓜，今天想吃吃看。"},{"n":27,"v":"Quả xoài này vừa thơm vừa ngọt.","h":"這、芒果、又、香、又、甜","a":"這芒果又香又甜。|這個芒果又香又甜。"},{"n":28,"v":"Dưa hấu thường có nhiều nước, cho nên mùa hè rất thích hợp để ăn.","h":"西瓜、通常、水分、很多、所以、夏天、很、適合、吃","a":"西瓜通常水分很多，所以夏天很適合吃。"},{"n":29,"v":"Quả táo này có màu đỏ, còn quả nho có màu tím.","h":"這、顆、蘋果、是、紅色、葡萄、是、紫色","a":"這顆蘋果是紅色，葡萄是紫色。"},{"n":30,"v":"Tôi muốn mua ba quả cam và hai quả táo.","h":"我、想、買、三、顆、橙子、和、兩、顆、蘋果","a":"我想買三顆橙子和兩顆蘋果。"},{"n":31,"v":"Quả dâu tây này hơi chua, nhưng quả chuối rất ngọt.","h":"這、草莓、有一點、酸、可是、香蕉、很、甜","a":"這草莓有一點酸，可是香蕉很甜。"},{"n":32,"v":"Bạn có thể cho tôi một ly nước ép dưa hấu không?","h":"你、可以、給、我、一、杯、西瓜、果汁、嗎","a":"你可以給我一杯西瓜果汁嗎？"},{"n":33,"v":"Trước đây tôi không thích uống sữa, nhưng bây giờ tôi thích rồi.","h":"我、以前、不、喜歡、喝、牛奶、可是、現在、喜歡、了","a":"我以前不喜歡喝牛奶，可是現在喜歡了。"},{"n":34,"v":"Nếu có cơ hội, tôi muốn đến Đài Loan vào mùa hè.","h":"要是、有、機會、我、想、夏天、去、台灣","a":"要是有機會，我想夏天去臺灣。"},{"n":35,"v":"Màu sắc của những quả trái cây này rất đẹp, có đỏ, vàng và xanh lá cây.","h":"這些、水果、的、顏色、很、美、有、紅色、黃色、和、綠色","a":"這些水果的顏色很美，有紅色、黃色和綠色。"},{"n":36,"v":"Tôi muốn mời bạn ăn thử loại trái cây này.","h":"我、想、請、你、吃吃看、這、種、水果","a":"我想請你吃吃看這種水果。"},{"n":37,"v":"Con khỉ đang ngồi trên cây ăn chuối.","h":"猴子、在、樹上、坐、著、吃、香蕉","a":"猴子在樹上坐著吃香蕉。"},{"n":38,"v":"Khi trái cây chín, vỏ thường có màu vàng.","h":"水果、成熟、的、時候、外皮、通常、是、黃色","a":"水果成熟的時候，外皮通常是黃色。"},{"n":39,"v":"Tôi thích quả táo này vì nó vừa thơm vừa ngọt.","h":"我、喜歡、這、顆、蘋果、因為、它、又、香、又、甜","a":"我喜歡這顆蘋果，因為它又香又甜。"},{"n":40,"v":"Cô ấy mặc chiếc áo màu trắng, trông rất sạch sẽ và gọn gàng.","h":"她、穿、白色、衣服、看起來、很、乾淨、整齊","a":"她穿白色衣服，看起來很乾淨整齊。"},{"n":41,"v":"Em trai tôi thấp hơn tôi, nhưng em ấy rất vui vẻ.","h":"我、弟弟、比、我、矮、可是、他、很、開心","a":"我弟弟比我矮，可是他很開心。"},{"n":42,"v":"Tôi sống ở khách sạn này từ tháng trước, căn phòng rất sạch sẽ.","h":"我、從、上個月、住、在、這、家、旅館、房間、很、乾淨","a":"我從上個月住在這家旅館，房間很乾淨。"},{"n":43,"v":"Bầu trời hôm nay có màu xám, nhưng tôi vẫn rất vui.","h":"今天、天空、是、灰色、可是、我、還是、很、高興","a":"今天天空是灰色，可是我還是很高興。"},{"n":44,"v":"Cô ấy cười khi nhìn thấy em trai mặc chiếc áo màu tím.","h":"她、看見、弟弟、穿、紫色、衣服、就、笑","a":"她看見弟弟穿紫色衣服就笑。"},{"n":45,"v":"Tôi muốn mua những loại trái cây này để mang về khách sạn cho vợ.","h":"我、想、買、這些、水果、帶、回、旅館、給、我、太太","a":"我想買這些水果帶回旅館給我太太。"},{"n":46,"v":"Sau khi ăn dưa hấu, tôi muốn uống thêm một ly sữa.","h":"吃、完、西瓜、以後、我、還、想、喝、一、杯、牛奶","a":"吃完西瓜以後，我還想喝一杯牛奶。"},{"n":47,"v":"Những chiếc lá trên cây chuyển sang màu vàng khi mùa hè kết thúc.","h":"夏天、結束、以後、樹葉、變成、黃色","a":"夏天結束以後，樹葉變成黃色。"},{"n":48,"v":"Nếu có cơ hội, tôi muốn chụp ảnh cùng những quả trái cây có màu sắc đặc biệt này.","h":"要是、有、機會、我、想、跟、這些、顏色、特別、的、水果、拍照","a":"要是有機會，我想跟這些顏色特別的水果拍照。"},{"n":49,"v":"Tôi vui đến mức vừa cười vừa khóc khi nhận được món quà của em trai.","h":"我、收到、弟弟、的、禮物、很、開心、又、笑、又、哭","a":"我收到弟弟的禮物很開心，又笑又哭。"},{"n":50,"v":"Tháng trước tôi ở khách sạn này, căn phòng vừa sạch sẽ vừa gọn gàng, ngoài cửa sổ còn có thể nhìn thấy bầu trời xanh.","h":"上個月、我、住、在、這、家、旅館、房間、又、乾淨、又、整齊、窗戶、外面、可以、看見、藍色、天空","a":"上個月我住在這家旅館，房間又乾淨又整齊，窗戶外面可以看見藍色天空。|上個月我住在這家旅館，房間又乾淨又整齊，窗戶外面可以看見藍色的天空。"}]}]},
+  {"t":"Bài 11: 我要租房子 – Tôi Muốn Thuê Nhà","p":[{"t":"Phần 1: 25 câu dễ","q":[{"n":1,"v":"Tôi muốn thuê một căn phòng.","h":"租、房間","a":"我想租一間房間。|我要租一間房間。"},{"n":2,"v":"Chủ nhà đang ở phòng khách.","h":"房東、客廳","a":"房東在客廳。"},{"n":3,"v":"Nhà tôi có một căn bếp.","h":"家、廚房","a":"我家有一間廚房。|我家有廚房。"},{"n":4,"v":"Phòng tắm ở bên trái.","h":"浴室、左邊","a":"浴室在左邊。"},{"n":5,"v":"Siêu thị ở bên phải.","h":"超市、右邊","a":"超市在右邊。"},{"n":6,"v":"Đi bộ năm phút là đến.","h":"走路、五、分鐘、到","a":"走路五分鐘就到了。|走路五分鐘就到。"},{"n":7,"v":"Tôi muốn thuê một căn phòng.","h":"我、想、租、一、間、房間","a":"我想租一間房間。|我要租一間房間。"},{"n":8,"v":"Căn phòng này rất trống.","h":"這、間、房間、很、空","a":"這間房間很空。"},{"n":9,"v":"Tôi muốn thuê một căn hộ khép kín.","h":"我、想、租、套房","a":"我想租套房。|我想租一間套房。"},{"n":10,"v":"Tôi về nhà trước.","h":"我、先、回去","a":"我先回去。|我先回家。"},{"n":11,"v":"Ngày mai tôi lại đến.","h":"明天、我、再、來","a":"明天我再來。"},{"n":12,"v":"Bạn có thể cho tôi số điện thoại không?","h":"你、可以、給、我、電話","a":"你可以給我電話嗎？|你可以給我你的電話嗎？"},{"n":13,"v":"Tôi muốn gọi điện cho chủ nhà.","h":"我、想、打電話、給、房東","a":"我想打電話給房東。"},{"n":14,"v":"Siêu thị ở giữa trường học và nhà tôi.","h":"超市、中間、學校、家","a":"超市在學校和我家中間。|超市在學校和我家的中間。"},{"n":15,"v":"Tôi không thuê nổi căn phòng này.","h":"我、租不起、這、間、房間","a":"我租不起這間房間。"},{"n":16,"v":"Tiền thuê nhà rất đắt.","h":"房租、很、貴","a":"房租很貴。"},{"n":17,"v":"Phòng ngủ ở đâu?","h":"臥室、在、哪裡","a":"臥室在哪裡？"},{"n":18,"v":"Bạn có thể nói lại một lần nữa không?","h":"你、可以、再......一遍、說","a":"你可以再說一遍嗎？"},{"n":19,"v":"Bạn gọi điện lại nhé.","h":"你、再、打電話","a":"你再打電話吧。|請你再打電話。"},{"n":20,"v":"Alo, xin hỏi bạn là ai?","h":"喂、請問、你、是、誰","a":"喂，請問你是誰？"},{"n":21,"v":"Tôi đã nhận được điện thoại của bạn.","h":"我、已經、收到、你、電話","a":"我已經收到你的電話了。|我已經收到你的電話。"},{"n":22,"v":"Xin lỗi, tôi đến muộn rồi.","h":"不好意思、我、來、晚、了","a":"不好意思，我來晚了。"},{"n":23,"v":"Không sao đâu.","h":"沒關係","a":"沒關係。"},{"n":24,"v":"Tôi đã quen với cuộc sống ở đây rồi.","h":"我、已經、習慣、這裡、生活","a":"我已經習慣這裡的生活了。|我已經習慣這裡的生活。"},{"n":25,"v":"Nhà này có truyền hình cáp không?","h":"這、間、房子、有、沒有、有線電視","a":"這間房子有沒有有線電視？|這間房子有有線電視嗎？"}]},{"t":"Phần 2: 25 câu khó hơn","q":[{"n":26,"v":"Tôi muốn thuê một căn phòng gần siêu thị, đi bộ khoảng mười phút là đến.","h":"我、想、租、房間、超市、附近、走路、大概、十分鐘、到","a":"我想租一間在超市附近的房間，走路大概十分鐘就到了。|我想租超市附近的房間，走路大概十分鐘到。"},{"n":27,"v":"Căn hộ khép kín này có phòng khách, phòng ngủ và phòng tắm.","h":"這、間、套房、有、客廳、臥室、浴室","a":"這間套房有客廳、臥室和浴室。"},{"n":28,"v":"Tiền thuê nhà ở đây quá đắt, tôi không thuê nổi.","h":"這裡、房租、太、貴、我、租不起","a":"這裡的房租太貴了，我租不起。"},{"n":29,"v":"Chủ nhà nói rằng ngày mai sẽ lắp máy nước nóng.","h":"房東、說、明天、會、裝、熱水器","a":"房東說明天會裝熱水器。"},{"n":30,"v":"Máy nước nóng hình như có vấn đề, không có nước nóng.","h":"熱水器、好像、有、問題、沒有、熱水","a":"熱水器好像有問題，沒有熱水。"},{"n":31,"v":"Tôi đã gọi điện cho chủ nhà rồi, nhưng ông ấy vẫn chưa đến.","h":"我、已經、打電話、給、房東、了、不過、他、還、沒、有、來","a":"我已經打電話給房東了，不過他還沒有來。"},{"n":32,"v":"Xin lỗi, bạn có thể nói lại địa chỉ một lần nữa không?","h":"不好意思、你、可以、再......一遍、說、地址、嗎","a":"不好意思，你可以再說一遍地址嗎？"},{"n":33,"v":"Đi từ nhà tôi đến siêu thị chỉ mất năm phút đi bộ.","h":"從、我家、到、超市、走路、只、要、五、分鐘","a":"從我家到超市走路只要五分鐘。"},{"n":34,"v":"Tôi muốn hỏi tiền thuê căn phòng này một tháng là bao nhiêu.","h":"我、想、問、這、間、房間、租金、一個月、多少","a":"我想問這間房間的租金一個月多少錢？|我想問這間房間一個月的租金是多少？"},{"n":35,"v":"Nếu căn phòng này quá đắt, chúng ta hãy thuê căn khác.","h":"如果、這、間、房間、太、貴、我們、就、租、別的","a":"如果這間房間太貴，我們就租別的。|如果這間房間太貴，我們就租別間。"},{"n":36,"v":"Phòng khách ở bên trái, còn nhà bếp ở bên phải.","h":"客廳、在、左邊、廚房、在、右邊","a":"客廳在左邊，廚房在右邊。"},{"n":37,"v":"Tôi đã quen sống ở đây, nên không muốn chuyển đi nơi khác.","h":"我、已經、習慣、住、在、這裡、所以、不想、搬、到、別的地方","a":"我已經習慣住在這裡，所以不想搬到別的地方。"},{"n":38,"v":"Chủ nhà nói rằng tiền thuê nhà phải trả trước vào đầu tháng.","h":"房東、說、房租、要、在、月初、先、付","a":"房東說房租要在月初先付。"},{"n":39,"v":"Tôi đã nhận được tin nhắn của bạn, lát nữa tôi sẽ gọi lại.","h":"我、已經、收到、你、的、訊息、等一下、再、打電話","a":"我已經收到你的訊息了，等一下再打電話給你。|我已經收到你的訊息，等一下再打電話。"},{"n":40,"v":"Alo, xin hỏi căn phòng còn trống không? Tôi muốn thuê.","h":"喂、請問、房間、還、空、嗎、我、想、租","a":"喂，請問房間還空嗎？我想租。|喂，請問房間還有空嗎？我想租。"},{"n":41,"v":"Căn phòng này có vẻ không tệ, nhưng tiền thuê hơi đắt.","h":"這、間、房間、好像、不錯、不過、房租、有一點、貴","a":"這間房間好像不錯，不過房租有一點貴。"},{"n":42,"v":"Tôi muốn thuê căn phòng ở giữa phòng khách và phòng ngủ.","h":"我、想、租、客廳、和、臥室、中間、的、房間","a":"我想租客廳和臥室中間的房間。"},{"n":43,"v":"Nếu bạn có vấn đề gì, hãy gọi điện cho tôi.","h":"如果、你、有、什麼、問題、就、打電話、給、我","a":"如果你有什麼問題，就打電話給我。"},{"n":44,"v":"Chủ nhà đã lắp truyền hình cáp, nhưng tôi không biết cách sử dụng.","h":"房東、已經、裝、有線電視、了、不過、我、不知道、怎麼、用","a":"房東已經裝有線電視了，不過我不知道怎麼用。"},{"n":45,"v":"Tôi không thể thuê căn hộ này vì tiền thuê quá cao.","h":"因為、這、間、套房、租金、太、高、所以、我、租不起","a":"因為這間套房租金太高，所以我租不起。"},{"n":46,"v":"Đợi tôi một chút, tôi sẽ gọi điện hỏi chủ nhà.","h":"等、我、一、下、我、會、打電話、問、房東","a":"等我一下，我會打電話問房東。"},{"n":47,"v":"Tôi đã trả tiền thuê nhà rồi, bạn không cần lo lắng.","h":"我、已經、付、房租、了、你、不用、擔心","a":"我已經付房租了，你不用擔心。"},{"n":48,"v":"Xin lỗi, tôi muốn hỏi lại một lần nữa: siêu thị ở bên trái hay bên phải?","h":"不好意思、我、想、再、問、一遍、超市、在、左邊、還是、右邊","a":"不好意思，我想再問一遍，超市在左邊還是右邊？"},{"n":49,"v":"Căn phòng này không chỉ rộng mà tiền thuê cũng không đắt, vì vậy tôi muốn thuê nó.","h":"這、間、房間、不但、很、大、而且、房租、不、貴、所以、我、想、租","a":"這間房間不但很大，房租也不貴，所以我想租。|這間房間不只很大，房租也不貴，所以我很喜歡。"},{"n":50,"v":"Tôi đã gọi điện cho chủ nhà nhiều lần, nhưng vẫn chưa nhận được câu trả lời.","h":"我、已經、給、房東、打、了、好幾次、電話、但是、還、沒、有、收到、回答","a":"我已經給房東打了好幾次電話，但是還沒有收到回答。|我已經打電話給房東很多次了，但是還沒有收到回覆。"}]}]},
+  {"t":"Bài 12: 你在台灣學多久的中文？ – Bạn Ở Đài Loan Học Tiếng Trung Bao Lâu?","p":[{"t":"Phần 1: 25 câu dễ","q":[{"n":1,"v":"Tôi có một kế hoạch.","h":"我、有、一個、計畫","a":"我有一個計畫。"},{"n":2,"v":"Tôi học tiếng Trung được một năm rồi.","h":"我、念、中文、一、年、了","a":"我念中文一年了。"},{"n":3,"v":"Đã lâu rồi tôi không gặp bạn.","h":"好久、沒、有、見面、了","a":"好久沒有見面了。"},{"n":4,"v":"Tôi không có thời gian.","h":"我、沒有、時間","a":"我沒有時間。"},{"n":5,"v":"Tôi muốn ăn cơm trước.","h":"我、想、先、吃飯","a":"我想先吃飯。"},{"n":6,"v":"Tôi muốn học đại học.","h":"我、想、念、大學","a":"我想念大學。"},{"n":7,"v":"Học tiếng Trung cần thời gian.","h":"念、中文、需要、時間","a":"念中文需要時間。"},{"n":8,"v":"Tôi dành hai tiếng để học tiếng Trung.","h":"我、花、兩個小時、念、中文","a":"我花兩個小時念中文。"},{"n":9,"v":"Tôi muốn có học bổng.","h":"我、想、拿、獎學金","a":"我想拿獎學金。"},{"n":10,"v":"Thành tích học tập của tôi rất tốt.","h":"我、的、成績、很好","a":"我的成績很好。"},{"n":11,"v":"Học phí của trường này rất đắt.","h":"這、間、學校、的、學費、很、貴","a":"這間學校的學費很貴。"},{"n":12,"v":"Bố tôi làm việc ở một công ty.","h":"我、爸爸、在、一、間、公司、工作","a":"我爸爸在一間公司工作。"},{"n":13,"v":"Tôi hy vọng sau này có thể đến Đài Loan.","h":"我、希望、以後、可以、到、臺灣","a":"我希望以後可以到臺灣。"},{"n":14,"v":"Sau này tôi muốn đi làm ở Đài Loan.","h":"以後、我、想、到、臺灣、上班","a":"以後我想到臺灣上班。"},{"n":15,"v":"Hôm nay tôi rất mệt.","h":"今天、我、很、累","a":"今天我很累。"},{"n":16,"v":"Tôi học tiếng Trung ở trung tâm ngôn ngữ.","h":"我、在、語言中心、念、中文","a":"我在語言中心念中文。"},{"n":17,"v":"Cố lên!","h":"加油","a":"加油！"},{"n":18,"v":"Tôi muốn tìm một công việc.","h":"我、想、找、一、個、工作","a":"我想找一個工作。"},{"n":19,"v":"Năm ngoái tôi đến Đài Loan.","h":"去年、我、到、臺灣","a":"去年我到臺灣。|去年我到臺灣去。"},{"n":20,"v":"Gia đình tôi làm ăn buôn bán.","h":"我、的、家人、做、生意","a":"我的家人做生意。"},{"n":21,"v":"Sau này tôi muốn có một công việc tốt.","h":"以後、我、希望、有、一、個、好、工作","a":"以後我希望有一個好工作。"},{"n":22,"v":"Công việc này rất dễ tìm.","h":"這、個、工作、很、好、找","a":"這個工作很好找。"},{"n":23,"v":"Làm như vậy rất tốt.","h":"這樣、很好","a":"這樣很好。"},{"n":24,"v":"Tôi muốn đến một quốc gia khác.","h":"我、想、到、別的、國家","a":"我想到別的國家。"},{"n":25,"v":"Tiếng Trung không khó lắm.","h":"中文、不、那麼、難","a":"中文不那麼難。"}]},{"t":"Phần 2: 25 câu khó hơn","q":[{"n":26,"v":"Tôi dự định năm sau sẽ học đại học ở Đài Loan.","h":"我、計畫、明年、到、臺灣、念、大學","a":"我計畫明年到臺灣念大學。"},{"n":27,"v":"Tôi đã học tiếng Trung được hai năm, nhưng vẫn cần thêm thời gian để luyện tập.","h":"我、念、中文、兩、年、了、但是、還、需要、時間、練習","a":"我念中文兩年了，但是還需要時間練習。"},{"n":28,"v":"Nếu muốn nhận học bổng, thành tích học tập phải tốt.","h":"如果、想、拿、獎學金、成績、要、好","a":"如果想拿獎學金，成績要好。"},{"n":29,"v":"Tôi hy vọng công ty có thể trả học phí giúp tôi.","h":"我、希望、公司、可以、替、我、付、學費","a":"我希望公司可以替我付學費。"},{"n":30,"v":"Sau khi tốt nghiệp đại học, tôi muốn tìm một công việc tốt.","h":"大學、畢業、以後、我、想、找、一、個、好、工作","a":"大學畢業以後，我想找一個好工作。"},{"n":31,"v":"Tôi muốn vừa đi làm vừa học tiếng Trung, nhưng như vậy sẽ rất mệt.","h":"我、想、一邊、上班、一邊、念、中文、但是、這樣、很、累","a":"我想一邊上班一邊念中文，但是這樣很累。"},{"n":32,"v":"Năm ngoái chị tôi học ở trung tâm ngôn ngữ, năm nay chị ấy muốn học đại học.","h":"去年、我、姐姐、在、語言中心、念書、今年、她、想、念、大學","a":"去年我姐姐在語言中心念書，今年她想念大學。"},{"n":33,"v":"Tôi cần dành nhiều thời gian để chuẩn bị cho kỳ thi.","h":"我、需要、花、很多、時間、準備、考試","a":"我需要花很多時間準備考試。"},{"n":34,"v":"Nếu thành tích học tập tốt, bạn có thể thử xin học bổng.","h":"如果、成績、好、你、可以、試試看、申請、獎學金","a":"如果成績好，你可以試試看申請獎學金。"},{"n":35,"v":"Tôi hy vọng sau này có thể làm việc ở một công ty lớn.","h":"我、希望、以後、可以、在、一、間、大、公司、工作","a":"我希望以後可以在一間大公司工作。"},{"n":36,"v":"Công việc này không khó như tôi nghĩ, nhưng cần rất nhiều thời gian.","h":"這、個、工作、沒有、我、想、的、那麼、難、但是、需要、很多、時間","a":"這個工作沒有我想的那麼難，但是需要很多時間。|這個工作不像我想的那麼難，但是需要很多時間。"},{"n":37,"v":"Tôi muốn thử đến một quốc gia khác để học tập và làm việc.","h":"我、想、試試看、到、別的、國家、念書、和、工作","a":"我想試試看到別的國家念書和工作。"},{"n":38,"v":"Anh ấy đã làm ăn buôn bán nhiều năm nên có rất nhiều kinh nghiệm.","h":"他、做、生意、很多、年、了、所以、很、有、經驗","a":"他做生意很多年了，所以很有經驗。"},{"n":39,"v":"Tôi đã dành ba tiếng để làm bài tập, vì vậy bây giờ tôi rất mệt.","h":"我、花、三個小時、做、功課、所以、現在、很、累","a":"我花三個小時做功課，所以現在很累。"},{"n":40,"v":"Nếu muốn tìm việc dễ dàng hơn, bạn nên học tốt tiếng Trung.","h":"如果、想、找、工作、更、容易、你、應該、念、好、中文","a":"如果想找工作更容易，你應該念好中文。"},{"n":41,"v":"Tôi dự định học ở trung tâm ngôn ngữ trước, sau đó mới vào đại học.","h":"我、計畫、先、在、語言中心、念書、然後、再、念、大學","a":"我計畫先在語言中心念書，然後再念大學。"},{"n":42,"v":"Học đại học cần nhiều thời gian và tiền bạc, nhưng tôi vẫn muốn thử.","h":"念、大學、需要、很多、時間、和、錢、但是、我、還是、想、試試看","a":"念大學需要很多時間和錢，但是我還是想試試看。|念大學需要很多時間和錢，但是我還是想試試看念大學。"},{"n":43,"v":"Mẹ hy vọng sau này tôi có thể tìm được một công việc ổn định.","h":"媽媽、希望、我、以後、可以、找到、一、個、穩定、的、工作","a":"媽媽希望我以後可以找到一個穩定的工作。"},{"n":44,"v":"Tôi không có nhiều tiền, vì vậy tôi cần tìm một trường có học phí không quá đắt.","h":"我、沒有、很多、錢、所以、我、需要、找、一、間、學費、不、那麼、貴、的、學校","a":"我沒有很多錢，所以我需要找一間學費不那麼貴的學校。"},{"n":45,"v":"Bạn đã học tiếng Trung lâu như vậy rồi, tại sao vẫn cảm thấy khó?","h":"你、念、中文、這麼、久、了、為什麼、還、覺得、難","a":"你念中文這麼久了，為什麼還覺得難？"},{"n":46,"v":"Tôi muốn thử làm việc ở công ty này, nhưng không biết họ có tuyển người không.","h":"我、想、試試看、在、這、間、公司、工作、但是、不知道、他們、有沒有、找、人","a":"我想試試看在這間公司工作，但是不知道他們有沒有找人。"},{"n":47,"v":"Chị ấy vừa phải đi làm vừa phải học đại học nên thường xuyên cảm thấy rất mệt.","h":"她、一邊、要、上班、一邊、要、念、大學、所以、常常、覺得、很、累","a":"她要一邊上班一邊念大學，所以常常覺得很累。|她要一邊上班一邊念大學，所以常常很累。"},{"n":48,"v":"Nếu bạn cảm thấy tiếng Trung quá khó, hãy thử học mỗi ngày một chút.","h":"如果、你、覺得、中文、太、難、就、試試看、每天、念、一點","a":"如果你覺得中文太難，就試試看每天念一點。"},{"n":49,"v":"Tôi hy vọng sau khi đến Đài Loan, tôi có thể vừa học tốt vừa tìm được công việc phù hợp.","h":"我、希望、到、臺灣、以後、可以、念、好、書、也、能、找到、適合、的、工作","a":"我希望到臺灣以後可以念好書，也能找到適合的工作。"},{"n":50,"v":"Tôi đã lên kế hoạch từ năm ngoái, nhưng vì cần chuẩn bị nhiều thứ nên đến bây giờ vẫn chưa đi.","h":"我、去年、就、計畫、了、但是、因為、需要、準備、很多、東西、所以、到、現在、還、沒、有、去","a":"我去年就計畫了，但是因為需要準備很多東西，所以到現在還沒有去。"}]}]},
+  {"t":"Bài 13: 生日快樂 – Sinh Nhật Vui Vẻ","p":[{"t":"Phần 1: 25 câu dễ","q":[{"n":1,"v":"Chúc mừng sinh nhật!","h":"生日快樂","a":"生日快樂！"},{"n":2,"v":"Bạn về rồi à!","h":"你、回來、了、啊","a":"你回來了啊！"},{"n":3,"v":"Sao bạn quên rồi?","h":"你、怎麼、忘了","a":"你怎麼忘了？"},{"n":4,"v":"Bạn còn nhớ tôi không?","h":"你、還、記得、我、嗎","a":"你還記得我嗎？"},{"n":5,"v":"Đương nhiên là tôi nhớ bạn rồi!","h":"當然、我、記得、你","a":"當然，我記得你！|我當然記得你！"},{"n":6,"v":"Bạn học ngôn ngữ nào?","h":"你、學、什麼、語言","a":"你學什麼語言？"},{"n":7,"v":"Tôi muốn tham gia chương trình trao đổi ngôn ngữ.","h":"我、想、參加、語言交換","a":"我想參加語言交換。"},{"n":8,"v":"Bạn nhiệt tình quá!","h":"你、真、熱心","a":"你真熱心！"},{"n":9,"v":"Tôi học tiếng Tây Ban Nha.","h":"我、學、西班牙文","a":"我學西班牙文。"},{"n":10,"v":"Hai người chúng tôi bằng tuổi nhau.","h":"我們、兩個人、一樣、大","a":"我們兩個人一樣大。"},{"n":11,"v":"Năm nay bạn bao nhiêu tuổi?","h":"你、今年、幾、歲","a":"你今年幾歲？"},{"n":12,"v":"Tôi đã đón sinh nhật ở Đài Loan.","h":"我、在、臺灣、過、生日","a":"我在臺灣過生日。"},{"n":13,"v":"Nhà tôi ở cách trường khoảng mười phút.","h":"我家、離、學校、十分鐘、左右","a":"我家離學校十分鐘左右。"},{"n":14,"v":"Tôi đang đợi bạn ở cửa.","h":"我、在、門口、等、你","a":"我在門口等你。"},{"n":15,"v":"Anh ấy đến từ Tây Ban Nha.","h":"他、是、西班牙、人","a":"他是西班牙人。"},{"n":16,"v":"Tôi chính là người bạn đang tìm.","h":"我就是、你、找、的、人","a":"我就是你找的人。"},{"n":17,"v":"Không cần khách sáo đâu!","h":"不必客氣","a":"不必客氣！"},{"n":18,"v":"Bạn khách sáo quá rồi!","h":"你、太客氣、了","a":"你太客氣了！"},{"n":19,"v":"Đây là quà sinh nhật của bạn.","h":"這、是、你、的、生日、禮物","a":"這是你的生日禮物。"},{"n":20,"v":"Năm nay tôi hai mươi tuổi.","h":"今年、我、二十、歲","a":"今年我二十歲。"},{"n":21,"v":"Tôi muốn ăn bánh sinh nhật.","h":"我、想、吃、生日蛋糕","a":"我想吃生日蛋糕。"},{"n":22,"v":"Người Đài Loan có truyền thống ăn mì trường thọ vào ngày sinh nhật.","h":"臺灣人、生日、吃、麵線、傳統","a":"臺灣人生日吃麵線，這是一個傳統。|臺灣人有生日吃麵線的傳統。"},{"n":23,"v":"Chúc bạn luôn vui vẻ!","h":"祝、你、快樂","a":"祝你快樂！"},{"n":24,"v":"Đâu có, đâu có!","h":"哪裡，哪裡","a":"哪裡，哪裡！"},{"n":25,"v":"Chúc bạn vạn sự như ý!","h":"祝、你、萬事如意","a":"祝你萬事如意！"}]},{"t":"Phần 2: 25 câu khó hơn","q":[{"n":26,"v":"Sao bạn lại quên sinh nhật của tôi rồi?","h":"你、怎麼、忘了、我、的、生日","a":"你怎麼忘了我的生日？|你怎麼忘了我的生日了？"},{"n":27,"v":"Đương nhiên tôi nhớ ngày sinh nhật của bạn, sao tôi có thể quên được!","h":"當然、我、記得、你、的、生日、我、怎麼、會、忘了","a":"當然我記得你的生日，我怎麼會忘了？|我當然記得你的生日，我怎麼會忘了呢？"},{"n":28,"v":"Cảm ơn bạn đã trở về để tổ chức sinh nhật cùng tôi.","h":"謝謝、你、回來、跟、我、一起、過、生日","a":"謝謝你回來跟我一起過生日。"},{"n":29,"v":"Bạn nhiệt tình như vậy, tôi thật sự rất cảm động.","h":"你、那麼、熱心、我、真的、很、感動","a":"你那麼熱心，我真的很感動。"},{"n":30,"v":"Tôi quen một người bạn Tây Ban Nha trong chương trình trao đổi ngôn ngữ.","h":"我、在、語言交換、認識、一、個、西班牙、朋友","a":"我在語言交換認識一個西班牙朋友。|我在語言交換中認識了一個西班牙朋友。"},{"n":31,"v":"Chúng tôi bằng tuổi nhau, nhưng ngôn ngữ chúng tôi học không giống nhau.","h":"我們、一樣、大、但是、我們、學、的、語言、不、一樣","a":"我們一樣大，但是我們學的語言不一樣。"},{"n":32,"v":"Sinh nhật năm nay, mẹ đã chuẩn bị mì trường thọ, trứng và bánh sinh nhật cho tôi.","h":"今年、生日、媽媽、替、我、準備、了、麵線、蛋、和、蛋糕","a":"今年生日媽媽替我準備了麵線、蛋和蛋糕。"},{"n":33,"v":"Theo truyền thống, người lớn tuổi thường ăn mì trường thọ vào ngày sinh nhật.","h":"按照、傳統、年輕人、長輩、生日、吃、麵線","a":"按照傳統，年輕人生日不吃麵線，長輩生日才吃麵線。|按照傳統，長輩生日吃麵線，年輕人不吃。"},{"n":34,"v":"Bạn không cần khách sáo như vậy, chúng ta là bạn mà!","h":"你、不必、那麼、客氣、我們、是、朋友","a":"你不必那麼客氣，我們是朋友！|你不必那麼客氣，我們是朋友嘛！"},{"n":35,"v":"Món quà này là do bạn mua cho tôi phải không?","h":"這、個、禮物、是、你、買、給、我、的、嗎","a":"這個禮物是你買給我的嗎？"},{"n":36,"v":"Chúc bạn năm nay vạn sự như ý, muốn gì được nấy!","h":"祝、你、今年、萬事如意、心想事成","a":"祝你今年萬事如意，心想事成！"},{"n":37,"v":"Bạn đợi tôi ở cửa khoảng mười phút nhé, tôi sắp về rồi.","h":"你、在、門口、等、我、十分鐘、左右、我、快、回來、了","a":"你在門口等我十分鐘左右，我快回來了。"},{"n":38,"v":"Sao bạn biết hôm nay là sinh nhật của tôi?","h":"你、怎麼、知道、今天、是、我、的、生日","a":"你怎麼知道今天是我的生日？"},{"n":39,"v":"Tôi không chỉ chuẩn bị bánh sinh nhật mà còn mua quà cho bạn.","h":"我、不但、準備、了、生日蛋糕、還、買、了、禮物、給、你","a":"我不但準備了生日蛋糕，還買了禮物給你。"},{"n":40,"v":"Cô ấy là người rất nhiệt tình, vì vậy có rất nhiều bạn bè.","h":"她、是、一、個、很、熱心、的、人、所以、有、很多、朋友","a":"她是一個很熱心的人，所以有很多朋友。"},{"n":41,"v":"Tôi học tiếng Tây Ban Nha được khoảng một năm rồi.","h":"我、學、西班牙文、一、年、左右、了","a":"我學西班牙文一年左右了。"},{"n":42,"v":"Bạn đã quên lời chúc sinh nhật mà tôi nói với bạn năm ngoái rồi sao?","h":"你、忘了、我、去年、跟、你、說、的、生日祝福、了、嗎","a":"你忘了我去年跟你說的生日祝福了嗎？"},{"n":43,"v":"Đừng khách sáo, đây chỉ là một món quà nhỏ thôi.","h":"不必客氣、這、只是、一、個、小、禮物","a":"不必客氣，這只是一個小禮物。"},{"n":44,"v":"Hôm nay là sinh nhật của bà tôi, gia đình tôi chuẩn bị mì trường thọ và trứng cho bà.","h":"今天、是、我、奶奶、的、生日、我、的、家人、替、她、準備、了、麵線、和、蛋","a":"今天是我奶奶的生日，我的家人替她準備了麵線和蛋。"},{"n":45,"v":"Chúc bạn mỗi ngày đều vui vẻ, mọi việc đều thuận lợi!","h":"祝、你、每天、都、快樂、萬事如意","a":"祝你每天都快樂，萬事如意！"},{"n":46,"v":"Bạn trẻ tuổi như vậy mà đã biết nói ba ngôn ngữ rồi!","h":"你、那麼、年輕、就、會、說、三、種、語言、了","a":"你那麼年輕就會說三種語言了！"},{"n":47,"v":"Tôi gặp bạn ấy ở cửa khoảng mười phút trước, nhưng bây giờ không thấy bạn ấy đâu nữa.","h":"我、十分鐘、左右、以前、在、門口、看到、他、但是、現在、看不到、他、了","a":"我十分鐘左右以前在門口看到他，但是現在看不到他了。"},{"n":48,"v":"Bạn không cần tặng tôi quà đắt tiền đâu, chỉ cần bạn nhớ sinh nhật tôi là được rồi.","h":"你、不必、送、我、很、貴、的、禮物、只要、你、記得、我、的、生日、就、好、了","a":"你不必送我很貴的禮物，只要你記得我的生日就好了。|你不必送我很貴的禮物，只要你記得我的生日就好。"},{"n":49,"v":"Sinh nhật năm nay, tôi hy vọng có thể cùng bạn bè ăn bánh, ăn trứng và đón một ngày thật vui vẻ.","h":"今年、生日、我、希望、可以、跟、朋友、一起、吃、蛋糕、吃、蛋、過、一、個、快樂、的、生日","a":"今年生日我希望可以跟朋友一起吃蛋糕、吃蛋，過一個快樂的生日。"},{"n":50,"v":"Chúc bạn trong năm mới mọi việc đều như ý, những điều mong muốn đều trở thành sự thật!","h":"祝、你、新、一、年、萬事如意、心想事成","a":"祝你新的一年萬事如意，心想事成！"}]}]},
+  {"t":"Bài 14: 天氣這麼冷 – Trời Lạnh Thế","p":[{"t":"Phần 1: 25 câu dễ","q":[{"n":1,"v":"Hôm nay thời tiết rất lạnh.","h":"今天、天氣、很、冷","a":"今天天氣很冷。|今天很冷。"},{"n":2,"v":"Hôm nay gió rất lớn.","h":"今天、風、很、大","a":"今天風很大。"},{"n":3,"v":"Mùa xuân rất đẹp.","h":"春天、很、美","a":"春天很美。"},{"n":4,"v":"Tôi muốn đi trượt tuyết.","h":"我、想、去、滑雪","a":"我想去滑雪。"},{"n":5,"v":"Chúc mừng năm mới!","h":"新年、快樂","a":"新年快樂！"},{"n":6,"v":"Tôi nhớ bố mẹ tôi.","h":"我、想、我、的、父母","a":"我想我的父母。"},{"n":7,"v":"Mùa đông ở đây rất lạnh.","h":"這裡、冬天、很、冷","a":"這裡冬天很冷。|這裡的冬天很冷。"},{"n":8,"v":"Năm sau tôi muốn đến Đài Loan.","h":"明年、我、想、到、臺灣","a":"明年我想到臺灣。|明年我想到臺灣去。"},{"n":9,"v":"Mùa thu có lá đỏ.","h":"秋天、有、紅葉","a":"秋天有紅葉。"},{"n":10,"v":"Tôi chỉ muốn ở nhà.","h":"我、只、想、在、家","a":"我只想在家。"},{"n":11,"v":"Ngọc Sơn rất cao.","h":"玉山、很、高","a":"玉山很高。"},{"n":12,"v":"Tôi muốn đến New York.","h":"我、想、到、紐約","a":"我想到紐約。|我想去紐約。"},{"n":13,"v":"Hôm qua trời có tuyết rơi.","h":"昨天、下雪","a":"昨天下雪。|昨天下雪了。"},{"n":14,"v":"Cuối tháng 12 tôi sẽ về nhà.","h":"十二月底、我、會、回家","a":"十二月底我會回家。"},{"n":15,"v":"Trời đang mưa, bạn nhớ mang ô nhé.","h":"正在、下雨、你、記得、帶、傘","a":"正在下雨，你記得帶傘。|正在下雨，你記得帶傘喔。"},{"n":16,"v":"Tôi rất ghét bão.","h":"我、很、討厭、颱風","a":"我很討厭颱風。"},{"n":17,"v":"Mùa hè ở đây rất nóng và ẩm ướt.","h":"這裡、夏天、很、熱、很、濕","a":"這裡夏天很熱，很濕。|這裡的夏天很熱，也很濕。"},{"n":18,"v":"Tôi đang xem tin tức.","h":"我、在、看、新聞","a":"我在看新聞。|我正在看新聞。"},{"n":19,"v":"Hôm nay lạnh hơn hôm qua.","h":"今天、比、昨天、更、冷","a":"今天比昨天更冷。|今天比昨天冷。"},{"n":20,"v":"Mọi người hãy cẩn thận!","h":"大家、小心","a":"大家小心！|大家要小心！"},{"n":21,"v":"Thời tiết này thật đáng sợ.","h":"這、種、天氣、很、可怕","a":"這種天氣很可怕。"},{"n":22,"v":"Mưa cuối cùng cũng ngừng rồi.","h":"雨、終於、停、了","a":"雨終於停了。"},{"n":23,"v":"Trời lại mưa rồi.","h":"又、下雨、了","a":"又下雨了。"},{"n":24,"v":"Lần này tôi không đi.","h":"這次、我、不、去","a":"這次我不去。"},{"n":25,"v":"Lần trước thời tiết rất tốt.","h":"上次、天氣、很、好","a":"上次天氣很好。"}]},{"t":"Phần 2: 25 câu khó hơn","q":[{"n":26,"v":"Nghe nói cuối tháng 12 ở New York thường có tuyết rơi.","h":"聽說、十二月底、紐約、常常、下雪","a":"聽說十二月底紐約常常下雪。"},{"n":27,"v":"Mùa đông năm sau, tôi muốn cùng bố mẹ đi trượt tuyết.","h":"明年、冬天、我、想、跟、父母、一起、去、滑雪","a":"明年冬天我想跟父母一起去滑雪。"},{"n":28,"v":"Tôi nhớ bạn, nhưng gần đây tôi quá bận nên không thể đến gặp bạn.","h":"我、想、你、但是、最近、我、太、忙、了、所以、不、能、去、看、你","a":"我想你，但是最近我太忙了，所以不能去看你。|我想你，可是最近我太忙了，所以不能去看你。"},{"n":29,"v":"Mùa thu ở Đài Loan rất đẹp vì có thể nhìn thấy lá đỏ.","h":"臺灣、的、秋天、很、美、因為、可以、看到、紅葉","a":"臺灣的秋天很美，因為可以看到紅葉。"},{"n":30,"v":"Trời sắp mưa rồi, mọi người nhớ mang ô nhé.","h":"快、下雨、了、大家、記得、帶、傘","a":"快下雨了，大家記得帶傘。"},{"n":31,"v":"Bản tin nói rằng ngày mai có thể có bão, mọi người phải cẩn thận.","h":"新聞、說、明天、可能、有、颱風、大家、要、小心","a":"新聞說明天可能有颱風，大家要小心。"},{"n":32,"v":"Tôi không thích mùa hè ở đây vì thời tiết vừa nóng vừa ẩm ướt.","h":"我、不、喜歡、這裡、的、夏天、因為、天氣、又、熱、又、濕","a":"我不喜歡這裡的夏天，因為天氣又熱又濕。"},{"n":33,"v":"Lần trước tôi đến Ngọc Sơn, thời tiết rất lạnh và gió cũng rất lớn.","h":"上次、我、去、玉山、天氣、很、冷、風、也、很、大","a":"上次我去玉山，天氣很冷，風也很大。"},{"n":34,"v":"Mùa xuân năm sau, tôi muốn đi du lịch cùng bạn bè.","h":"明年、春天、我、想、跟、朋友、一起、去、旅行","a":"明年春天我想跟朋友一起去旅行。"},{"n":35,"v":"Trời mưa lớn như vậy, tốt nhất mọi người đừng ra ngoài.","h":"雨、下、得、這麼、大、大家、最好、不、要、出去","a":"雨下得這麼大，大家最好不要出去。"},{"n":36,"v":"Mùa đông ở New York lạnh hơn mùa đông ở Đài Loan nhiều.","h":"紐約、的、冬天、比、臺灣、的、冬天、冷、得、多","a":"紐約的冬天比臺灣的冬天冷得多。"},{"n":37,"v":"Tôi chỉ muốn ở nhà xem tin tức và đợi mưa ngừng.","h":"我、只、想、在家、看、新聞、等、雨、停","a":"我只想在家看新聞，等雨停。"},{"n":38,"v":"Nghe nói cuối tháng 12 ở đó sẽ có tuyết rơi, tôi rất mong chờ.","h":"聽說、那裡、十二月底、會、下雪、我、很、期待","a":"聽說那裡十二月底會下雪，我很期待。"},{"n":39,"v":"Vì trời sắp có bão nên mọi người phải chuẩn bị trước.","h":"因為、快、有、颱風、了、所以、大家、要、先、準備","a":"因為快有颱風了，所以大家要先準備。"},{"n":40,"v":"Lần này thời tiết còn tệ hơn lần trước, chúng ta đừng đi nữa.","h":"這次、天氣、比、上次、更、不好、我們、不、要、去、了","a":"這次天氣比上次更不好，我們不要去了。"},{"n":41,"v":"Tôi nhớ bố mẹ, vì vậy tôi dự định về nhà vào dịp năm mới.","h":"我、想、父母、所以、我、打算、新年、回家","a":"我想父母，所以我打算新年回家。"},{"n":42,"v":"Mùa thu năm nay, tôi muốn đến Ngọc Sơn ngắm lá đỏ.","h":"今年、秋天、我、想、去、玉山、看、紅葉","a":"今年秋天我想去玉山看紅葉。"},{"n":43,"v":"Trời lạnh như vậy mà bạn vẫn muốn đi bơi sao?","h":"天氣、這麼、冷、你、還、想、去、游泳、嗎","a":"天氣這麼冷，你還想去游泳嗎？"},{"n":44,"v":"Bão thật đáng sợ, hy vọng mưa và gió sẽ sớm ngừng.","h":"颱風、很、可怕、希望、雨、和、風、快、停","a":"颱風很可怕，希望雨和風快停。"},{"n":45,"v":"Mùa hè ở đây không chỉ nóng mà còn thường xuyên mưa.","h":"這裡、的、夏天、不但、很、熱、而且、常常、下雨","a":"這裡的夏天不但很熱，而且常常下雨。"},{"n":46,"v":"Nếu ngày mai trời vẫn mưa, chúng ta chỉ có thể ở nhà.","h":"如果、明天、還、下雨、我們、就、只、能、在家","a":"如果明天還下雨，我們就只能在家。"},{"n":47,"v":"Tôi vừa xem tin tức vừa lo lắng về cơn bão sắp đến.","h":"我、一邊、看、新聞、一邊、擔心、快、來、的、颱風","a":"我一邊看新聞，一邊擔心快來的颱風。"},{"n":48,"v":"Năm ngoái tôi muốn đi New York vào mùa đông, nhưng cuối cùng đã không đi được.","h":"去年、我、想、冬天、去、紐約、但是、最後、沒、有、去、成","a":"去年我想冬天去紐約，但是最後沒有去成。"},{"n":49,"v":"Trời sắp mưa rồi, bạn đi đường cẩn thận và đi chậm nhé.","h":"快、下雨、了、你、路上、小心、慢走","a":"快下雨了，你路上小心，慢走。"},{"n":50,"v":"Chúc mọi người năm mới vui vẻ, thời tiết tốt và mọi việc đều thuận lợi!","h":"祝、大家、新年快樂、天氣、好、萬事如意","a":"祝大家新年快樂，天氣好，萬事如意。"}]}]},
+  {"t":"Bài 15: 我很不舒服 – Tôi Rất Khó Chịu","p":[{"t":"Phần 1: 25 câu dễ","q":[{"n":1,"v":"Tôi muốn gặp bác sĩ.","h":"我、想、看、醫生","a":"我想看醫生。"},{"n":2,"v":"Tôi bị chảy nước mũi liên tục.","h":"我、一直、流、鼻水","a":"我一直流鼻水。"},{"n":3,"v":"Đầu tôi đau quá.","h":"我、頭、很、痛","a":"我頭很痛。"},{"n":4,"v":"Gần đây khẩu vị của tôi không tốt.","h":"最近、我、胃口、不好","a":"最近我胃口不好。"},{"n":5,"v":"Cổ họng tôi bị viêm rồi.","h":"我、喉嚨、發炎、了","a":"我喉嚨發炎了。"},{"n":6,"v":"Tôi bị bệnh rồi.","h":"我、生病、了","a":"我生病了。"},{"n":7,"v":"Hôm nay tôi bị sốt.","h":"今天、我、發燒","a":"今天我發燒。|今天我發燒了。"},{"n":8,"v":"Tôi bị cảm rồi.","h":"我、感冒、了","a":"我感冒了。"},{"n":9,"v":"Tôi muốn đến hiệu thuốc mua thuốc.","h":"我、想、去、藥局、拿、藥","a":"我想去藥局拿藥。"},{"n":10,"v":"Bạn uống một ít nước đi nhé.","h":"你、喝、一點、水、吧","a":"你喝一點水吧。"},{"n":11,"v":"Bạn nên nghỉ ngơi.","h":"你、應該、休息","a":"你應該休息。"},{"n":12,"v":"Tối nay hãy đi ngủ sớm một chút.","h":"今天晚上、早一點、睡覺","a":"今天晚上早一點睡覺。"},{"n":13,"v":"Sắc mặt của bạn trông rất khó coi.","h":"你、的、臉色、很、難看","a":"你的臉色很難看。"},{"n":14,"v":"Bụng tôi đau quá.","h":"我、肚子、很、痛","a":"我肚子很痛。"},{"n":15,"v":"Em trai tôi bị nôn rồi.","h":"我、弟弟、吐、了","a":"我弟弟吐了。"},{"n":16,"v":"Tôi đã uống thuốc vài lần rồi.","h":"我、已經、吃、了、幾、次、藥","a":"我已經吃了幾次藥了。|我已經吃了幾次藥。"},{"n":17,"v":"Bạn có thể đi cùng tôi đến bệnh viện không?","h":"你、可以、陪、我、去、看病、嗎","a":"你可以陪我去看病嗎？"},{"n":18,"v":"Sức khỏe rất quan trọng.","h":"健康、很、重要","a":"健康很重要。"},{"n":19,"v":"Tôi có bảo hiểm sức khỏe.","h":"我、有、健康保險","a":"我有健康保險。"},{"n":20,"v":"Tôi không thích ăn đồ nhiều dầu mỡ.","h":"我、不、喜歡、吃、很、油、的、東西","a":"我不喜歡吃很油的東西。"},{"n":21,"v":"Khi bị cảm, đừng uống nước đá.","h":"感冒、的、時候、別、喝、冰水","a":"感冒的時候別喝冰水。"},{"n":22,"v":"Cảm ơn bạn đã quan tâm đến tôi.","h":"謝謝、你、關心、我","a":"謝謝你關心我。"},{"n":23,"v":"Tôi muốn ngủ tám tiếng mỗi ngày.","h":"我、想、每天、睡、八、小時","a":"我想每天睡八小時。|我想每天睡八個小時。"},{"n":24,"v":"Bạn bị làm sao vậy?","h":"你、怎麼了","a":"你怎麼了？"},{"n":25,"v":"Không cần nữa, cảm ơn bạn.","h":"不用了、謝謝","a":"不用了，謝謝。"}]},{"t":"Phần 2: 25 câu khó hơn","q":[{"n":26,"v":"Tôi bị cảm, chảy nước mũi liên tục và còn đau đầu nữa.","h":"我、感冒、了、一直、流、鼻水、而且、頭、也、痛","a":"我感冒了，一直流鼻水，而且頭也痛。"},{"n":27,"v":"Vì cổ họng bị viêm nên hôm nay tôi không muốn ăn gì cả.","h":"因為、喉嚨、發炎、了、所以、今天、我、什麼、都、不、想、吃","a":"因為喉嚨發炎了，所以今天我什麼都不想吃。"},{"n":28,"v":"Bác sĩ nói tôi bị cảm và cần nghỉ ngơi nhiều hơn.","h":"醫生、說、我、感冒、了、需要、多、休息","a":"醫生說我感冒了，需要多休息。"},{"n":29,"v":"Bạn bị sốt rồi, tốt nhất nên về nhà nghỉ ngơi.","h":"你、發燒、了、最好、回家、休息","a":"你發燒了，最好回家休息。"},{"n":30,"v":"Sắc mặt của mẹ hôm nay không tốt, tôi rất lo cho mẹ.","h":"媽媽、今天、的、臉色、不好、我、很、關心、她","a":"媽媽今天的臉色不好，我很關心她。"},{"n":31,"v":"Tôi đau bụng và đã nôn vài lần rồi.","h":"我、肚子、痛、而且、已經、吐、了、幾、次","a":"我肚子痛，而且已經吐了幾次。"},{"n":32,"v":"Nếu bạn bị bệnh, tôi sẽ đi cùng bạn đến gặp bác sĩ.","h":"如果、你、生病、了、我、就、陪、你、去、看病","a":"如果你生病了，我就陪你去看病。"},{"n":33,"v":"Tôi muốn đến hiệu thuốc lấy thuốc, sau đó về nhà ngủ một chút.","h":"我、想、去、藥局、拿、藥、然後、回家、睡、一、下","a":"我想去藥局拿藥，然後回家睡一下。"},{"n":34,"v":"Bác sĩ bảo tôi không được uống nước đá và ăn đồ nhiều dầu mỡ.","h":"醫生、叫、我、別、喝、冰水、也、別、吃、太、油、的、東西","a":"醫生叫我別喝冰水，也別吃太油的東西。"},{"n":35,"v":"Gần đây tôi ngủ không đủ tám tiếng mỗi ngày nên thường xuyên cảm thấy mệt.","h":"最近、我、每天、睡、不、到、八、小時、所以、常常、覺得、累","a":"最近我每天睡不到八小時，所以常常覺得累。"},{"n":36,"v":"Tôi có bảo hiểm sức khỏe, vì vậy chi phí khám bệnh không quá đắt.","h":"我、有、健康保險、所以、看病、的、費用、不、太、貴","a":"我有健康保險，所以看病的費用不太貴。"},{"n":37,"v":"Bạn bị làm sao vậy? Sao sắc mặt trông khó coi như thế?","h":"你、怎麼了、為什麼、臉色、看起來、那麼、難看","a":"你怎麼了？為什麼臉色看起來那麼難看？"},{"n":38,"v":"Tôi đã uống thuốc rồi nhưng vẫn bị sốt và chảy nước mũi.","h":"我、已經、吃、藥、了、但是、還是、發燒、和、流、鼻水","a":"我已經吃藥了，但是還是發燒和流鼻水。"},{"n":39,"v":"Hôm nay tôi không khỏe, bạn có thể đến trung tâm y tế cùng tôi không?","h":"今天、我、不、舒服、你、可以、陪、我、去、健康中心、嗎","a":"今天我不舒服，你可以陪我去健康中心嗎？"},{"n":40,"v":"Bạn nên đi ngủ sớm hơn và nghỉ ngơi nhiều hơn để giữ gìn sức khỏe.","h":"你、最好、早一點、睡覺、多、休息、才能、保持、健康","a":"你最好早一點睡覺，多休息，才能保持健康。"},{"n":41,"v":"Tôi không có khẩu vị vì bị cảm, nên cả ngày nay chưa ăn gì nhiều.","h":"因為、我、感冒、了、胃口、不好、所以、今天、一整天、都、沒、有、吃、多少","a":"因為我感冒了，胃口不好，所以今天一整天都沒有吃多少。"},{"n":42,"v":"Em trai tôi bị đau đầu và sốt, mẹ phải đưa em đi khám bệnh.","h":"我、弟弟、頭、痛、又、發燒、媽媽、只好、帶、他、去、看病","a":"我弟弟頭痛又發燒，媽媽只好帶他去看病。"},{"n":43,"v":"Nếu bạn không khỏe thì không cần đi làm hôm nay, hãy về nhà nghỉ ngơi đi.","h":"如果、你、不、舒服、今天、不用、去、上班、回家、休息、吧","a":"如果你不舒服，今天不用去上班，回家休息吧。"},{"n":44,"v":"Bác sĩ dặn tôi uống nhiều nước, uống thuốc đúng giờ và ngủ sớm.","h":"醫生、叫、我、多、喝、水、按時、吃、藥、早一點、睡覺","a":"醫生叫我多喝水，按時吃藥，早一點睡覺。"},{"n":45,"v":"Tôi đã đến trung tâm y tế vài lần rồi, nhưng bệnh vẫn chưa khỏi.","h":"我、已經、去、過、健康中心、幾、次、了、但是、病、還、沒、有、好","a":"我已經去過健康中心幾次了，但是病還沒有好。"},{"n":46,"v":"Cảm ơn bạn đã quan tâm và đi cùng tôi đến bệnh viện.","h":"謝謝、你、關心、我、還、陪、我、去、醫院","a":"謝謝你關心我，還陪我去醫院。"},{"n":47,"v":"Vì tôi bị đau bụng nên bác sĩ bảo tôi đừng ăn đồ lạnh.","h":"因為、我、肚子、痛、所以、醫生、叫、我、別、吃、冰、的、東西","a":"因為我肚子痛，所以醫生叫我別吃冰的東西。"},{"n":48,"v":"Muốn có sức khỏe tốt thì không chỉ cần ăn uống lành mạnh mà còn phải ngủ đủ giấc.","h":"想、有、好、的、健康、不但、要、吃、得、健康、還、要、睡、得、夠","a":"想有好的健康，不但要吃得健康，還要睡得夠。"},{"n":49,"v":"Tôi thấy bạn bị bệnh đã mấy ngày rồi, tốt nhất hôm nay hãy đến gặp bác sĩ.","h":"我、看、你、生病、已經、好、幾、天、了、最好、今天、去、看、醫生","a":"我看你生病已經好幾天了，最好今天去看醫生。"},{"n":50,"v":"Mẹ lo lắng cho sức khỏe của tôi nên bảo tôi nghỉ ngơi ở nhà, không cần ra ngoài.","h":"媽媽、關心、我、的、健康、所以、叫、我、在家、休息、不用、出去","a":"媽媽關心我的健康，所以叫我在家休息，不用出去。"}]}]}
+  ];
+  const $ = id => document.getElementById(id);
+  const panel = $('panel-reflex'), bookSel = $('rx-book'), partSel = $('rx-part'), inp = $('rx-input');
+  const show = (id, on) => { $(id).hidden = !on; };
+  const active = () => panel.classList.contains('active');
+  const gameOn = () => !$('rx-game').hidden;
+  let bi = -1, pi = -1, mode = 'rnd', qs = [], idx = 0, res = [], lastWrong = [];
+  let hintsLeft = 3, hintLv = 0, over = true;
+  let infoOpen = false, cd = null, cdLeft = 2, cdPaused = false, cdStarted = false, safety = null;
+  /* --- chuẩn hoá & chấm: bỏ dấu câu/khoảng trắng, 台=臺, 裏=裡, 着=著; chấp nhận mọi đáp án trong a (ngăn bằng |) --- */
+  const MAP = {'台':'臺','裏':'裡','着':'著'};
+  const norm = t => String(t || '').normalize('NFKC').replace(/[\s\p{P}~～]/gu, '').replace(/[台裏着]/g, c => MAP[c]);
+  const alts = q => q.a.split('|').map(s => s.trim()).filter((s, i, a) => s && a.indexOf(s) === i);
+  const isOk = (q, ans) => { const v = norm(ans); return !!v && alts(q).some(a => norm(a) === v); };
+  const shuffle = a => { for(let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  const parts = () => bi < 0 ? [].concat(...RX.map(b => b.p)) : pi < 0 ? RX[bi].p : [RX[bi].p[pi]];
+  const usable = () => [].concat(...parts().map(p => p.q.filter(q => q.a && q.v)));
+  function stop(){ over = true; }
+  function silence(){ try{ if(currentAudio) currentAudio.pause(); }catch(e){} try{ speechSynthesis.cancel(); }catch(e){} }
+  function closeInfo(){ clearInterval(cd); clearTimeout(safety); infoOpen = false; show('rx-info', false); show('rx-dim', false); }
+  function halt(){ stop(); closeInfo(); silence(); show('rx-game', false); show('rx-end', false); show('rx-empty', false); }
+  function exit(){ halt(); const h = document.querySelector('.tab-btn[data-tab="home"]'); if(h) h.click(); }
+  function hud(){
+    $('rx-count').textContent = 'Câu ' + Math.min(idx + 1, qs.length) + ' / ' + qs.length;
+    $('rx-pbar').style.width = (qs.length ? idx / qs.length * 100 : 0) + '%';
+  }
+  function hintList(q){
+    const a = [...norm(alts(q)[0])], n = a.length;
+    return ['Số chữ Hán: ' + n + ' (' + '＿'.repeat(Math.min(n, 14)) + ')',
+      q.h ? 'Từ gợi ý: ' + q.h : 'Chữ đầu: ' + a[0] + '＿'.repeat(Math.max(0, Math.min(n, 14) - 1)),
+      'Bắt đầu bằng: ' + a.slice(0, Math.max(2, Math.ceil(n / 3))).join('') + '…'];
+  }
+  function showQ(){
+    const q = qs[idx];
+    hintsLeft = 3; hintLv = 0;
+    inp.value = ''; inp.className = 'ls-input'; inp.disabled = false;
+    $('rx-prompt').textContent = q.v;
+    $('rx-hint').textContent = 'Chưa có gợi ý';
+    $('rx-hintbtn').disabled = false; $('rx-hintlbl').textContent = 'Gợi ý (3)';
+    hud(); over = false;
+    setTimeout(() => { if(gameOn() && !infoOpen) inp.focus(); }, 50);
+  }
+  function giveHint(){
+    if(over || infoOpen || hintsLeft <= 0) return;
+    const hs = hintList(qs[idx]); hintLv++; hintsLeft--;
+    $('rx-hint').textContent = hs.slice(0, hintLv).join('  ·  ');
+    $('rx-hintlbl').textContent = 'Gợi ý (' + hintsLeft + ')'; $('rx-hintbtn').disabled = hintsLeft <= 0;
+    inp.focus();
+  }
+  /* kind: undefined = chấm bình thường | 'show' = xem đáp án (chế độ này không tính giờ) */
+  function check(kind){
+    if(over || infoOpen) return;
+    const q = qs[idx], ans = inp.value;
+    if(!kind && !ans.trim()){ inp.classList.add('bad'); setTimeout(() => inp.classList.remove('bad'), 400); inp.focus(); return; }
+    stop();
+    const ok = !kind && isOk(q, ans);
+    const lbl = kind === 'show' ? '(xem đáp án)' : ans.trim();
+    res.push({q, ok, typed: lbl});
+    inp.className = 'ls-input ' + (ok ? 'ok' : 'bad'); inp.disabled = true;
+    hud(); openInfo(q, ok, lbl);
+  }
+  /* --- thanh thông tin xanh (đúng) / đỏ (sai) --- */
+  function cdLabel(){ $('rx-icont').textContent = 'Tiếp tục (' + cdLeft + 's)'; }
+  function startCd(){
+    if(cdStarted || !infoOpen) return; cdStarted = true; clearTimeout(safety);
+    cd = setInterval(() => { if(cdPaused) return; cdLeft--; if(cdLeft <= 0) next(); else cdLabel(); }, 1000);
+  }
+  function next(){
+    if(!infoOpen) return;
+    closeInfo(); silence();
+    if(idx + 1 >= qs.length){ idx++; end(); } else { idx++; showQ(); }
+  }
+  function openInfo(q, ok, typed){
+    infoOpen = true; cdLeft = ok ? 2 : 4; cdPaused = false; cdStarted = false;
+    $('rx-info').classList.toggle('bad', !ok);
+    $('rx-ipause').textContent = '⏸'; cdLabel();
+    const A = alts(q);
+    $('rx-iw').textContent = A[0];
+    $('rx-ialt').textContent = A.length > 1 ? 'Cách nói khác: ' + A.slice(1).join('  /  ') : '';
+    $('rx-ialt').hidden = A.length < 2;
+    $('rx-imean').textContent = q.v;
+    $('rx-iyou').textContent = ok ? '' : 'Bạn gõ: ' + (typed || '—');
+    show('rx-dim', true); show('rx-info', true);
+    playWord(A[0], $('rx-isp'), {silent: true, onEnd: startCd});
+    safety = setTimeout(startCd, 12000);
+  }
+  /* --- màn hình kết quả --- */
+  function row(r, chk){
+    const q = r.q, tr = document.createElement('tr');
+    if(chk){ const c = document.createElement('td'); c.innerHTML = '<span class="mt-chk">✓</span>'; tr.appendChild(c); }
+    const h = document.createElement('td'); h.className = 'h'; h.lang = 'zh-Hant'; h.textContent = alts(q)[0] + ' ';
+    const sp = document.createElement('button'); sp.type = 'button'; sp.textContent = '🔊';
+    sp.addEventListener('click', () => playWord(alts(q)[0], sp, {silent: true})); h.appendChild(sp);
+    const m = document.createElement('td'); m.textContent = q.v;
+    if(!chk){ const s = document.createElement('small'); s.textContent = 'Bạn gõ: ' + (r.typed || '—'); m.appendChild(s); }
+    tr.appendChild(h); tr.appendChild(m); return tr;
+  }
+  function end(){
+    stop(); closeInfo();
+    const ok = res.filter(r => r.ok), no = res.filter(r => !r.ok);
+    const pc = qs.length ? Math.round(ok.length / qs.length * 100) : 0;
+    const col = pc >= 70 ? '#58cc02' : pc >= 40 ? '#f59e0b' : '#f87171';
+    $('rx-ring').style.borderColor = col; $('rx-ring').style.color = col;
+    $('rx-pct').textContent = pc + '%';
+    $('rx-et').textContent = pc === 100 ? '🏆 Tuyệt vời!' : pc >= 70 ? '👏 Làm tốt lắm!' : '💪 Cố gắng!';
+    $('rx-es').textContent = '✓ ' + ok.length + ' đúng   ✗ ' + no.length + ' sai';
+    $('rx-okn').textContent = ok.length; $('rx-non').textContent = no.length;
+    $('rx-oktb').replaceChildren(...ok.map(r => row(r, true)));
+    $('rx-notb').replaceChildren(...no.map(r => row(r, false)));
+    lastWrong = no.map(r => r.q);
+    $('rx-retry').hidden = !no.length; $('rx-retryn').textContent = no.length;
+    show('rx-game', false); show('rx-end', true);
+  }
+  function start(items){
+    show('rx-modal', false); show('rx-empty', false); stop(); closeInfo(); silence();
+    mode = bi < 0 ? 'rnd' : 'seq';
+    qs = items ? items.slice() : usable();
+    if(mode === 'rnd' || items) shuffle(qs);
+    if(!qs.length){ halt(); $('rx-emptytxt').textContent = RX.length ? 'Phần này chưa có câu để luyện.' : 'Chưa có giáo trình nào cho Luyện phản xạ.'; show('rx-empty', true); return; }
+    idx = 0; res = [];
+    show('rx-end', false); show('rx-game', true);
+    showQ();
+  }
+  /* --- chọn giáo trình / phần --- */
+  function fillParts(){
+    partSel.innerHTML = '';
+    const all = document.createElement('option'); all.value = -1;
+    all.textContent = bi < 0 ? 'Bài học' : 'Toàn bộ bài (' + RX[bi].p.reduce((s, p) => s + p.q.filter(q => q.a).length, 0) + ' câu)'; partSel.appendChild(all);
+    if(bi >= 0) RX[bi].p.forEach((p, i) => { const o = document.createElement('option'); o.value = i; o.textContent = p.t + ' (' + p.q.filter(q => q.a).length + ' câu)'; partSel.appendChild(o); });
+    pi = -1; partSel.value = -1;
+  }
+  const blank = document.createElement('option'); blank.value = -1; blank.textContent = 'Giáo trình'; bookSel.appendChild(blank);
+  RX.forEach((b, i) => { const o = document.createElement('option'); o.value = i; o.textContent = b.t; bookSel.appendChild(o); });
+  const restart = () => { if(gameOn() || !$('rx-end').hidden) start(); };
+  bookSel.addEventListener('change', () => { bi = +bookSel.value; mode = bi < 0 ? 'rnd' : 'seq'; fillParts(); bookSel.blur(); restart(); });
+  partSel.addEventListener('change', () => { pi = +partSel.value; partSel.blur(); restart(); });
+  fillParts();
+  $('rx-check').addEventListener('click', () => check());
+  $('rx-hintbtn').addEventListener('click', giveHint);
+  $('rx-showbtn').addEventListener('click', () => check('show'));
+  $('rx-isp').addEventListener('click', () => { const w = $('rx-iw').textContent; if(w) playWord(w, $('rx-isp'), {silent: true}); });
+  $('rx-ipause').addEventListener('click', () => { cdPaused = !cdPaused; $('rx-ipause').textContent = cdPaused ? '▶' : '⏸'; });
+  $('rx-icont').addEventListener('click', next);
+  $('rx-x').addEventListener('click', () => show('rx-modal', false));
+  document.querySelectorAll('.rx-mode').forEach(b => b.addEventListener('click', () => { mode = b.dataset.m; start(); }));
+  $('rx-again').addEventListener('click', () => start());
+  $('rx-next').addEventListener('click', () => start());
+  $('rx-retry').addEventListener('click', () => start(lastWrong));
+  $('rx-other').addEventListener('click', exit);
+  $('rx-exit').addEventListener('click', exit);
+  document.addEventListener('keydown', e => {
+    if(!active() || e.key === 'Escape' || !$('rx-modal').hidden) return;
+    if(infoOpen){ if(e.key === 'Enter'){ e.preventDefault(); next(); } return; }
+    if(!gameOn()) return;
+    const k = e.key.toLowerCase();
+    if(e.ctrlKey && k === 'e'){ e.preventDefault(); check('show'); }
+    else if(e.ctrlKey && (e.code === 'Space' || e.key === ' ')){ e.preventDefault(); giveHint(); }
+    else if(e.key === 'Enter' && !e.isComposing && e.keyCode !== 229){ e.preventDefault(); check(); }
+  });
+  document.querySelectorAll('.tab-btn').forEach(b => b.addEventListener('click', () => {
+    if(b.dataset.tab === 'reflex'){
+      if($('rx-game').hidden && $('rx-end').hidden) start();
+      setTimeout(() => { const f = $('footerNote'); if(f) f.textContent = 'Nhìn câu tiếng Việt, gõ câu tiếng Trung bằng bộ gõ chữ Hán (台/臺 đều được, bỏ qua dấu câu) · Enter kiểm tra · Ctrl+Space gợi ý · Ctrl+E xem đáp án · Đúng = thanh xanh, sai = thanh đỏ, có phát âm · Cần Internet để phát âm'; }, 0);
+    } else { show('rx-modal', false); if(gameOn() || !$('rx-end').hidden) halt(); }
+  }));
+})();
+</script>
+<script>
+/* ============ Từ điển Việt ⇄ Đài ============
+   Nguồn dữ liệu (theo thứ tự ưu tiên):
+   1) Từ vựng TOCFL có sẵn trong app (DATA) — nghĩa & ví dụ do bạn biên soạn, dùng offline.
+   2) 教育部《重編國語辭典修訂本》(Bộ Giáo dục Đài Loan) qua API mở moedict.tw: định nghĩa, ví dụ, đồng/trái nghĩa, bopomofo.
+   3) Google Dịch (dịch máy, ép về Hán phồn thể zh-TW) cho câu/cụm từ chưa có trong 1–2, sau đó chuẩn hóa từ ngữ Đài Loan.
+   Nếu mất mạng: vẫn tra được phần 1. */
+(function(){
+'use strict';
+var root = document.getElementById('panel-dict'); if(!root) return;
+var $ = function(id){ return document.getElementById(id); };
+var out = $('dk-out'), inp = $('dk-input'), goBtn = $('dk-go'), form = $('dk-form'), histEl = $('dk-hist');
+var HANC = '\\u3400-\\u9fff\\uf900-\\ufaff';
+var HAN_RE = new RegExp('[' + HANC + ']'), HAN_ALL = new RegExp('^[' + HANC + ']+$'), HAN_G = new RegExp('[' + HANC + ']', 'g');
+var dir = 'auto', SEQ = 0;
+try{ var sd = localStorage.getItem('dk-dir'); if(sd === 'vi2zh' || sd === 'zh2vi' || sd === 'auto') dir = sd; }catch(e){}
+
+function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+function uniq(a){ var s = {}, r = []; a.forEach(function(x){ if(x && !s[x]){ s[x] = 1; r.push(x); } }); return r; }
+function stripAcc(s){ return String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd'); }
+function hanVars(h){ return String(h || '').replace(/[（(][^）)]*[）)]/g, '').split(/[\/／、,，;；]/).map(function(s){ return s.trim(); }).filter(Boolean); }
+function hanLen(s){ return (String(s).match(HAN_G) || []).length; }
+function capFirst(s){ s = String(s || '').trim(); return s ? s.charAt(0).toUpperCase() + s.slice(1) : s; }
+
+/* ---------- Chuẩn hóa từ ngữ đại lục → Đài Loan (áp lên kết quả dịch máy) ---------- */
+var TW = [['視頻','影片'],['軟件','軟體'],['硬件','硬體'],['網絡','網路'],['計算機','電腦'],['鼠標','滑鼠'],['打印','列印'],['土豆','馬鈴薯'],['出租車','計程車'],['公交車','公車'],['地鐵','捷運'],['默認','預設'],['激活','啟用'],['優盤','隨身碟'],['服務器','伺服器'],['博客','部落格'],['酸奶','優格'],['方便麵','泡麵'],['自行車','腳踏車'],['摩托車','機車'],['冰激凌','冰淇淋'],['菠蘿','鳳梨'],['圓珠筆','原子筆'],['筆記本電腦','筆記型電腦'],['手提電腦','筆記型電腦'],['登錄','登入'],['U盤','隨身碟'],['短信','簡訊']];
+function toTW(s){ TW.forEach(function(p){ if(p[0] !== p[1]) s = s.split(p[0]).join(p[1]); }); return s; }
+
+/* ---------- Mạng: fetch có timeout, cache ---------- */
+function fetchT(url, ms){
+  var ac = ('AbortController' in window) ? new AbortController() : null, t = setTimeout(function(){ if(ac) ac.abort(); }, ms || 8000);
+  return fetch(url, ac ? { signal: ac.signal } : {}).then(function(r){ clearTimeout(t); return r; }, function(e){ clearTimeout(t); throw e; });
+}
+var NET = { moe: true, gt: true, gtUsed: false };           /* cờ nguồn nào đang hoạt động trong lần tra hiện tại */
+var GC = new Map(), MC = new Map();
+function gtr(q, sl, tl){
+  q = String(q || '').trim(); if(!q) return Promise.resolve({ text: '', srcPy: '', tgtPy: '', alts: [] });
+  var key = sl + '|' + tl + '|' + q; if(GC.has(key)) return GC.get(key);
+  var p = (function(){
+    var url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=' + sl + '&tl=' + tl + '&dt=t&dt=rm&dt=bd&q=' + encodeURIComponent(q);
+    return fetchT(url, 9000).then(function(r){ if(!r.ok) throw new Error('gt ' + r.status); return r.json(); }).then(function(j){
+      var text = '', srcPy = '', tgtPy = '', alts = []; NET.gtUsed = true;
+      (j[0] || []).forEach(function(s){ if(s && s[0] != null) text += s[0]; else if(s){ if(s[2]) tgtPy += s[2]; if(s[3]) srcPy += s[3]; } });
+      (j[1] || []).forEach(function(e){ (e[1] || []).forEach(function(t){ alts.push(t); }); });
+      return { text: text.trim(), srcPy: srcPy.trim(), tgtPy: tgtPy.trim(), alts: uniq(alts) };
+    }).catch(function(){
+      /* dự phòng: MyMemory */
+      return fetchT('https://api.mymemory.translated.net/get?q=' + encodeURIComponent(q) + '&langpair=' + encodeURIComponent(sl + '|' + tl), 9000)
+        .then(function(r){ return r.json(); }).then(function(j){
+          var t = j && j.responseData && j.responseData.translatedText;
+          if(!t || /MYMEMORY WARNING|INVALID/i.test(t)) throw new Error('mm');
+          return { text: String(t).trim(), srcPy: '', tgtPy: '', alts: [] };
+        });
+    });
+  })();
+  GC.set(key, p); p.catch(function(){ GC.delete(key); NET.gt = false; });
+  return p;
+}
+function gtrSafe(q, sl, tl){ return gtr(q, sl, tl).catch(function(){ return { text: '', srcPy: '', tgtPy: '', alts: [], fail: true }; }); }
+
+/* ---------- 教育部國語辭典 (qua moedict.tw) ---------- */
+function clean(s){ return String(s || '').replace(/<[^>]*>/g, '').replace(/\{\[[0-9a-fA-F]+\]\}/g, '').replace(/[`~]/g, '').replace(/\s+/g, ' ').trim(); }
+function splitList(s, w){ return uniq(clean(s, w).split(/[,，、;；]/).map(function(x){ return x.replace(/[「」『』]/g, '').trim(); }).filter(function(x){ return x && HAN_RE.test(x); })); }
+function parseMoe(j, word){
+  var hs = j.h || j.heteronyms || []; if(!hs.length) return null;
+  var o = { title: clean(j.t || j.title || word), het: [] };
+  hs.forEach(function(h){
+    var defs = (h.d || h.definitions || []).map(function(d){
+      var ex = [];
+      [].concat(d.e || d.example || []).forEach(function(e){
+        var t = clean(e, o.title), qs = t.match(/「[^」]+」/g);
+        if(qs) qs.forEach(function(q){ ex.push(q.replace(/[「」]/g, '')); }); else if(t){ t = t.replace(/^如[：:]?/, '').trim(); if(t) ex.push(t); }
+      });
+      return { type: clean(d.type || ''), f: clean(d.f || d.def || '', o.title).replace(/^\d+[.、]\s*/, ''), e: uniq(ex).filter(function(x){ return HAN_RE.test(x) && x.length <= 60; }), s: splitList(d.s || d.synonyms || '', o.title), a: splitList(d.a || d.antonyms || '', o.title) };
+    }).filter(function(d){ return d.f; });
+    o.het.push({ py: clean(h.p || h.pinyin || ''), zy: clean(h.b || h.bopomofo || ''), defs: defs });
+  });
+  return o.het.some(function(h){ return h.defs.length; }) ? o : null;
+}
+function moe(word){
+  if(MC.has(word)) return MC.get(word);
+  var enc = encodeURIComponent(word);
+  var urls = ['https://www.moedict.tw/uni/' + enc + '.json', 'https://www.moedict.tw/a/' + enc + '.json'];
+  var p = (function next(i){
+    if(i >= urls.length) return Promise.resolve(null);
+    return fetchT(urls[i], 8000).then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); }).then(function(j){ return parseMoe(j, word) || next(i + 1); }).catch(function(e){ if(String(e && e.message) !== '404' && !/^40\d$/.test(String(e && e.message))) NET.moe = false; return next(i + 1); });
+  })(0);
+  MC.set(word, p); return p;
+}
+
+/* ---------- Chỉ mục từ vựng cục bộ ---------- */
+var IDX = null, VOW = 'aeiouüāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜ';
+var SYL = new RegExp("[^" + VOW + "'\\s]*[" + VOW + "]+(?:ng|n(?![" + VOW + "])|r(?![" + VOW + "]))?", 'gi');
+function sylls(py){ return String(py || '').toLowerCase().replace(/[.,。，!?！？]/g, ' ').match(SYL) || []; }
+function buildIdx(){
+  if(IDX) return IDX;
+  IDX = { all: [], byHan: new Map(), chars: new Map(), cnt: new Map() };
+  var src = (typeof DATA !== 'undefined' && DATA) ? DATA : [];
+  src.forEach(function(d){
+    if(!d || d.type !== 'word') return;
+    var hv = hanVars(d.han), pure = hv.filter(function(v){ return HAN_ALL.test(v); });
+    var segs = String(d.nghia || '').split(/[;,\/\n]|\(|\)/).map(stripAcc).map(function(s){ return s.trim(); }).filter(Boolean);
+    var o = { d: d, hv: hv, pure: pure, vi: stripAcc(d.nghia), segs: segs, pyN: stripAcc(d.pinyin).replace(/[^a-z]/g, '') };
+    IDX.all.push(o);
+    pure.forEach(function(v){
+      if(!IDX.byHan.has(v)) IDX.byHan.set(v, []);
+      IDX.byHan.get(v).push(o);
+      var ch = Array.from(v), sy = (String(d.pinyin).indexOf(' ') > 0 ? String(d.pinyin).toLowerCase().split(/\s+/) : sylls(d.pinyin));
+      if(sy.length === ch.length) ch.forEach(function(c, i){ var k = c + '|' + sy[i]; IDX.cnt.set(k, (IDX.cnt.get(k) || 0) + 1); if(!IDX.chars.has(c)) IDX.chars.set(c, {}); IDX.chars.get(c)[sy[i]] = (IDX.chars.get(c)[sy[i]] || 0) + 1; });
+    });
+  });
+  return IDX;
+}
+function charPy(c){ var m = IDX.chars.get(c); if(!m) return ''; return Object.keys(m).sort(function(a, b){ return m[b] - m[a]; })[0]; }
+function segmentHan(text){
+  buildIdx(); var ch = Array.from(String(text)), res = [], i = 0;
+  while(i < ch.length){
+    if(!HAN_RE.test(ch[i])){ res.push({ t: ch[i], han: false }); i++; continue; }
+    var hit = null;
+    for(var n = Math.min(6, ch.length - i); n >= 1; n--){ var sub = ch.slice(i, i + n).join(''); if(IDX.byHan.has(sub) && HAN_ALL.test(sub)){ hit = sub; break; } }
+    if(hit){ res.push({ t: hit, han: true, known: true }); i += Array.from(hit).length; } else { res.push({ t: ch[i], han: true, known: false }); i++; }
+  }
+  return res;
+}
+function wordPy(w){
+  var l = IDX.byHan.get(w); if(l){ return String(l[0].d.pinyin || '').replace(/\s+/g, ' ').trim(); }
+  return Array.from(w).map(function(c){ return charPy(c) || c; }).join(' ');
+}
+function fixPy(py){
+  py = String(py || '').trim(); if(!py) return '';
+  if(py.indexOf(' ') < 0 && py.length > 9){ var sy = sylls(py); if(sy.length > 2 && sy.join('').length >= py.replace(/[^a-zA-Z\u00C0-\u024F\u0300-\u036Füü]/g, '').length - 1) py = sy.join(' ') + (/[.。!?！？]$/.test(py) ? py.slice(-1) : ''); }
+  return py.replace(/\s+([，。！？、；：,.!?;:”」』）)])/g, '$1').replace(/\s+/g, ' ');
+}
+function pinyinOf(text){
+  buildIdx(); var s = '';
+  segmentHan(text).forEach(function(g){ if(g.han) s += (s && !/[\s(]$/.test(s) ? ' ' : '') + wordPy(g.t); else s += (/[，。！？、；：,.!?;:）)」』]/.test(g.t) ? '' : ' ') + g.t; });
+  return s.replace(/\s+/g, ' ').replace(/\s+([，。！？、；：,.!?;:）)」』])/g, '$1').trim();
+}
+function localGroup(hanKey){
+  buildIdx(); var l = IDX.byHan.get(hanKey); if(!l || !l.length) return null;
+  var gl = [], gs = {}; l.forEach(function(o){ var t = String(o.d.nghia || '').trim(), k = stripAcc(t); if(t && !gs[k]){ gs[k] = 1; gl.push(t); } });
+  gl = gl.filter(function(a, i){ var na = stripAcc(a); return !gl.some(function(b, j){ var nb = stripAcc(b); return j !== i && nb.length > na.length && nb.indexOf(na) >= 0; }); }).slice(0, 3);
+  var ex = [], seen = {};
+  l.forEach(function(o){ (o.d.examples || []).forEach(function(e){ if(e && e.han && !seen[e.han]){ seen[e.han] = 1; ex.push({ han: e.han, py: e.pinyin, vi: e.vi, src: 'local' }); } }); });
+  var lv = uniq(l.map(function(o){ return o.d.tocfl; })).filter(Boolean);
+  return { han: l[0].d.han, key: hanKey, py: wordPy(hanKey), gloss: gl.join('; '), glosses: gl, pos: l[0].d.wordTypeLabel || '', tocfl: lv.slice(0, 2).join(' / '), ex: ex };
+}
+function searchLocalVi(q){
+  buildIdx(); var n = stripAcc(q).replace(/\s+/g, ' ').trim(); if(!n) return [];
+  var sc = [];
+  IDX.all.forEach(function(o){
+    if(!o.pure.length) return;
+    var s = 0;
+    if(o.segs.indexOf(n) >= 0) s = 100;
+    else if(o.segs.some(function(g){ return g.indexOf(n + ' ') === 0 || g.slice(-n.length - 1) === ' ' + n; })) s = 70;
+    else if((' ' + o.vi + ' ').indexOf(' ' + n + ' ') >= 0) s = 50;
+    else if(n.length >= 4 && o.vi.indexOf(n) >= 0) s = 20;
+    if(s) sc.push({ s: s - Math.min(o.pure[0].length, 10) * 0.5, key: o.pure[0] });
+  });
+  sc.sort(function(a, b){ return b.s - a.s; });
+  return uniq(sc.map(function(x){ return x.key; })).slice(0, 8);
+}
+function searchLocalPinyin(q){
+  buildIdx(); var n = stripAcc(q).replace(/[^a-z]/g, ''); if(n.length < 2) return [];
+  return uniq(IDX.all.filter(function(o){ return o.pure.length && o.pyN === n; }).map(function(o){ return o.pure[0]; })).slice(0, 8);
+}
+function localContaining(q, skip){
+  buildIdx(); var r = [];
+  IDX.all.forEach(function(o){ if(r.length < 60 && o.pure[0] && o.pure[0] !== skip && o.pure[0].length > q.length && o.pure[0].indexOf(q) >= 0) r.push(o.pure[0]); });
+  return uniq(r).sort(function(a, b){ return a.length - b.length; }).slice(0, 8);
+}
+function localExamplesWith(word, skipKey, max){
+  buildIdx(); var r = [], seen = {};
+  for(var i = 0; i < IDX.all.length && r.length < max; i++){
+    var o = IDX.all[i]; if(o.pure[0] === skipKey) continue;
+    (o.d.examples || []).some(function(e){ if(e && e.han && e.han.indexOf(word) >= 0 && !seen[e.han]){ seen[e.han] = 1; r.push({ han: e.han, py: e.pinyin, vi: e.vi, src: 'local' }); return r.length >= max; } return false; });
+  }
+  return r;
+}
+
+var RAD_TXT = "一|yī|Nhất|một\n丨|gǔn|Cổn|nét sổ\n丶|zhǔ|Chủ|chấm\n丿|piě|Phiệt|nét phẩy\n乙|yǐ|Ất|can Ất, nét cong\n亅|jué|Quyết|nét móc\n二|èr|Nhị|hai\n亠|tóu|Đầu|cái nắp\n人|rén|Nhân|người\n儿|ér|Nhân|chân người\n入|rù|Nhập|vào\n八|bā|Bát|tám, chia ra\n冂|jiōng|Quynh|vùng biên giới xa\n冖|mì|Mịch|trùm khăn\n冫|bīng|Băng|băng giá\n几|jī|Kỷ|cái ghế\n凵|kǎn|Khảm|há miệng\n刀|dāo|Đao|dao\n力|lì|Lực|sức mạnh\n勹|bāo|Bao|bao bọc\n匕|bǐ|Chủy|cái thìa\n匚|fāng|Phương|cái hòm\n匸|xì|Hễ|che đậy\n十|shí|Thập|mười\n卜|bǔ|Bốc|xem bói\n卩|jié|Tiết|đốt tre, ấn tín\n厂|hàn|Hán|sườn núi, vách đá\n厶|sī|Tư|riêng tư\n又|yòu|Hựu|lại nữa, bàn tay phải\n口|kǒu|Khẩu|miệng\n囗|wéi|Vi|vây quanh\n土|tǔ|Thổ|đất\n士|shì|Sĩ|kẻ sĩ\n夂|zhǐ|Trĩ|đến sau\n夊|suī|Tuy|đi chậm\n夕|xī|Tịch|buổi tối\n大|dà|Đại|to lớn\n女|nǚ|Nữ|phụ nữ\n子|zǐ|Tử|con\n宀|mián|Miên|mái nhà\n寸|cùn|Thốn|tấc, đơn vị đo\n小|xiǎo|Tiểu|nhỏ\n尢|wāng|Uông|yếu, què\n尸|shī|Thi|xác chết, thân người\n屮|chè|Triệt|mầm cây\n山|shān|Sơn|núi\n巛|chuān|Xuyên|sông\n工|gōng|Công|thợ, công việc\n己|jǐ|Kỷ|bản thân\n巾|jīn|Cân|cái khăn\n干|gān|Can|khô, can dự\n幺|yāo|Yêu|nhỏ nhắn\n广|guǎng|Nghiễm|mái nhà rộng\n廴|yǐn|Dẫn|bước dài\n廾|gǒng|Củng|chắp tay\n弋|yì|Dặc|bắn tên\n弓|gōng|Cung|cái cung\n彐|jì|Kệ|đầu con nhím\n彡|shān|Sam|lông, tua, vệt sáng\n彳|chì|Xích|bước chân trái\n心|xīn|Tâm|tim, tâm trí\n戈|gē|Qua|cây giáo\n戶|hù|Hộ|cửa một cánh\n手|shǒu|Thủ|tay\n支|zhī|Chi|cành, chi nhánh\n攴|pū|Phộc|đánh khẽ\n文|wén|Văn|văn chương, chữ viết\n斗|dǒu|Đẩu|cái đấu (đong)\n斤|jīn|Cân|cái rìu, cân\n方|fāng|Phương|vuông, phương hướng\n无|wú|Vô|không\n日|rì|Nhật|mặt trời, ngày\n曰|yuē|Viết|nói rằng\n月|yuè|Nguyệt|mặt trăng, tháng\n木|mù|Mộc|cây, gỗ\n欠|qiàn|Khiếm|thiếu, ngáp\n止|zhǐ|Chỉ|dừng lại\n歹|dǎi|Đãi|xấu, xương tàn\n殳|shū|Thù|binh khí\n毋|wú|Vô|đừng, chớ\n比|bǐ|Tỉ|so sánh\n毛|máo|Mao|lông\n氏|shì|Thị|họ\n气|qì|Khí|hơi, khí\n水|shuǐ|Thủy|nước\n火|huǒ|Hỏa|lửa\n爪|zhǎo|Trảo|móng vuốt\n父|fù|Phụ|cha\n爻|yáo|Hào|vạch quẻ\n爿|qiáng|Tường|mảnh gỗ\n片|piàn|Phiến|mảnh, tấm\n牙|yá|Nha|răng\n牛|niú|Ngưu|trâu, bò\n犬|quǎn|Khuyển|chó\n玄|xuán|Huyền|màu đen huyền, sâu xa\n玉|yù|Ngọc|ngọc\n瓜|guā|Qua|dưa\n瓦|wǎ|Ngõa|ngói\n甘|gān|Cam|ngọt\n生|shēng|Sinh|sống, sinh ra\n用|yòng|Dụng|dùng\n田|tián|Điền|ruộng\n疋|pǐ|Thất|cuộn vải\n疒|nè|Nạch|bệnh tật\n癶|bō|Bát|gạt ngược\n白|bái|Bạch|trắng\n皮|pí|Bì|da\n皿|mǐn|Mãnh|đồ bát đĩa\n目|mù|Mục|mắt\n矛|máo|Mâu|cây giáo\n矢|shǐ|Thỉ|mũi tên\n石|shí|Thạch|đá\n示|shì|Thị|chỉ bảo, thần đất\n禸|róu|Nhựu|vết chân thú\n禾|hé|Hòa|lúa\n穴|xué|Huyệt|hang, lỗ\n立|lì|Lập|đứng\n竹|zhú|Trúc|tre\n米|mǐ|Mễ|gạo\n糸|mì|Mịch|sợi tơ\n缶|fǒu|Phẫu|đồ sành\n网|wǎng|Võng|cái lưới\n羊|yáng|Dương|dê\n羽|yǔ|Vũ|lông vũ\n老|lǎo|Lão|già\n而|ér|Nhi|mà, và\n耒|lěi|Lỗi|cái cày\n耳|ěr|Nhĩ|tai\n聿|yù|Duật|cây bút\n肉|ròu|Nhục|thịt\n臣|chén|Thần|bề tôi\n自|zì|Tự|tự mình, từ\n至|zhì|Chí|đến\n臼|jiù|Cữu|cái cối\n舌|shé|Thiệt|lưỡi\n舛|chuǎn|Suyễn|trái ngược\n舟|zhōu|Chu|thuyền\n艮|gèn|Cấn|dừng, quẻ Cấn\n色|sè|Sắc|màu sắc\n艸|cǎo|Thảo|cỏ\n虍|hū|Hô|vằn da hổ\n虫|chóng|Trùng|sâu bọ\n血|xuè|Huyết|máu\n行|xíng|Hành|đi, hàng\n衣|yī|Y|áo\n襾|yà|Á|che đậy\n見|jiàn|Kiến|thấy\n角|jiǎo|Giác|sừng\n言|yán|Ngôn|lời nói\n谷|gǔ|Cốc|thung lũng\n豆|dòu|Đậu|hạt đậu\n豕|shǐ|Thỉ|con heo\n豸|zhì|Trãi|loài thú không chân\n貝|bèi|Bối|vỏ sò, tiền của\n赤|chì|Xích|màu đỏ\n走|zǒu|Tẩu|chạy\n足|zú|Túc|chân\n身|shēn|Thân|thân mình\n車|chē|Xa|xe\n辛|xīn|Tân|cay\n辰|chén|Thần|chi Thìn, thời giờ\n辵|chuò|Sước|chợt đi chợt dừng\n邑|yì|Ấp|làng, thành ấp\n酉|yǒu|Dậu|rượu, chi Dậu\n釆|biàn|Biện|phân biệt\n里|lǐ|Lý|dặm, làng\n金|jīn|Kim|vàng, kim loại\n長|cháng|Trường|dài\n門|mén|Môn|cửa hai cánh\n阜|fù|Phụ|gò đất\n隶|dài|Đãi|theo kịp\n隹|zhuī|Truy|chim đuôi ngắn\n雨|yǔ|Vũ|mưa\n靑|qīng|Thanh|màu xanh\n非|fēi|Phi|không, trái\n面|miàn|Diện|mặt\n革|gé|Cách|da thuộc\n韋|wéi|Vi|da thuộc mềm\n韭|jiǔ|Cửu|rau hẹ\n音|yīn|Âm|âm thanh\n頁|yè|Hiệt|đầu, trang giấy\n風|fēng|Phong|gió\n飛|fēi|Phi|bay\n食|shí|Thực|ăn\n首|shǒu|Thủ|đầu\n香|xiāng|Hương|mùi thơm\n馬|mǎ|Mã|ngựa\n骨|gǔ|Cốt|xương\n高|gāo|Cao|cao\n髟|biāo|Bưu|tóc dài\n鬥|dòu|Đấu|đánh nhau\n鬯|chàng|Sưởng|rượu nếp\n鬲|lì|Cách|cái đỉnh ba chân\n鬼|guǐ|Quỷ|ma quỷ\n魚|yú|Ngư|cá\n鳥|niǎo|Điểu|chim\n鹵|lǔ|Lỗ|muối mỏ\n鹿|lù|Lộc|hươu nai\n麥|mài|Mạch|lúa mạch\n麻|má|Ma|cây gai\n黃|huáng|Hoàng|màu vàng\n黍|shǔ|Thử|lúa nếp\n黑|hēi|Hắc|màu đen\n黹|zhǐ|Chỉ|may thêu\n黽|mǐn|Mãnh|con ếch\n鼎|dǐng|Đỉnh|cái đỉnh\n鼓|gǔ|Cổ|cái trống\n鼠|shǔ|Thử|con chuột\n鼻|bí|Tị|cái mũi\n齊|qí|Tề|ngang bằng\n齒|chǐ|Xỉ|răng\n龍|lóng|Long|con rồng\n龜|guī|Quy|con rùa\n龠|yuè|Dược|sáo ba lỗ";
+var RADS = null, RC = new Map();
+/* dạng viết thường gặp của bộ khi nằm trong chữ (để người học nhận ra) */
+var RADFORM = { '人':'亻','水':'氵','手':'扌','心':'忄 / 㣺','艸':'艹','言':'訁','辵':'辶','阜':'阝 (bên trái)','邑':'阝 (bên phải)','犬':'犭','示':'礻','衣':'衤','刀':'刂','火':'灬','网':'罒','金':'釒','食':'飠','糸':'糹','肉':'月','玉':'王','竹':'⺮','攴':'攵','牛':'牜','爪':'爫','老':'耂','歹':'歺','足':'⻊' };
+var RADVAR = { '亻':'人','氵':'水','扌':'手','忄':'心','艹':'艸','艹':'艸','訁':'言','讠':'言','辶':'辵','犭':'犬','礻':'示','衤':'衣','刂':'刀','灬':'火','罒':'网','釒':'金','钅':'金','飠':'食','饣':'食','糹':'糸','纟':'糸','王':'玉','⺮':'竹','攵':'攴','牜':'牛','爫':'爪','耂':'老','歺':'歹','⻊':'足','门':'門','马':'馬','鱼':'魚','鸟':'鳥','车':'車','见':'見','贝':'貝','长':'長','风':'風','页':'頁','齐':'齊','齿':'齒','龙':'龍','龟':'龜' };
+function radTable(){
+  if(RADS) return RADS; RADS = {};
+  RAD_TXT.split('\n').forEach(function(l){ var q = l.split('|'); if(q.length === 4) RADS[q[0]] = { py: q[1], hv: q[2], vi: q[3] }; });
+  return RADS;
+}
+function charInfo(c){
+  if(RC.has(c)) return RC.get(c);
+  var enc = encodeURIComponent(c), urls = ['https://www.moedict.tw/uni/' + enc + '.json', 'https://www.moedict.tw/a/' + enc + '.json'];
+  var p = (function next(i){
+    if(i >= urls.length) return Promise.resolve(null);
+    return fetchT(urls[i], 8000).then(function(r){ if(!r.ok) throw new Error(String(r.status)); return r.json(); }).then(function(j){
+      var rad = clean(j.radical || j.r || ''), t = radTable();
+      if(rad && !t[rad] && RADVAR[rad]) rad = RADVAR[rad];
+      var h0 = (j.heteronyms || j.h || [])[0] || {};
+      var num = function(v){ v = parseInt(v, 10); return isNaN(v) ? 0 : v; };
+      if(!rad) return next(i + 1);
+      return { ch: c, rad: rad, strokes: num(j.stroke_count || j.c), rest: num(j.non_radical_stroke_count || j.n), py: clean(h0.pinyin || h0.p || '').split(/[\s\/,]/)[0] };
+    }).catch(function(e){ if(!/^40\d$/.test(String(e && e.message))) NET.moe = false; return next(i + 1); });
+  })(0);
+  RC.set(c, p); return p;
+}
+
+/* ---------- Cấu tạo chữ: tách thành các thành phần (dữ liệu makemeahanzi, tải lúc chạy, cần Internet) ---------- */
+var IDS_OPS = { '⿰':2, '⿱':2, '⿲':3, '⿳':3, '⿴':2, '⿵':2, '⿶':2, '⿷':2, '⿸':2, '⿹':2, '⿺':2, '⿻':2 };
+var IDS_POS = {
+  '⿰':['bên trái','bên phải'], '⿱':['phía trên','phía dưới'], '⿲':['bên trái','ở giữa','bên phải'], '⿳':['phía trên','ở giữa','phía dưới'],
+  '⿴':['bao bọc bên ngoài','nằm gọn bên trong'], '⿵':['bao bọc phía trên và hai bên ngoài','nằm bên trong'], '⿶':['bao bọc phía dưới và hai bên ngoài','nằm bên trong'],
+  '⿷':['bao bọc bên trái, phía trên và phía dưới','nằm bên trong'], '⿸':['bao bọc phía trên bên trái','nằm bên trong'], '⿹':['bao bọc phía trên bên phải','nằm bên trong'],
+  '⿺':['bao bọc phía dưới bên trái','nằm bên trong'], '⿻':['chồng lên nhau','chồng lên nhau','chồng lên nhau']
+};
+var COMP_NOTE = { '𢆶':'hai chữ 幺 (yêu – sợi tơ nhỏ) đứng cạnh nhau, biểu thị dây tơ chằng chịt', '丱':'búi tóc hai chỏm, cũng là hình nan gỗ cài', '幺':'sợi tơ nhỏ' };
+var MMH = null;
+function loadMMH(){
+  if(MMH) return MMH;
+  MMH = fetchT('https://cdn.jsdelivr.net/gh/skishore/makemeahanzi@master/dictionary.txt', 40000).then(function(r){ if(!r.ok) throw new Error(String(r.status)); return r.text(); }).then(function(t){
+    var m = new Map();
+    t.split('\n').forEach(function(l){ if(l.charAt(0) !== '{') return; try { var o = JSON.parse(l); m.set(o.character, o); } catch(e){} });
+    return m;
+  }).catch(function(){ MMH = null; return new Map(); });
+  return MMH;
+}
+function canonR(x){ var t = radTable(); return t[x] ? x : (RADVAR[x] || x); }
+function parseIds(str){
+  var a = Array.from(str || ''), i = 0;
+  function node(){
+    var c = a[i++]; if(c === undefined) return null;
+    if(IDS_OPS[c]){ var n = { op: c, kids: [] }; for(var k = 0; k < IDS_OPS[c]; k++){ var x = node(); if(x) n.kids.push(x); } return n; }
+    return { ch: c };
+  }
+  var r = node(); return r && r.op ? r : null;
+}
+function expandIds(M, n, d){
+  if(n.op && !n.ch){ n.kids = n.kids.map(function(k){ return expandIds(M, k, d); }); return n; }
+  if(d >= 2 || n.ch === '？' || radTable()[canonR(n.ch)]) return n;
+  var o = M.get(n.ch), tr = o && o.decomposition ? parseIds(o.decomposition) : null;
+  if(tr){ n.op = tr.op; n.kids = tr.kids.map(function(k){ return expandIds(M, k, d + 1); }); }
+  return n;
+}
+function collectIds(n, out){
+  if(n.ch && n.ch !== '？' && !radTable()[canonR(n.ch)]) out.push(n.ch);
+  (n.kids || []).forEach(function(k){ collectIds(k, out); });
+}
+function hasRad(n, rad){ return (n.ch && canonR(n.ch) === rad) || (n.kids || []).some(function(k){ return hasRad(k, rad); }); }
+function structFor(chars){
+  var wait = new Promise(function(res){ setTimeout(function(){ res(null); }, 9000); });
+  return Promise.race([loadMMH(), wait]).then(function(M){
+    if(!M) return { S: {}, gl: {}, slow: true };
+    var S = {}, comps = [];
+    chars.forEach(function(c){
+      var o = M.get(c); if(!o) return;
+      var tr = parseIds(o.decomposition); if(tr){ tr = expandIds(M, tr, 0); collectIds(tr, comps); }
+      S[c] = { tree: tr, rad: o.radical || '', ety: o.etymology || null };
+    });
+    var etys = chars.filter(function(c){ return S[c] && S[c].ety && S[c].ety.hint && S[c].ety.type !== 'pictophonetic'; });
+    return Promise.all([ glossBatch(uniq(comps).slice(0, 14)), Promise.all(etys.map(function(c){ return gtrSafe(S[c].ety.hint, 'en', 'vi'); })) ]).then(function(R){
+      etys.forEach(function(c, i){ S[c].etyVi = String((R[1][i] && R[1][i].text) || '').trim(); });
+      return { S: S, gl: R[0] || {}, slow: false };
+    });
+  });
+}
+function compList(ns, gl, t, rad){
+  return ns.map(function(n){
+    if(!n.ch) return compList(n.kids || [], gl, t, rad);
+    if(n.ch === '？') return '';
+    var cc = canonR(n.ch), r = t[cc], txt = '';
+    if(r) txt = ' (' + esc(r.hv) + '): ' + esc(r.vi) + (cc === rad ? ' <span class="dk-badge">bộ thủ</span>' : '');
+    else if(COMP_NOTE[n.ch]) txt = ': ' + esc(COMP_NOTE[n.ch]);
+    else if(gl && gl[n.ch]) txt = ': ' + esc(gl[n.ch]);
+    var sub = (n.ch && n.op && n.kids && n.kids.length) ? '<ul>' + compList(n.kids, gl, t, rad) + '</ul>' : '';
+    return '<li><span class="dk-han">' + esc(n.ch) + '</span>' + (pinyinOf(n.ch) ? ' <span class="dk-py">/' + esc(pinyinOf(n.ch)) + '/</span>' : '') + txt + sub + '</li>';
+  }).join('');
+}
+function stHtml(c, i, e, t){
+  var st = c.st, rad = canonR((i && i.rad) || (st && st.rad) || '');
+  if(!st) return '<div class="dk-note" style="margin:6px 0 0 0">' + (e.stSlow ? 'Đang tải dữ liệu cấu tạo chữ (lần đầu hơi lâu) — hãy tra lại sau ít giây.' : 'Chưa có dữ liệu cấu tạo chi tiết của chữ này (cần Internet).') + '</div>';
+  var h = '', tr = st.tree;
+  if(tr){
+    var pos = '';
+    if(rad) for(var k = 0; k < tr.kids.length; k++){ if(hasRad(tr.kids[k], rad)){ pos = (IDS_POS[tr.op] || [])[k] || ''; break; } }
+    if(pos) h += '<div class="dk-radk dk-sk">Vị trí bộ thủ</div><div class="dk-p">' + esc(rad) + ' nằm ' + esc(pos) + '.</div>';
+    h += '<div class="dk-radk dk-sk">Cấu tạo chi tiết</div><ul class="dk-st">' + compList(tr.kids, e.stl || {}, t, rad) + '</ul>';
+  } else if(rad && rad === c.ch){
+    h += '<div class="dk-radk dk-sk">Cấu tạo chi tiết</div><div class="dk-p">Chữ độc thể (nguyên khối), không tách thành thành phần nhỏ hơn.</div>';
+  }
+  var ety = st.ety, m = '';
+  if(ety){
+    if(ety.type === 'pictophonetic'){
+      var parts = []; if(ety.semantic) parts.push(esc(ety.semantic) + ' gợi nghĩa'); if(ety.phonetic) parts.push(esc(ety.phonetic) + ' gợi âm đọc');
+      if(parts.length) m = 'Chữ hình thanh: ' + parts.join(', ') + '.';
+    } else if(st.etyVi) m = (ety.type === 'pictographic' ? 'Chữ tượng hình: ' : 'Chữ hội ý: ') + esc(st.etyVi);
+  }
+  if(m) h += '<div class="dk-radk dk-sk">Ý nghĩa cấu tạo</div><div class="dk-p">' + m + '</div>';
+  return h;
+}
+
+/* ---------- Dựng dữ liệu một mục từ ---------- */
+var POS = { '名': 'Danh từ', '動': 'Động từ', '形': 'Tính từ', '副': 'Phó từ', '連': 'Liên từ', '介': 'Giới từ', '助': 'Trợ từ', '嘆': 'Thán từ', '量': 'Lượng từ', '代': 'Đại từ', '數': 'Số từ', '擬聲': 'Từ tượng thanh' };
+function posVi(t){ t = String(t || '').replace(/詞$/, ''); return POS[t] || t; }
+function glossFor(han){
+  buildIdx();
+  var g = localGroup(han); if(g && g.gloss) return Promise.resolve(g.gloss);
+  return gtrSafe(han, 'zh-TW', 'vi').then(function(r){
+    var parts = uniq([r.text].concat(r.alts.slice(0, 3)).map(function(x){ return String(x || '').trim().toLowerCase(); })).filter(Boolean);
+    return parts.slice(0, 4).join(', ');
+  });
+}
+function glossBatch(words){
+  buildIdx(); var m = {}, need = [];
+  words.forEach(function(w){ var g = localGroup(w); if(g && g.gloss) m[w] = g.glosses[0]; else need.push(w); });
+  if(!need.length) return Promise.resolve(m);
+  return gtrSafe(need.join('\n'), 'zh-TW', 'vi').then(function(r){
+    var lines = String(r.text || '').split(/\n+/).map(function(s){ return s.trim(); });
+    if(lines.length === need.length) need.forEach(function(w, i){ m[w] = lines[i].toLowerCase(); });
+    else return Promise.all(need.slice(0, 6).map(function(w){ return gtrSafe(w, 'zh-TW', 'vi').then(function(x){ if(x.text) m[w] = x.text.toLowerCase(); }); }));
+  }).then(function(){ return m; });
+}
+function buildEntry(han, hintGloss){
+  buildIdx();
+  var key = hanVars(han)[0] || han, lg = localGroup(key);
+  return moe(key).then(function(M){
+    var base = lg ? lg.gloss : (hintGloss || ''), glossP = base ? Promise.resolve(base) : glossFor(key);
+    var senses = [], syn = [], ant = [], exZh = [], zy = '', py = lg ? lg.py : '';
+    if(M){
+      M.het.forEach(function(h, hi){
+        if(!py && h.py && hi === 0) py = h.py.replace(/\s+/g, '');
+        if(!zy && h.zy) zy = h.zy;
+        h.defs.forEach(function(d){
+          if(senses.length < 5) senses.push({ pos: posVi(d.type), zh: d.f });
+          d.s.forEach(function(x){ syn.push(x); }); d.a.forEach(function(x){ ant.push(x); });
+          d.e.forEach(function(x){ if(exZh.length < 6) exZh.push(x); });
+        });
+      });
+    }
+    syn = uniq(syn).filter(function(x){ return x !== key; }).slice(0, 8); ant = uniq(ant).filter(function(x){ return x !== key; }).slice(0, 8);
+    if(!py) py = wordPy(key);
+    var exLocal = lg ? lg.ex.slice(0, 3) : [];
+    var extra = localExamplesWith(key, key, 2);
+    var exMoe = exZh.slice(0, 3);
+    var all = Array.from(key), chars = uniq(all.filter(function(c){ return HAN_RE.test(c); })).slice(0, 8), sy = sylls(py), cpy = {};
+    all.forEach(function(c, i){ if(!cpy[c] && sy.length === all.length) cpy[c] = sy[i]; });
+    return Promise.all([
+      glossP,
+      Promise.resolve([]),
+      Promise.all(exMoe.map(function(e){ return gtrSafe(e, 'zh-TW', 'vi'); })),
+      glossBatch(syn.concat(ant)),
+      Promise.all(chars.map(charInfo)),
+      glossBatch(chars),
+      structFor(chars)
+    ]).then(function(R){
+      var SS = R[6] || { S: {}, gl: {}, slow: false };
+      var ex = exLocal.concat(extra).concat(exMoe.map(function(e, i){ return { han: e, py: R[2][i].srcPy ? R[2][i].srcPy.replace(/^./, function(c){ return c.toLowerCase(); }) : pinyinOf(e), vi: capFirst(R[2][i].text || ''), src: 'moe' }; }));
+      var seen = {}; ex = ex.filter(function(e){ if(seen[e.han]) return false; seen[e.han] = 1; return true; }).slice(0, 6);
+      return { key: key, han: lg ? lg.han : key, py: py, zy: zy, gloss: R[0], pos: lg ? lg.pos : (senses[0] && senses[0].pos) || '', tocfl: lg ? lg.tocfl : '', local: !!lg, moe: !!M, senses: senses, ex: ex, syn: syn, ant: ant, gl: R[3], chars: chars.map(function(c, i){ var inf = R[4][i]; return { ch: c, py: cpy[c] || charPy(c) || (inf && inf.py) || '', vi: R[5][c] || '', inf: inf, st: SS.S[c] || null }; }), stl: SS.gl, stSlow: SS.slow };
+    });
+  });
+}
+
+/* ---------- Hiển thị ---------- */
+var SPK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/></svg>';
+function spk(han, cls){ return '<button type="button" class="dk-spk ' + (cls || '') + '" data-say="' + esc(han) + '" aria-label="Nghe phát âm ' + esc(han) + '" title="Nghe phát âm">' + SPK + '</button>'; }
+function hl(han, word){ var h = esc(han); if(!word) return h; var w = esc(word); return h.split(w).join('<b>' + w + '</b>'); }
+function linkRow(w){
+  var e = encodeURIComponent(w);
+  return '<div class="dk-foot"><span>Đối chiếu nguồn chính thức:</span><a href="https://dict.revised.moe.edu.tw/search.jsp?md=1&word=' + e + '" target="_blank" rel="noopener">教育部重編國語辭典修訂本</a><a href="https://dict.concised.moe.edu.tw/search.jsp?md=1&word=' + e + '" target="_blank" rel="noopener">教育部國語辭典簡編本</a></div>';
+}
+function chipHtml(w, gl, cls){
+  return '<span class="dk-chip ' + (cls || '') + '">' + spk(w, 'sm') + '<button type="button" class="dk-q" data-q="' + esc(w) + '"><span class="dk-han">' + esc(w) + '</span> <span class="dk-py">/' + esc(pinyinOf(w)) + '/</span>' + (gl ? ' <span class="dk-sep">:</span> <span class="dk-vi">' + esc(gl) + '</span>' : '') + '</button></span>';
+}
+function radHtml(e){
+  var t = radTable(), got = e.chars.filter(function(c){ return c.inf; });
+  if(!e.chars.length) return '<div class="dk-none">Không có chữ Hán để phân tích.</div>';
+  var h = '<div class="dk-rads">' + e.chars.map(function(c){
+    var i = c.inf, r = i && t[i.rad], row = '<div class="dk-rad"><div class="dk-line">' + spk(c.ch, 'sm') + '<span class="dk-han">' + esc(c.ch) + '</span>' + (c.py ? '<span class="dk-py">/' + esc(c.py) + '/</span>' : '') + (c.vi ? '<span class="dk-sep">:</span><span class="dk-vi">' + esc(c.vi) + '</span>' : '') + (i && i.strokes ? '<span class="dk-badge">' + i.strokes + ' nét</span>' : '') + '</div>';
+    if(!i) return row + '<div class="dk-none">Chưa lấy được bộ thủ của chữ này (cần Internet để tra 教育部國語辭典).</div>' + (c.st ? stHtml(c, null, e, t) : '') + '</div>';
+    row += '<div class="dk-radk dk-sk">Bộ thủ chính</div><div class="dk-line dk-radl" style="margin-top:4px;padding-top:0;border-top:0">' + spk(i.rad, 'sm') + '<span class="dk-han">' + esc(i.rad) + '</span>' + (r ? '<span class="dk-py">/' + esc(r.py) + '/</span><span class="dk-sep">:</span><span class="dk-vi">bộ ' + esc(r.hv) + ' — ' + esc(r.vi) + '</span>' : '<span class="dk-vi">(chưa có trong bảng 214 bộ)</span>') + '</div>';
+    var meta = [];
+    if(i.rad === c.ch) meta.push('chữ này chính là bộ thủ');
+    else if(i.rest) meta.push('phần còn lại ' + i.rest + ' nét');
+    if(RADFORM[i.rad]) meta.push('dạng viết thường gặp: ' + RADFORM[i.rad]);
+    if(meta.length) row += '<div class="dk-note" style="margin:4px 0 0 0">' + esc(meta.join(' · ')) + '</div>';
+    row += stHtml(c, i, e, t);
+    return row + '</div>';
+  }).join('') + '</div>';
+  if(e.chars.length > 1 && got.length) {
+    var uq = uniq(got.map(function(c){ return c.inf.rad; }));
+    h += '<div class="dk-note">' + esc(e.han) + ' gồm các bộ: ' + uq.map(function(r){ return r + (t[r] ? ' (' + t[r].hv + ')' : ''); }).join(', ') + '.</div>';
+  }
+  if(e.chars.length > 1){
+    h += '<div class="dk-sum"><b>Khi ghép lại,</b> ' + e.chars.map(function(c){ return '<span class="dk-han" style="font-size:17px">' + esc(c.ch) + '</span>' + (c.vi ? ' (' + esc(c.vi) + ')' : ''); }).join(' kết hợp với ') + ' → <span class="dk-han" style="font-size:17px">' + esc(e.han) + '</span>' + (e.gloss ? ' mang nghĩa: <b>' + esc(e.gloss) + '</b>' : '') + '.</div>';
+  }
+  return h;
+}
+function entryHtml(e){
+  var h = '<article class="dk-card dk-entry"><div class="dk-line big">' + spk(e.han) + '<span class="dk-han">' + esc(e.han) + '</span><span class="dk-py">/' + esc(e.py) + '/</span><span class="dk-sep">:</span><span class="dk-gloss">' + esc(e.gloss || '—') + '</span></div>';
+  var b = [];
+  if(e.pos) b.push('<span class="dk-badge">' + esc(e.pos) + '</span>');
+  if(e.tocfl) b.push('<span class="dk-badge lv">' + esc(e.tocfl) + '</span>');
+  if(e.zy) b.push('<span class="dk-badge zy" title="Chú âm (Bopomofo)">' + esc(e.zy) + '</span>');
+  if(b.length) h += '<div class="dk-badges">' + b.join('') + '</div>';
+  h += '<section class="dk-sec"><h4>Bộ thủ</h4>' + radHtml(e) + '</section>';
+  h += '<section class="dk-sec"><h4>Câu ví dụ</h4>';
+  if(e.ex.length) h += '<div class="dk-exs">' + e.ex.map(function(x){
+    return '<div class="dk-ex">' + spk(x.han, 'sm') + '<div class="dk-ex-t"><span class="dk-han">' + hl(x.han, e.key) + '</span> <span class="dk-py">/' + esc(fixPy(x.py) || pinyinOf(x.han)) + '/</span> <span class="dk-sep">:</span> <span class="dk-vi">' + esc(x.vi || '') + '</span>' + (x.src === 'local' ? '<span class="dk-tag">bài học</span>' : '<span class="dk-tag">教育部</span>') + '</div></div>';
+  }).join('') + '</div>'; else h += '<div class="dk-none">Chưa có câu ví dụ trong nguồn dữ liệu.</div>';
+  h += '</section>';
+  h += '<section class="dk-sec"><h4>Từ đồng nghĩa</h4>' + (e.syn.length ? '<div class="dk-chips">' + e.syn.map(function(w){ return chipHtml(w, e.gl[w]); }).join('') + '</div>' : '<div class="dk-none">Từ điển chưa ghi từ đồng nghĩa.</div>') + '</section>';
+  h += '<section class="dk-sec"><h4>Từ trái nghĩa</h4>' + (e.ant.length ? '<div class="dk-chips">' + e.ant.map(function(w){ return chipHtml(w, e.gl[w], 'ant'); }).join('') + '</div>' : '<div class="dk-none">Từ điển chưa ghi từ trái nghĩa.</div>') + '</section>';
+  h += linkRow(e.key) + '</article>';
+  return h;
+}
+function transHtml(t){
+  /* t: {han, py, vi, label, note, parts[]} */
+  var h = '<article class="dk-card dk-tr"><div class="dk-line big">' + spk(t.han) + '<span class="dk-han">' + esc(t.han) + '</span><span class="dk-py">/' + esc(t.py) + '/</span><span class="dk-sep">:</span><span class="dk-gloss">' + esc(t.vi) + '</span></div>';
+  h += '<div class="dk-badges"><span class="dk-badge lv">' + esc(t.label) + '</span></div>';
+  if(t.parts && t.parts.length){
+    h += '<section class="dk-sec"><h4>Tách từ trong câu</h4><div class="dk-chips">' + t.parts.map(function(p){ return chipHtml(p.w, p.g); }).join('') + '</div></section>';
+  }
+  h += '<div class="dk-note">' + esc(t.note) + '</div></article>';
+  return h;
+}
+function listHtml(title, keys){
+  if(!keys.length) return '';
+  buildIdx();
+  return '<div class="dk-card dk-entry dk-more"><h3>' + esc(title) + '</h3><div class="dk-list">' + keys.map(function(k){
+    var g = localGroup(k); if(!g) return '';
+    return '<div class="dk-li">' + spk(k, 'sm') + '<button type="button" class="dk-q" data-q="' + esc(k) + '"><span class="dk-han">' + esc(g.han) + '</span> <span class="dk-py">/' + esc(g.py) + '/</span> <span class="dk-sep">:</span> <span class="dk-vi">' + esc(g.gloss) + '</span></button></div>';
+  }).join('') + '</div></div>';
+}
+function statusHtml(used){
+  var s = [['local', 'Từ vựng TOCFL trong app', 1], ['moe', '教育部國語辭典', NET.moe], ['gt', 'Google Dịch (dịch máy)', NET.gt]];
+  return '<div class="dk-status">Nguồn: ' + s.filter(function(x){ return used[x[0]] || !x[2]; }).map(function(x){ return '<span class="dk-src' + (x[2] ? '' : ' off') + '" title="' + (x[2] ? 'Đã dùng' : 'Không kết nối được') + '">' + x[1] + '</span>'; }).join('') + '</div>' + ((!NET.moe || !NET.gt) ? '<div class="dk-warn">Không kết nối được một số nguồn trực tuyến. Kiểm tra Internet rồi tra lại để có đầy đủ nghĩa, ví dụ và đồng/trái nghĩa.</div>' : '');
+}
+
+/* ---------- Luồng tra cứu ---------- */
+function partsOf(han){
+  buildIdx(); var ws = uniq(segmentHan(han).filter(function(g){ return g.han && g.known; }).map(function(g){ return g.t; })).slice(0, 12);
+  return ws.map(function(w){ return { w: w, g: (localGroup(w) || {}).glosses ? localGroup(w).glosses[0] : '' }; });
+}
+function isSentence(q, d){
+  if(d === 'zh2vi') return hanLen(q) > 6 || /[，。！？、；：,.!?]/.test(q.replace(/[，。！？.!?]+$/, ''));
+  return q.split(/\s+/).length > 4 || /[,.!?;:]/.test(q.replace(/[.!?]+$/, ''));
+}
+function sentenceFlow(q, d, used){
+  if(d === 'zh2vi'){
+    return gtrSafe(q, 'zh-TW', 'vi').then(function(r){
+      used.gt = 1;
+      if(!r.text) return '<div class="dk-warn">Không dịch được câu này (cần Internet). Thử lại sau.</div>';
+      var py = r.srcPy || pinyinOf(q); buildIdx();
+      return transHtml({ han: q, py: py.replace(/^./, function(c){ return c.toLowerCase(); }), vi: capFirst(r.text), label: 'Đài → Việt · dịch máy', note: 'Bản dịch tự động, nên đối chiếu với từng từ bên dưới. Bấm vào từ để xem nghĩa chi tiết.', parts: partsOf(q) });
+    });
+  }
+  return gtrSafe(q, 'vi', 'zh-TW').then(function(r){
+    used.gt = 1;
+    if(!r.text) return '<div class="dk-warn">Không dịch được câu này (cần Internet). Thử lại sau.</div>';
+    var han = toTW(r.text); buildIdx();
+    return transHtml({ han: han, py: (r.tgtPy ? r.tgtPy : pinyinOf(han)).replace(/^./, function(c){ return c.toLowerCase(); }), vi: capFirst(q), label: 'Việt → Đài · dịch máy (Hán phồn thể, từ ngữ Đài Loan)', note: 'Bản dịch tự động, đã chuẩn hóa sang cách dùng từ của Đài Loan. Bấm vào từ bên dưới để xem nghĩa chi tiết.', parts: partsOf(han) });
+  });
+}
+function zhFlow(q, used){
+  buildIdx();
+  var key = hanVars(q)[0] || q, lg = localGroup(key);
+  return moe(key).then(function(M){
+    if(!M && !lg && hanLen(key) <= 8){
+      /* có thể là chữ giản thể: đổi sang phồn thể rồi tra lại */
+      return gtrSafe(key, 'auto', 'zh-TW').then(function(r){
+        var t = toTW(r.text || ''); used.gt = 1;
+        if(t && t !== key && HAN_ALL.test(t)) return t;
+        return key;
+      });
+    }
+    return key;
+  }).then(function(k2){
+    key = k2; lg = localGroup(key);
+    return Promise.all([buildEntry(key), moe(key)]);
+  }).then(function(R){
+    var e = R[0], M = R[1]; used.local = e.local; used.moe = !!M;
+    if(!e.local && !M){
+      /* không có trong từ điển → dịch máy + tách từ */
+      return sentenceFlow(key, 'zh2vi', used);
+    }
+    used.gt = 1;
+    var more = listHtml('Từ có chứa “' + key + '” trong bài học', localContaining(key, key));
+    return entryHtml(e) + more;
+  });
+}
+function viFlow(q, used){
+  buildIdx();
+  var locals = searchLocalVi(q);
+  var gP = gtrSafe(q, 'vi', 'zh-TW');
+  return gP.then(function(r){
+    var main = r.text ? toTW(r.text) : '', cands = uniq([main].concat(r.alts.map(toTW))).filter(function(x){ return x && HAN_ALL.test(x) && hanLen(x) <= 8; });
+    used.gt = !!r.text;
+    var fullKeys = [], seen = {};
+    function add(k, hint){ if(k && !seen[k] && fullKeys.length < 5){ seen[k] = 1; fullKeys.push({ k: k, hint: hint || '' }); } }
+    if(cands[0]) add(cands[0], q);
+    locals.slice(0, 2).forEach(function(k){ add(k, ''); });
+    cands.slice(1).forEach(function(c){ add(c, ''); });
+    return Promise.all(fullKeys.map(function(x){ return buildEntry(x.k, x.hint).then(function(e){ return e; }); })).then(function(es){
+      /* giữ mục có dữ liệu (local hoặc MOE); mục của dịch máy không có trong từ điển thì bỏ để tránh nhiễu */
+      var good = es.filter(function(e){ return e.local || e.moe; }).slice(0, 3);
+      es.forEach(function(e){ if(e.local) used.local = 1; if(e.moe) used.moe = 1; });
+      var html = '';
+      if(!good.length){
+        if(!main) return locals.length ? listHtml('Kết quả trong bài học', locals) : '<div class="dk-empty">Không tìm thấy kết quả cho “' + esc(q) + '”.<br>Thử viết có dấu hoặc dùng từ khác.</div>';
+        return Promise.resolve(transHtml({ han: main, py: r.tgtPy || pinyinOf(main), vi: capFirst(q), label: 'Việt → Đài · dịch máy (Hán phồn thể, từ ngữ Đài Loan)', note: 'Từ hoặc cụm từ này chưa có trong từ điển của Bộ Giáo dục nên đây là bản dịch tự động. Hãy đối chiếu thêm trước khi dùng trong bài thi.', parts: partsOf(main) })).then(function(t){ return t + listHtml('Kết quả trong bài học', locals); });
+      }
+      good.forEach(function(e){ html += entryHtml(e); });
+      var rest = locals.filter(function(k){ return !good.some(function(e){ return e.key === k; }); });
+      var other = cands.filter(function(c){ return !good.some(function(e){ return e.key === c; }); }).slice(0, 4);
+      html += listHtml('Các từ khác trong bài học', rest);
+      if(other.length){
+        return glossBatch(other).then(function(m){
+          html += '<div class="dk-card dk-entry dk-more"><h3>Cách nói khác</h3><div class="dk-chips" style="padding:10px 4px 0">' + other.map(function(w){ return chipHtml(w, m[w]); }).join('') + '</div></div>';
+          return html;
+        });
+      }
+      return html;
+    });
+  });
+}
+function pinyinFlow(q, used){
+  var keys = searchLocalPinyin(q); used.local = 1;
+  if(!keys.length) return Promise.resolve('<div class="dk-empty">Không tìm thấy “' + esc(q) + '”.<br>Ở chế độ Đài → Việt hãy nhập chữ Hán (hoặc pinyin của từ có trong bài học).</div>');
+  return Promise.all(keys.slice(0, 2).map(function(k){ return buildEntry(k); })).then(function(es){
+    es.forEach(function(e){ if(e.moe) used.moe = 1; });
+    return es.map(entryHtml).join('') + listHtml('Các từ cùng pinyin', keys.slice(2));
+  });
+}
+
+function run(q, force){
+  q = String(q || '').replace(/\s+/g, ' ').trim(); if(!q) return;
+  var d = dir === 'auto' ? (HAN_RE.test(q) ? 'zh2vi' : 'vi2zh') : dir;
+  if(d === 'vi2zh' && HAN_RE.test(q)) d = 'zh2vi';
+  var my = ++SEQ; NET.moe = true; NET.gt = true; NET.gtUsed = false;
+  inp.value = q; goBtn.disabled = true;
+  out.innerHTML = '<div class="dk-card dk-load"><i></i>Đang tra “' + esc(q) + '”…</div>';
+  pushHist(q);
+  var used = { local: 0, moe: 0, gt: 0 };
+  var P;
+  try{
+    if(d === 'zh2vi' && !HAN_RE.test(q)) P = pinyinFlow(q, used);
+    else if(isSentence(q, d)) P = sentenceFlow(q, d, used);
+    else P = d === 'zh2vi' ? zhFlow(q, used) : viFlow(q, used);
+  }catch(err){ P = Promise.reject(err); }
+  P.then(function(html){
+    if(my !== SEQ) return;
+    used.gt = NET.gtUsed; out.innerHTML = statusHtml(used) + html;
+  }).catch(function(err){
+    if(my !== SEQ) return;
+    out.innerHTML = '<div class="dk-warn">Có lỗi khi tra từ. Thử lại sau.</div>';
+    try{ console.error('[dict]', err); }catch(e){}
+  }).then(function(){ if(my === SEQ) goBtn.disabled = false; });
+}
+
+/* ---------- Lịch sử tra ---------- */
+function getHist(){ try{ return JSON.parse(localStorage.getItem('dk-hist') || '[]').filter(function(x){ return typeof x === 'string'; }).slice(0, 10); }catch(e){ return []; } }
+function pushHist(q){ var h = getHist().filter(function(x){ return x !== q; }); h.unshift(q); try{ localStorage.setItem('dk-hist', JSON.stringify(h.slice(0, 10))); }catch(e){} renderHist(); }
+function renderHist(){
+  var h = getHist(); histEl.hidden = !h.length; if(!h.length) return;
+  histEl.innerHTML = '<small>Gần đây:</small>' + h.slice(0, 8).map(function(x){ return '<button type="button" class="dk-sug" data-q="' + esc(x) + '">' + esc(x) + '</button>'; }).join('');
+}
+
+/* ---------- Sự kiện ---------- */
+function playSay(btn){
+  var t = btn.getAttribute('data-say'); if(!t) return;
+  try{ if(typeof playWord === 'function'){ playWord(t, btn, { silent: true }); return; } }catch(e){}
+  try{ var u = new SpeechSynthesisUtterance(t); u.lang = 'zh-TW'; u.rate = .9; speechSynthesis.cancel(); speechSynthesis.speak(u); }catch(e){}
+}
+root.addEventListener('click', function(ev){
+  var s = ev.target.closest('.dk-spk'); if(s && root.contains(s)){ ev.preventDefault(); playSay(s); return; }
+  var q = ev.target.closest('[data-q]'); if(q && root.contains(q)){ ev.preventDefault(); run(q.getAttribute('data-q')); if(q.closest('.dk-out')) window.scrollTo({ top: root.getBoundingClientRect().top + window.pageYOffset - 10, behavior: 'smooth' }); return; }
+  var sg = ev.target.closest('.dk-seg button'); if(sg){ dir = sg.getAttribute('data-dir'); try{ localStorage.setItem('dk-dir', dir); }catch(e){} syncSeg(); if(inp.value.trim()) run(inp.value); }
+});
+function syncSeg(){
+  root.querySelectorAll('.dk-seg button').forEach(function(b){ b.setAttribute('aria-pressed', b.getAttribute('data-dir') === dir ? 'true' : 'false'); });
+  inp.placeholder = dir === 'zh2vi' ? 'Nhập chữ Hán: 學習, 我想預訂一間房間…' : dir === 'vi2zh' ? 'Nhập tiếng Việt: xin chào, tôi muốn đặt phòng…' : 'Nhập từ hoặc câu: xin chào, 學習, tôi muốn đặt phòng…';
+}
+form.addEventListener('submit', function(ev){ ev.preventDefault(); if(!ev.isComposing) run(inp.value); });
+syncSeg(); renderHist();
+document.querySelectorAll('.tab-btn').forEach(function(b){
+  b.addEventListener('click', function(){
+    if(b.dataset.tab !== 'dict') return;
+    setTimeout(function(){
+      var f = $('footerNote'); if(f) f.textContent = 'Từ điển Việt – Đài: gõ tiếng Việt hoặc chữ Hán phồn thể · Enter để tra · Bấm loa để nghe phát âm (giọng Đài Loan) · Bấm vào từ đồng/trái nghĩa để tra tiếp · Cần Internet để lấy dữ liệu từ 教育部國語辭典 và dịch câu';
+      if(window.innerWidth > 760) inp.focus();
+    }, 30);
+  });
+});
+/* hook cho kiểm thử / trợ lý */
+window.dkLookup = run;
+})();
+
 </script>
 <script src="firebase-config.js?v=2"></script>
 <script src="tro-ly.js?v=20261101h" defer></script>
