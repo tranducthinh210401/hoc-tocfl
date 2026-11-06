@@ -10225,8 +10225,35 @@ function radTable(){
   RAD_TXT.split('\n').forEach(function(l){ var q = l.split('|'); if(q.length === 4) RADS[q[0]] = { py: q[1], hv: q[2], vi: q[3] }; });
   return RADS;
 }
+/* ---------- Dữ liệu chữ Hán đóng gói sẵn (hanzi-data.js): bộ thủ, số nét, cấu tạo — không cần mạng, tải một lần khi mở tab ---------- */
+var HZP = null;
+function loadHZ(){
+  if(window.HZ_DATA) return Promise.resolve(window.HZ_DATA);
+  if(HZP) return HZP;
+  HZP = new Promise(function(res){
+    var sc = document.createElement('script'); sc.src = 'hanzi-data.js?v=20261106';
+    sc.onload = function(){ res(window.HZ_DATA || null); }; sc.onerror = function(){ HZP = null; res(null); };
+    document.head.appendChild(sc);
+  });
+  return HZP;
+}
+function localCharInfo(c){
+  var D = window.HZ_DATA, o = D && D[c]; if(!o || !o[0]) return null;
+  var t = radTable(), rad = o[0]; if(!t[rad] && RADVAR[rad]) rad = RADVAR[rad];
+  var rest = 0;
+  if(rad !== c && o[1]){
+    var tr = parseIds(o[2]), form = '';
+    (function find(n){ if(form || !n) return; if(n.ch && canonR(n.ch) === rad){ form = n.ch; return; } (n.kids || []).forEach(find); })(tr);
+    var fs = form && D[form] ? D[form][1] : 0; if(fs && o[1] > fs) rest = o[1] - fs;
+  }
+  return { ch: c, rad: rad, strokes: o[1] || 0, rest: rest, py: '' };
+}
 function charInfo(c){
   if(RC.has(c)) return RC.get(c);
+  var p0 = loadHZ().then(function(){ return localCharInfo(c) || netCharInfo(c); });
+  RC.set(c, p0); return p0;
+}
+function netCharInfo(c){
   var enc = encodeURIComponent(c), urls = ['https://www.moedict.tw/uni/' + enc + '.json', 'https://www.moedict.tw/a/' + enc + '.json'];
   var p = (function next(i){
     if(i >= urls.length) return Promise.resolve(null);
@@ -10239,7 +10266,7 @@ function charInfo(c){
       return { ch: c, rad: rad, strokes: num(j.stroke_count || j.c), rest: num(j.non_radical_stroke_count || j.n), py: clean(h0.pinyin || h0.p || '').split(/[\s\/,]/)[0] };
     }).catch(function(e){ if(!/^40\d$/.test(String(e && e.message))) NET.moe = false; return next(i + 1); });
   })(0);
-  RC.set(c, p); return p;
+  return p;
 }
 
 /* ---------- Cấu tạo chữ: tách thành các thành phần (dữ liệu makemeahanzi, tải lúc chạy, cần Internet) ---------- */
@@ -10252,7 +10279,17 @@ var IDS_POS = {
 };
 var COMP_NOTE = { '𢆶':'hai chữ 幺 (yêu – sợi tơ nhỏ) đứng cạnh nhau, biểu thị dây tơ chằng chịt', '丱':'búi tóc hai chỏm, cũng là hình nan gỗ cài', '幺':'sợi tơ nhỏ' };
 var MMH = null;
+var MMHL = null;
 function loadMMH(){
+  if(MMHL) return MMHL;
+  MMHL = loadHZ().then(function(D){
+    var m = new Map(); if(!D) return m;
+    Object.keys(D).forEach(function(k){ var r = D[k]; m.set(k, { character: k, radical: r[0], decomposition: r[2], etymology: r[3] || null }); });
+    return m;
+  });
+  return MMHL;
+}
+function loadMMHNet(){
   if(MMH) return MMH;
   MMH = fetchT('https://cdn.jsdelivr.net/gh/skishore/makemeahanzi@master/dictionary.txt', 40000).then(function(r){ if(!r.ok) throw new Error(String(r.status)); return r.text(); }).then(function(t){
     var m = new Map();
@@ -10286,6 +10323,10 @@ function hasRad(n, rad){ return (n.ch && canonR(n.ch) === rad) || (n.kids || [])
 function structFor(chars){
   var wait = new Promise(function(res){ setTimeout(function(){ res(null); }, 9000); });
   return Promise.race([loadMMH(), wait]).then(function(M){
+    if(!M) M = new Map();
+    if(!chars.some(function(ch){ return !M.has(ch); })) return M;
+    return Promise.race([loadMMHNet(), wait]).then(function(N){ if(!N) return M.size ? M : null; var m2 = new Map(M); N.forEach(function(v, k){ if(!m2.has(k)) m2.set(k, v); }); return m2; });
+  }).then(function(M){
     if(!M) return { S: {}, gl: {}, slow: true };
     var S = {}, comps = [];
     chars.forEach(function(c){
