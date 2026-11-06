@@ -3946,7 +3946,7 @@ window.TVPos = (function(){
   return {get, MAP};
 })();
 </script>
-<script src="data.js?v=20261105"></script>
+<script src="data.js?v=20261106"></script>
 <script src="gate.js?v=2"></script>
 <script src="state.js?v=2"></script>
 <script>
@@ -9983,6 +9983,7 @@ html body #panel-reflex .toolbar{position:sticky;top:0;z-index:40;}
     show('rx-game', false); show('rx-end', true);
   }
   function start(items){
+    if(window.ACC_GATE && !ACC_GATE.pro){ halt(); show('rx-modal', false); $('rx-emptytxt').textContent = '🔒 Luyện phản xạ dành cho tài khoản Pro.'; show('rx-empty', true); ACC_GATE.upsell('reflex'); return; }
     show('rx-modal', false); show('rx-empty', false); stop(); closeInfo(); silence();
     mode = bi < 0 ? 'rnd' : 'seq';
     qs = items ? items.slice() : usable();
@@ -10001,7 +10002,7 @@ html body #panel-reflex .toolbar{position:sticky;top:0;z-index:40;}
     pi = -1; partSel.value = -1;
   }
   const blank = document.createElement('option'); blank.value = -1; blank.textContent = 'Giáo trình'; bookSel.appendChild(blank);
-  RX.forEach((b, i) => { const o = document.createElement('option'); o.value = i; o.textContent = b.t; bookSel.appendChild(o); });
+  RX.forEach((b, i) => { const o = document.createElement('option'); o.value = i; o.textContent = ((window.ACC_GATE && !ACC_GATE.pro) ? '🔒 ' : '') + b.t; bookSel.appendChild(o); });
   const restart = () => { if(gameOn() || !$('rx-end').hidden) start(); };
   bookSel.addEventListener('change', () => { bi = +bookSel.value; mode = bi < 0 ? 'rnd' : 'seq'; fillParts(); bookSel.blur(); restart(); });
   partSel.addEventListener('change', () => { pi = +partSel.value; partSel.blur(); restart(); });

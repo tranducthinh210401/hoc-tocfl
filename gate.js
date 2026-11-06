@@ -1,12 +1,12 @@
 /* Khóa nội dung theo tài khoản Pro — © 2026 Học TOCFL cùng Thịnh & Loan
    Chạy ngay sau data.js: tài khoản Pro thì nạp thêm data-pro.js (từ vựng các bài khóa).
-   Quy tắc: Đương Đại 1/2/3 (A1, A2, B1) chỉ mở 5 bài đầu · Novice 1–2 và Ngữ pháp mở hết · Level 1–5 và Lona cần Pro. */
+   Quy tắc: Đương Đại 1/2/3 (A1, A2, B1) chỉ mở 5 bài đầu · Novice 1–2 và Ngữ pháp mở hết · Level 1–5, TOCFL Band A đầy đủ (BA), Luyện phản xạ và Lona cần Pro. */
 (function(){
 'use strict';
 var ZALO='0939509695',FREE_LESSONS=5;
 var pro=false;try{pro=localStorage.getItem('acc_pro')==='1'}catch(e){}
 function bookOf(l){var m=(l||'').match(/^\[([^\]]+)\]/);return m?m[1]:''}
-function bookLocked(b){return /^L[1-5]$/.test(b)}
+function bookLocked(b){return /^(L[1-5]|BA)$/.test(b)}
 function lessonLocked(l){
   var b=bookOf(l);
   if(bookLocked(b))return true;
@@ -21,7 +21,7 @@ var G=window.ACC_GATE={
 };
 /* Dữ liệu chia 2 phần: data.js (miễn phí) luôn tải; data-pro.js (bài khóa) chỉ tải khi là tài khoản Pro.
    Nhờ vậy người dùng thường tải ít hơn nhiều, trang mở nhanh hơn. Viết bằng document.write để chạy xong trước các script chính. */
-if(pro){document.write('<script src="data-pro.js?v=1"><\/script>')}
+if(pro){document.write('<script src="data-pro.js?v=2"><\/script>')}
 
 /* ---------- Hộp thoại mời nâng cấp ---------- */
 var css='\
@@ -37,7 +37,8 @@ var st=document.createElement('style');st.textContent=css;
 
 var WHY={
   lesson:['Bài học này dành cho tài khoản Pro','Bạn đang dùng bản học thử: mỗi giáo trình Đương Đại mở 5 bài đầu. Nâng cấp Pro để mở toàn bộ bài học và các cấp độ Level 1–5.'],
-  book:['Cấp độ này dành cho tài khoản Pro','Level 1–5 chỉ mở cho tài khoản Pro. Novice 1, Novice 2 và Ngữ pháp bạn vẫn học miễn phí.'],
+  book:['Cấp độ này dành cho tài khoản Pro','Level 1–5 và TOCFL Band A đầy đủ chỉ mở cho tài khoản Pro. Novice 1, Novice 2 và Ngữ pháp bạn vẫn học miễn phí.'],
+  reflex:['Luyện phản xạ dành cho Pro','Luyện phản xạ chỉ mở cho tài khoản Pro. Nâng cấp Pro để luyện dịch câu không giới hạn.'],
   lona:['Trò chuyện với Lona dành cho Pro','Lona là cô giáo AI trả lời từ vựng, ngữ pháp và sửa câu cho bạn. Nâng cấp tài khoản Pro để trò chuyện không giới hạn.']
 };
 var open=null;
@@ -60,6 +61,7 @@ G.upsell=function(kind){
 /* Chọn giáo trình/bài bị khóa trong bộ chọn → mở hộp thoại mời nâng cấp */
 document.addEventListener('change',function(e){
   var el=e.target;if(pro||!el||!el.id)return;
+  if(el.id==='rx-book'||el.id==='rx-part'){e.stopImmediatePropagation();if(el.id==='rx-book')el.value='-1';G.upsell('reflex');return}
   if(/^bookFilter/.test(el.id)&&bookLocked(el.value))G.upsell('book');
   else if(/^lessonFilter/.test(el.id)){
     var v=el.value||'';

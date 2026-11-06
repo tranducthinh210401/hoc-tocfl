@@ -2,7 +2,7 @@
 """Công cụ dữ liệu từ vựng.
   python3 tools/data_tool.py split   : (từ data.js đầy đủ HOẶC data.js + data-pro.js) -> viết lại data.js (miễn phí) + data-pro.js (Pro)
   python3 tools/data_tool.py merge out.json : gộp data.js + data-pro.js thành 1 file JSON đầy đủ để chỉnh sửa
-Quy tắc Pro (phải khớp gate.js): Level 1-5 (L1..L5) và Đương Đại 1/2/3 (A1,A2,B1) từ bài 6 trở đi."""
+Quy tắc Pro (phải khớp gate.js): Level 1-5 (L1..L5), TOCFL Band A (BA) và Đương Đại 1/2/3 (A1,A2,B1) từ bài 6 trở đi."""
 import json, re, sys, os
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 def read(path):
@@ -12,7 +12,7 @@ def read(path):
     return json.loads(s[s.index('[{'):s.rindex(']') + 1])
 def locked(l):
     m = re.match(r'\[([^\]]+)\]', l or ''); b = m.group(1) if m else ''
-    if re.match(r'L[1-5]$', b): return True
+    if re.match(r'(L[1-5]|BA)$', b): return True
     if b in ('A1', 'A2', 'B1'):
         n = re.search(r'BÀI\s*(\d+)', l); return bool(n) and int(n.group(1)) > 5
     return False
