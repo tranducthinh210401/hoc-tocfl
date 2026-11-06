@@ -1,4 +1,4 @@
-/* Nhớ vị trí đang học: chức năng, giáo trình, bài, nửa bài, vị trí thẻ Flashcard — © 2026 Học TOCFL cùng Thịnh & Loan
+/* Nhớ vị trí đang học: giáo trình, bài, nửa bài, vị trí thẻ Flashcard (luôn mở lại ở Trang chủ) — © 2026 Học TOCFL cùng Thịnh & Loan
    Lưu ở localStorage khóa "acc_state"; khi đăng nhập, khóa này được đồng bộ theo tài khoản (xem tai-khoan.js)
    nên đóng trình duyệt, đăng xuất hay đổi thiết bị vào lại vẫn đúng chỗ đang học. */
 (function(){
@@ -11,7 +11,7 @@ function write(){
   if(!touched)return;   /* chưa có thao tác thật của người dùng thì không ghi đè (tránh xóa vị trí đã lưu khi vừa đồng bộ từ tài khoản) */
   try{
     var tb=document.querySelector('.tab-btn.active'),e=(typeof LESSON_SYNC!=='undefined')&&LESSON_SYNC[0],o={t:Date.now()};
-    o.tab=tb?tb.dataset.tab:(cur.tab||'home');
+    o.tab='home';
     if(e){o.book=e.bookSel.value;o.lesson=e.selectEl.value;if(typeof PART!=='undefined')o.part=PART}
     if(cur.fc)o.fc=cur.fc;
     localStorage.setItem(KEY,JSON.stringify(o));
@@ -49,10 +49,7 @@ function restore(){
         }
       }
     }
-    if(st&&st.tab&&st.tab!=='home'){
-      var tb=document.querySelector('.tab-btn[data-tab="'+st.tab+'"]');
-      if(tb&&!tb.classList.contains('active'))tb.click();
-    }
+    /* Luôn mở ở Trang chủ: không khôi phục chức năng (tab) đang mở lần trước; chỉ nhớ giáo trình, bài, nửa bài và thẻ Flashcard */
   }catch(err){}
   restored=true;
 }
