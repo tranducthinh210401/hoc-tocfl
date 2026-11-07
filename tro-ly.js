@@ -399,7 +399,141 @@ function run(){
 var chatEl=$('.ta-chat',panel),dictEl=$('.ta-dict',panel),msgsEl=$('.ta-msgs',panel),cta=$('textarea',chatEl),cgo=$('.ta-go',chatEl),sugEl=$('.ta-sug',panel);
 var convo=(store('ta_chat')||[]).filter(function(m){return m&&typeof m.content==='string'&&(m.role==='user'||m.role==='assistant')}).slice(-20),busy=false;
 var SUG=['Chào buổi sáng là gì?','早安是什麼意思？','Phân biệt 的、得、地','Giải thích câu 把','「想」和「要」khác nhau thế nào?','Cho mình ví dụ với 雖然…但是…','Dịch giúp: 我昨天去夜市吃了臭豆腐。'];
-function fmt(t){
+/* ---------- Trả lời dạng thẻ (Cấu trúc · Câu mẫu · Lưu ý · Hỏi tiếp) ---------- */
+var ZH='㐀-䶿一-鿿豈-﫿',ZHP='，。！？：；「」『』…～、';
+var ZH_ANY=new RegExp('['+ZH+']'),ZH_RUN=new RegExp('(['+ZH+'][' +ZH+ZHP+']*)','g');
+var SEC={'cấu trúc':'struct','công thức':'struct','nghĩa':'mean','ý nghĩa':'mean','ý nghĩa & khi nào dùng':'mean','khi nào dùng':'mean','ví dụ':'ex','ví dụ minh họa':'ex','ví dụ minh hoạ':'ex','câu mẫu':'ex','lưu ý':'note','lỗi hay gặp':'note','lỗi hay gặp / so sánh':'note','so sánh':'note','mẹo nhớ':'note','mẹo':'note','đồng nghĩa':'syn','trái nghĩa':'ant','hỏi tiếp':'follow','gợi ý hỏi tiếp':'follow'};
+var SEC_T={struct:'Cấu trúc',mean:'Ý nghĩa',ex:'Câu mẫu',note:'Lưu ý',syn:'Đồng nghĩa',ant:'Trái nghĩa'};
+function zhSpan(m){var say=m.replace(new RegExp('['+ZHP+']','g'),'');return say?'<span class="zh" data-say="'+say+'">'+m+'</span>':m}
+function inl(t){   /* **đậm**, chữ Hán bấm để nghe, /pinyin/ giữ nguyên dấu gạch chéo */
+  var h=esc(t).replace(/\*\*([^*\n]+)\*\*/g,'<b>$1</b>').replace(/`([^`\n]+)`/g,'$1');
+  h=h.replace(/(^|[\s(（—-])\/([^\/<>\n]{1,80}?)\/(?=$|[\s,.;:)）—-])/g,function(m,p,py){return p+'<span class="py">/'+py+'/</span>'});
+  return h.replace(/<b>([^<]*)<\/b>|(?:<span class="py">[^<]*<\/span>)|([㐀-䶿一-鿿豈-﫿][㐀-䶿一-鿿豈-﫿，。！？：；「」『』…～、]*)/g,function(m,bold,zh){
+    if(zh)return zhSpan(zh);
+    if(bold!==undefined)return '<b>'+bold.replace(ZH_RUN,zhSpan)+'</b>';
+    return m;
+  });
+}
+function spkBtn(say){return '<button type="button" class="ta-spk ta-spi" data-say="'+esc(say)+'" aria-label="Nghe">🔊</button>'}
+function parseReply(text){
+  var lines=String(text||'').replace(/\r/g,'').split('\n'),secs=[],cur={type:'intro',title:'',lines:[]},head=null;
+  secs.push(cur);
+  lines.forEach(function(l,i){
+    var m=l.match(/^\s*(?:#{1,4}\s*)?\*\*\s*([^*\n]{2,60}?)\s*:?\s*\*\*\s*:?\s*(.*)$/);
+    if(m){
+      var key=m[1].toLowerCase().replace(/\s*:\s*$/,'');
+      if(SEC[key]){cur={type:SEC[key],title:m[1],lines:[]};secs.push(cur);if(m[2].trim())cur.lines.push(m[2]);return}
+      if(!head&&secs.length===1&&!secs[0].lines.some(function(x){return x.trim()})&&ZH_ANY.test(m[1])&&/\/[^\/]+\//.test(l)){head=l;return}   /* dòng tiêu đề từ vựng */
+    }
+    cur.lines.push(l);
+  });
+  return {head:head,secs:secs};
+}
+function bullets(lines){   /* gom thành các mục: mỗi dòng "- ..." / "1. ..." là một mục, dòng khác nối vào mục trước */
+  var out=[];
+  lines.forEach(function(l){
+    if(!l.trim())return;
+    var m=l.match(/^\s*(?:[-•*]|\d+[.)])\s+(.*)$/);
+    if(m)out.push({b:true,t:m[1]});
+    else if(out.length&&/^\s{2,}\S/.test(l))out[out.length-1].t+=' '+l.trim();
+    else out.push({b:false,t:l.trim()});
+  });
+  return out;
+}
+function splitExample(t){   /* "中文句 /pinyin/ — nghĩa" hoặc "中文句 (pinyin) — nghĩa" */
+  var m=t.match(/^(.*?)\s*\/([^\/]+)\/\s*(?:[—–-]+|:)?\s*(.*)$/);
+  if(m&&ZH_ANY.test(m[1]))return {zh:m[1].replace(/\*\*/g,'').trim(),py:m[2].trim(),vi:m[3].trim()};
+  m=t.match(/^(.*?)\s*[（(]([^()（）]*[a-zA-Zāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜ][^()（）]*)[)）]\s*(?:[—–-]+|:)?\s*(.*)$/);
+  if(m&&ZH_ANY.test(m[1]))return {zh:m[1].replace(/\*\*/g,'').trim(),py:m[2].trim(),vi:m[3].trim()};
+  m=t.match(/^(.*?[㐀-鿿][^—–]*?)\s*[—–]\s*(.*)$/);
+  if(m&&ZH_ANY.test(m[1]))return {zh:m[1].replace(/\*\*/g,'').trim(),py:'',vi:m[2].trim()};
+  return null;
+}
+function exCard(x){
+  return '<div class="ta-ex"><div class="ta-ex-t"><div class="ta-ex-zh">'+zhSpan(esc(x.zh))+'</div>'+(x.py?'<div class="ta-ex-py">/'+esc(x.py.replace(/^\/|\/$/g,''))+'/</div>':'')+(x.vi?'<div class="ta-ex-vi">'+inl(x.vi)+'</div>':'')+'</div>'+spkBtn(x.zh.replace(new RegExp('[^'+ZH+']','g'),''))+'</div>';
+}
+function structHtml(lines){
+  var txt=lines.filter(function(l){return l.trim()}).map(function(l){return l.trim()});if(!txt.length)return '';
+  var formula=txt[0].replace(/^\s*(?:[-•*]\s+)/,''),rest=txt.slice(1),h='';
+  var parts=formula.split(/\s+\+\s+/).map(function(x){return x.replace(/\*\*/g,'').trim()}).filter(Boolean);
+  if(parts.length>=2||/^[\[\(（]?[㐀-鿿]/.test(formula)&&formula.length<60){
+    h+='<div class="ta-fm">'+parts.map(function(p,i){
+      var opt=/^[\[(（]|[…\]]$|^[\[（(].*[\]）)]$/.test(p)||/\[|…|\.{3}/.test(p)&&!/^[㐀-鿿]+$/.test(p);
+      return (i?'<span class="ta-plus">+</span>':'')+'<span class="ta-chip'+(opt?' opt':'')+'">'+(ZH_ANY.test(p)&&!/^[\[(（]/.test(p)?zhSpan(esc(p)):esc(p))+'</span>';
+    }).join('')+'</div>';
+  }else rest=txt;
+  if(rest.length)h+='<div class="ta-small">'+rest.map(inl).join('<br>')+'</div>';
+  return h;
+}
+function listHtml(lines){
+  var items=bullets(lines);if(!items.length)return '';
+  var allB=items.every(function(x){return x.b});
+  if(allB)return '<ul>'+items.map(function(x){return '<li>'+inl(x.t)+'</li>'}).join('')+'</ul>';
+  return items.map(function(x){return x.b?'<ul><li>'+inl(x.t)+'</li></ul>':'<p>'+inl(x.t)+'</p>'}).join('');
+}
+function richHtml(text){
+  var P=parseReply(text),got=P.secs.filter(function(s){return s.type!=='intro'}).length;
+  if(!got&&!P.head)return null;
+  var h='<div class="ta-rich"><div class="ta-who"><img src="tro-ly-avatar.jpg" alt=""><b>Lona</b></div>';
+  if(P.head){
+    var hm=P.head.match(/\*\*\s*([^*]+?)\s*\*\*\s*(\/[^\/]+\/)?\s*(.*)$/),zh=hm?hm[1]:'',py=hm&&hm[2]?hm[2]:'',tail=hm?hm[3]:'';
+    var badges=tail.split(/[·•|]/).map(function(x){return x.replace(/^[\s,]+|[\s,]+$/g,'')}).filter(Boolean);
+    var pm=py?'':(tail.match(/\/[^\/]+\//)||[''])[0];if(pm){py=pm;badges=badges.map(function(x){return x.replace(pm,'').trim()}).filter(Boolean)}
+    h+='<div class="ta-hd"><div class="ta-hd-t"><span class="ta-hd-zh">'+zhSpan(esc(zh))+'</span>'+(py?'<span class="ta-hd-py">'+esc(py)+'</span>':'')+'</div>'+spkBtn(zh.replace(new RegExp('[^'+ZH+']','g'),''))+'</div>'+(badges.length?'<div class="ta-badges">'+badges.map(function(b){return '<span>'+inl(b)+'</span>'}).join('')+'</div>':'');
+  }
+  P.secs.forEach(function(s){
+    var body=s.lines.join('\n').trim();
+    if(s.type==='intro'){if(body)h+='<p class="ta-p">'+inl(body).replace(/\n/g,'<br>')+'</p>';return}
+    if(!body&&s.type!=='follow')return;
+    if(s.type==='follow'){
+      var qs=s.lines.join(' ').split(/\s*\|\s*|\s*(?:^|\s)[-•]\s+/).map(function(x){return x.replace(/^[\s\-•*"“]+|[\s"”]+$/g,'')}).filter(function(x){return x.length>1});
+      if(!qs.length)qs=bullets(s.lines).map(function(x){return x.t.replace(/\*\*/g,'')});
+      if(qs.length)h+='<div class="ta-fu"><span>HỎI TIẾP</span>'+qs.slice(0,4).map(function(q){return '<button type="button" data-q="'+esc(q)+'">'+esc(q)+'</button>'}).join('')+'</div>';
+      return;
+    }
+    var inner='';
+    if(s.type==='struct')inner=structHtml(s.lines);
+    else if(s.type==='ex'){
+      var its=bullets(s.lines),cards='',extra='';
+      its.forEach(function(x){var e=splitExample(x.t);if(e)cards+=exCard(e);else extra+='<p>'+inl(x.t)+'</p>'});
+      inner=cards+(extra?'<div class="ta-small">'+extra+'</div>':'');
+    }else inner=listHtml(s.lines);
+    h+='<section class="ta-sec s-'+s.type+'"><h5>'+esc(SEC_T[s.type]||s.title)+'</h5>'+inner+'</section>';
+  });
+  return h+'</div>';
+}
+var RICH_CSS='.ta-m.a.rich{padding:0;background:transparent;border:0;box-shadow:none;max-width:100%;white-space:normal;align-self:stretch}'
++'.ta-rich{display:flex;flex-direction:column;gap:10px;background:var(--surface,#fff);border:1px solid var(--border-soft,rgba(0,0,0,.08));border-radius:20px 20px 20px 6px;padding:12px;box-shadow:0 1px 3px rgba(0,0,0,.06)}'
++'.ta-who{display:flex;align-items:center;gap:8px;font-size:14px}.ta-who img{width:30px;height:30px;border-radius:50%;object-fit:cover}.ta-who b{font-weight:800}'
++'.ta-rich .ta-p{margin:0;font-size:14.5px;line-height:1.55}'
++'.ta-hd{display:flex;align-items:center;justify-content:space-between;gap:10px}.ta-hd-t{display:flex;flex-direction:column;gap:2px;min-width:0}'
++'.ta-hd-zh{font-family:var(--han-font,"Noto Serif TC",serif);font-size:28px;font-weight:700;line-height:1.2}.ta-hd-py{color:var(--ta-green,#0f7a4d);font-weight:600;font-size:15px}'
++'.ta-badges{display:flex;flex-wrap:wrap;gap:6px}.ta-badges span{background:var(--surface-2,#f2f2f5);border:1px solid var(--border-soft,rgba(0,0,0,.08));border-radius:999px;padding:2px 10px;font-size:12px;font-weight:600;color:var(--text-secondary,#555)}'
++'.ta-sec{border-radius:16px;padding:12px 14px;background:var(--surface-2,#f5f5f7);border:1px solid var(--border-soft,rgba(0,0,0,.06))}'
++'.ta-sec h5{margin:0 0 8px;font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--blue,#0071e3)}'
++'.ta-sec.s-struct{background:var(--blue-tint,#e1ecff);border-color:transparent}'
++'.ta-sec.s-note{background:#fff4d6;border-color:transparent;color:#3a2e0b}.ta-sec.s-note h5{color:#7a5a00}'
++'.ta-sec.s-ex{background:transparent;border:0;padding:0}.ta-sec.s-ex h5{padding:0 2px}'
++'.ta-fm{display:flex;flex-wrap:wrap;align-items:center;gap:6px}.ta-plus{font-weight:700;color:var(--blue,#0071e3)}'
++'.ta-chip{background:var(--surface,#fff);border-radius:12px;padding:8px 12px;font-weight:700;font-size:17px;box-shadow:0 1px 2px rgba(0,0,0,.08);font-family:var(--han-font,"Noto Serif TC",serif)}'
++'.ta-chip.opt{background:transparent;border:1.5px dashed var(--blue,#0071e3);color:var(--blue,#0071e3);box-shadow:none;font-family:inherit;font-size:15px}'
++'.ta-small{font-size:13.5px;line-height:1.5;margin-top:8px;color:var(--text-secondary,#555)}.ta-small p{margin:0 0 4px}'
++'.ta-ex{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--surface,#fff);border:1px solid var(--border,rgba(0,0,0,.1));border-radius:16px;padding:12px 14px;margin-bottom:8px}'
++'.ta-ex-t{min-width:0}.ta-ex-zh{font-family:var(--han-font,"Noto Serif TC",serif);font-size:19px;font-weight:700;line-height:1.35}'
++'.ta-ex-py{color:var(--ta-green,#0f7a4d);font-weight:600;font-size:14px;margin-top:2px}.ta-ex-vi{color:var(--text-secondary,#666);font-size:14px;margin-top:2px}'
++'.ta-m.a .ta-spk{flex:none;width:38px!important;height:38px!important;border-radius:50%;border:1px solid var(--border,rgba(0,0,0,.12))!important;background:var(--surface,#fff)!important;color:var(--blue,#0071e3)!important;margin:0!important;font-size:15px!important;box-shadow:none!important;cursor:pointer}'
++'.ta-sec ul{margin:0;padding-left:18px}.ta-sec li{margin:0 0 6px;line-height:1.55;font-size:14.5px}.ta-sec li:last-child{margin-bottom:0}.ta-sec p{margin:0 0 6px;font-size:14.5px;line-height:1.55}'
++'.ta-rich .py{color:var(--ta-green,#0f7a4d);font-weight:600}'
++'.ta-m.a .ta-rich .zh{font-family:var(--han-font,"Noto Serif TC",serif);font-weight:700;font-size:1em;color:var(--ta-green,#0f7a4d);cursor:pointer;background:none;border-radius:0;padding:0;border-bottom:1px dotted currentColor}'
++'.ta-m.a .ta-rich .ta-ex-zh .zh,.ta-m.a .ta-rich .ta-hd-zh .zh,.ta-m.a .ta-rich .ta-chip .zh,.ta-m.a .ta-rich .ta-badges .zh{color:inherit;border-bottom:0}.ta-m.a .ta-rich .ta-chip.opt .zh{color:inherit}'
++'.ta-sec b{font-weight:800}.ta-sec.s-note b{color:#0c5a3b}'
++'.ta-fu{display:flex;flex-wrap:wrap;align-items:center;gap:6px}.ta-fu span{font-size:11.5px;font-weight:800;letter-spacing:.08em;color:var(--blue,#0071e3);margin-right:2px}'
++'.ta-fu button{border:1px solid var(--border,rgba(0,0,0,.14));background:var(--surface,#fff);color:inherit;border-radius:999px;padding:6px 12px;font:600 13px/1.3 inherit;font-family:inherit;cursor:pointer;text-align:left}.ta-fu button:hover{background:var(--blue-tint,rgba(0,113,227,.08))}'
++':root{--ta-green:#0f7a4d}@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ta-green:#5fd3a0}:root:not([data-theme="light"]) .ta-sec.s-note{background:#3a3115;color:#f5e9c0}:root:not([data-theme="light"]) .ta-sec.s-note h5{color:#f0c75a}:root:not([data-theme="light"]) .ta-sec.s-note b{color:#8ee0b8}:root:not([data-theme="light"]) .ta-sec.s-struct{background:rgba(10,132,255,.18)}}'
++'html[data-theme="dark"]{--ta-green:#5fd3a0}html[data-theme="dark"] .ta-sec.s-note{background:#3a3115;color:#f5e9c0}html[data-theme="dark"] .ta-sec.s-note h5{color:#f0c75a}html[data-theme="dark"] .ta-sec.s-note b{color:#8ee0b8}html[data-theme="dark"] .ta-sec.s-struct{background:rgba(10,132,255,.18)}';
+(function(){var st=document.createElement('style');st.textContent=RICH_CSS;document.head.appendChild(st)})();
+function fmt(t){var r=null;try{r=richHtml(t)}catch(e){r=null}return r!==null?r:fmtPlain(t)}
+function fmtPlain(t){
   var h=esc(t).replace(/\*\*([^*\n]+)\*\*/g,'<b>$1</b>').replace(/^- /gm,'• ');
   /* mỗi cụm/câu tiếng Hoa: gạch chân chấm + loa nhỏ ngay bên cạnh để nghe */
   return h.replace(/([\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff][\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff，。！？：；「」『』…～]*)/g,function(m){
@@ -409,7 +543,7 @@ function fmt(t){
 }
 function addMsg(role,text){
   var d=document.createElement('div');d.className='ta-m '+(role==='user'?'u':'a');
-  if(role==='user')d.textContent=text;else d.innerHTML=fmt(text);
+  if(role==='user')d.textContent=text;else{d.innerHTML=fmt(text);if(d.querySelector('.ta-rich'))d.classList.add('rich')}
   msgsEl.appendChild(d);msgsEl.scrollTop=msgsEl.scrollHeight;return d;
 }
 function renderConvo(){
@@ -418,7 +552,9 @@ function renderConvo(){
   convo.forEach(function(m){addMsg(m.role,m.content)});
   sugEl.style.display=convo.length?'none':'';
 }
-msgsEl.addEventListener('click',function(e){var z=e.target.closest&&e.target.closest('.zh,.ta-spi');if(z)speak(z.dataset.say,z)});
+msgsEl.addEventListener('click',function(e){
+  var q=e.target.closest&&e.target.closest('.ta-fu button');if(q&&!busy){cta.value=q.dataset.q;sendChat();return}
+  var z=e.target.closest&&e.target.closest('.zh,.ta-spi');if(z)speak(z.dataset.say,z)});
 sugEl.innerHTML=SUG.map(function(x){return '<button type="button">'+esc(x)+'</button>'}).join('');
 sugEl.querySelectorAll('button').forEach(function(b){b.onclick=function(){cta.value=b.textContent;sendChat()}});
 function cauto(){cta.style.height='auto';cta.style.height=Math.min(120,cta.scrollHeight)+'px'}
@@ -433,7 +569,7 @@ function sendChat(){
   busy=true;cgo.disabled=true;
   var typing=addMsg('assistant','…');
   apiChat(convo.slice(-12)).then(function(r){
-    typing.innerHTML=fmt(r.text)+srcHtml(r.sources)+(r.status&&r.status!=='ok'?'<div class="ta-src">⚠️ Tra web: '+esc(r.status)+'</div>':'');convo.push({role:'assistant',content:r.text});convo=convo.slice(-20);store('ta_chat',convo);
+    var fh=fmt(r.text);typing.classList.toggle('rich',fh.indexOf('ta-rich')>=0);typing.innerHTML=fh+srcHtml(r.sources)+(r.status&&r.status!=='ok'?'<div class="ta-src">⚠️ Tra web: '+esc(r.status)+'</div>':'');convo.push({role:'assistant',content:r.text});convo=convo.slice(-20);store('ta_chat',convo);
   }).catch(function(e){
     convo.pop();
     typing.textContent=e&&e.code==='limit'?'Hôm nay bạn đã dùng hết lượt hỏi rồi, mai quay lại nhé!':'Mình chưa trả lời được lúc này, bạn gửi lại giúp mình nhé.';
