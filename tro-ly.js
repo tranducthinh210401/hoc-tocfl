@@ -398,7 +398,7 @@ function run(){
 /* ---------- Trò chuyện ---------- */
 var chatEl=$('.ta-chat',panel),dictEl=$('.ta-dict',panel),msgsEl=$('.ta-msgs',panel),cta=$('textarea',chatEl),cgo=$('.ta-go',chatEl),sugEl=$('.ta-sug',panel);
 var convo=(store('ta_chat')||[]).filter(function(m){return m&&typeof m.content==='string'&&(m.role==='user'||m.role==='assistant')}).slice(-20),busy=false;
-var SUG=['Phân biệt 的、得、地','Giải thích câu 把','「想」和「要」khác nhau thế nào?','Cho mình ví dụ với 雖然…但是…','Dịch giúp: 我昨天去夜市吃了臭豆腐。'];
+var SUG=['Chào buổi sáng là gì?','早安是什麼意思？','Phân biệt 的、得、地','Giải thích câu 把','「想」和「要」khác nhau thế nào?','Cho mình ví dụ với 雖然…但是…','Dịch giúp: 我昨天去夜市吃了臭豆腐。'];
 function fmt(t){
   var h=esc(t).replace(/\*\*([^*\n]+)\*\*/g,'<b>$1</b>').replace(/^- /gm,'• ');
   /* mỗi cụm/câu tiếng Hoa: gạch chân chấm + loa nhỏ ngay bên cạnh để nghe */
@@ -440,8 +440,35 @@ function sendChat(){
   }).then(function(){busy=false;cgo.disabled=false;msgsEl.scrollTop=msgsEl.scrollHeight});
 }
 /* Lấy dữ liệu đã kiểm chứng từ kho TOCFL của trang để AI trả lời đúng, không bịa */
+/* Nhận ý định hỏi nhanh: "chào buổi sáng là gì" → muốn chữ Hán; "早安是什麼" / "早安 là gì" → muốn nghĩa tiếng Việt */
+var ZH_CH='\\u3400-\\u4dbf\\u4e00-\\u9fff\\uf900-\\ufaff';
+var ZH_RE=new RegExp('['+ZH_CH+']'), ZH_ALL=new RegExp('['+ZH_CH+']+','g');
+function wre(list,flags){list=list.slice().sort(function(a,b){return b.length-a.length});return new RegExp('(?<![\\p{L}\\p{N}])(?:'+list.join('|')+')(?![\\p{L}\\p{N}])',flags||'iu')}
+var ZHQ_RE=wre(['là gì','nghĩa là gì','có nghĩa là gì','nghĩa gì','nghĩa là sao','là sao','nghĩa của','đọc là gì','đọc thế nào','giải nghĩa','là j','là gi','nghia la gi']);
+var ZHQ_ZH=/(是?什麼意思|是?什么意思|是什麼|是什么|意思是|怎麼說|怎么说)/;
+var VIQ_RE=wre(['là gì','nghĩa là gì','là j','nói thế nào','nói sao','nói như thế nào','viết thế nào','viết sao','viết như thế nào','viết chữ','chữ hán','chữ trung','chữ hoa','tiếng trung','tiếng hoa','tiếng đài','tiếng quan thoại','tiếng hán','dịch sang','dịch ra','trong tiếng','bằng tiếng']);
+var NOINT_RE=wre(['ngữ pháp','cấu trúc','cách dùng','khác nhau','phân biệt','so sánh','giải thích câu','sửa câu','sai ở đâu']);
+var FILL1=wre(['cho mình hỏi','cho tôi hỏi','cho hỏi','mình hỏi','tôi hỏi','hỏi','cho mình biết','bạn ơi','lona ơi','ơi','nhé','nha','nhỉ','vậy','ạ','với','giúp mình','giúp'],'giu');
+var LANGS=['tiếng đài loan','tiếng quan thoại','tiếng trung','tiếng hoa','tiếng đài','tiếng hán','chữ hán','chữ trung','chữ hoa','chữ phồn thể','phồn thể'],LPRE=['','bằng ','trong ','dịch sang ','dịch ra ','nói bằng ','viết bằng ','viết chữ ','viết '],LCOMBO=[];
+LPRE.forEach(function(p){LANGS.forEach(function(l){LCOMBO.push(p+l)})});
+var FILL2=wre(LCOMBO.concat(['nghĩa là gì','có nghĩa là gì','là gì','là j','nói thế nào','nói sao','nói như thế nào','viết thế nào','viết sao','viết như thế nào','viết chữ','viết','dịch sang','dịch ra','dịch','chữ hán','chữ trung','chữ hoa','trong tiếng','bằng tiếng','tiếng trung','tiếng hoa','tiếng đài','tiếng quan thoại','tiếng hán','thế nào','như thế nào','từ','cụm từ','câu']),'giu');
+function detectIntent(text){
+  text=String(text||'').trim();if(!text||NOINT_RE.test(text))return null;
+  if(ZH_RE.test(text)){
+    if(!ZHQ_RE.test(text)&&!ZHQ_ZH.test(text))return null;
+    var vi=text.replace(ZH_ALL,' ').replace(/[^\p{L}\p{N}\s]/gu,' ').replace(/\s+/g,' ').trim();
+    var zh=(text.replace(ZHQ_ZH,' ').match(ZH_ALL)||[]).join('');
+    if(!zh||zh.length>12||vi.split(' ').length>8)return null;     /* câu dài → để Lona xử lý bình thường */
+    return {dir:'zh2vi',phrase:zh};
+  }
+  if(!VIQ_RE.test(text))return null;
+  var p=text.replace(/[?？!！。.,:;]/g,' ').replace(FILL1,' ').replace(FILL2,' ').replace(/\s+/g,' ').trim();
+  if(p.length<2||p.length>40)return null;
+  if(!/[^\x00-\x7f]/.test(p))return null;      /* toàn ký tự không dấu (có thể là pinyin hoặc gõ thiếu dấu) → để Lona tự suy luận */
+  return {dir:'vi2zh',phrase:p};
+}
 function buildContext(text){
-  var seen={},rows=[];
+  var seen={},rows=[],intent=detectIntent(text);
   function add(w){
     if(!w||rows.length>=8)return;var k=w.han+'|'+w.nghia;if(seen[k])return;seen[k]=1;
     var ex=(w.examples&&w.examples[0])||null;
@@ -453,9 +480,13 @@ function buildContext(text){
       if(chunk.length>1)lookupHan(chunk).slice(0,2).forEach(add);
     });
     var vi=text.replace(/[㐀-䶿一-鿿豈-﫿]+/g,' ').trim();
-    if(vi.length>=2&&vi.length<=40)searchVi(vi,4).forEach(add);
+    if(intent&&intent.dir==='vi2zh')searchVi(intent.phrase,6).forEach(add);
+    else if(vi.length>=2&&vi.length<=40)searchVi(vi,4).forEach(add);
   }catch(e){}
-  return rows.join('\n');
+  var hint='';
+  if(intent&&intent.dir==='vi2zh')hint='[Ý ĐỊNH] Người dùng đang hỏi CHỮ HÁN của cụm tiếng Việt «'+intent.phrase+'». Hãy trả lời NGAY ở dòng đầu bằng chữ Hán PHỒN THỂ (Đài Loan) kèm pinyin, rồi tối đa 1–2 cách nói khác (nếu có, nêu sắc thái), 1 ví dụ ngắn. Không giảng dài dòng.\n';
+  else if(intent&&intent.dir==='zh2vi')hint='[Ý ĐỊNH] Người dùng đang hỏi NGHĨA TIẾNG VIỆT của «'+intent.phrase+'». Hãy trả lời NGAY ở dòng đầu bằng nghĩa tiếng Việt (kèm pinyin), rồi 1 ví dụ ngắn. Không giảng dài dòng.\n';
+  return hint+rows.join('\n');
 }
 function srcHtml(src){
   if(!src||!src.length)return '';var seen={},out=[];
