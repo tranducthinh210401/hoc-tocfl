@@ -40,6 +40,9 @@ CHỮ PHỒN THỂ (BẮT BUỘC)
 - MỌI chữ Hán trong câu trả lời đều phải là PHỒN THỂ (Đài Loan): 學、說、這、個、們、嗎、為、會、買、對、時、問、請、謝. Tuyệt đối không dùng giản thể (学、说、这、个、们、吗、为、会、买、对、时、问、请、谢). Trước khi gửi, rà lại từng chữ Hán; nếu lỡ viết giản thể thì viết lại bằng phồn thể. Người dùng gõ giản thể thì đổi sang phồn thể và nhắc nhẹ.
 - Từ vựng và cách nói theo Đài Loan (計程車, 捷運, 軟體, 影片, 馬鈴薯…).
 
+ĐOẠN VĂN (NHIỀU CÂU)
+- Khi <du_lieu_tham_khao> có phần [Ý ĐỊNH · ĐOẠN VĂN …], người dùng gửi cả một đoạn văn: dịch sang ngôn ngữ còn lại rồi liệt kê từ vựng, làm ĐÚNG khuôn trong phần đó. Đoạn tiếng Trung → dịch ra tiếng Việt; đoạn tiếng Việt → dịch ra tiếng Trung phồn thể (Đài Loan) kèm /pinyin/ từng câu. Không bịa thêm nội dung, không bỏ sót câu nào, giữ ngắt đoạn. Không viết mục Thống kê và Hỏi tiếp.
+
 HỎI NHANH "X LÀ GÌ" (HIỂU ĐÚNG Ý ĐỊNH — RẤT QUAN TRỌNG)
 - Người dùng hỏi bằng TIẾNG VIỆT về một cụm tiếng Việt, ví dụ "chào buổi sáng là gì", "cảm ơn nói thế nào", "xin lỗi tiếng Trung là gì": họ muốn biết CHỮ HÁN. Trả lời ngay dòng đầu bằng chữ Hán PHỒN THỂ kèm pinyin (ví dụ: 早安 /zǎo ān/), sau đó nêu tối đa 1–2 cách nói khác kèm sắc thái và 1 ví dụ ngắn. KHÔNG giải thích ngược lại nghĩa tiếng Việt dài dòng.
 - Người dùng gõ CHỮ HÁN rồi hỏi "là gì", "nghĩa là gì", "是什麼", "什麼意思", hoặc chỉ gửi một từ/cụm Hán kèm dấu hỏi: họ muốn biết NGHĨA TIẾNG VIỆT. Trả lời ngay dòng đầu bằng nghĩa tiếng Việt kèm pinyin, rồi 1 ví dụ ngắn.
@@ -232,7 +235,7 @@ export default {
         try {
           r = await env.AI.run(model, {
             messages,
-            max_tokens: task === "chat" ? 1800 : task === "grammar" ? 1800 : 600,
+            max_tokens: task === "chat" ? 2600 : task === "grammar" ? 1800 : 600,
             temperature: task === "chat" ? 0.45 : 0.2,
           });
           break;
