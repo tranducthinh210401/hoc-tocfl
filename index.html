@@ -2311,6 +2311,7 @@ html.sb-collapsed .brand-logo{width:46px;height:46px;border-width:2px;border-rad
 #panel-flash .fc-btn{height:46px;padding:0 22px;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--text);box-shadow:none;font-size:14.5px;font-weight:600;}
 #panel-flash .fc-btn:not(:disabled):hover{border-color:var(--c);color:var(--c);background:color-mix(in srgb,var(--c) 10%,var(--surface));transform:none;box-shadow:none;}
 #panel-flash .fc-sq{width:46px;padding:0;}
+@media (max-width:560px){#panel-flash #fc-restart{width:46px!important;padding:0!important;font-size:0!important;gap:0!important;justify-content:center}}
 #panel-flash .fc-sq.on,#panel-flash .fc-sq.has{background:color-mix(in srgb,var(--c) 16%,var(--surface));border-color:var(--c);color:var(--c);}
 #panel-flash .fc-flipbtn{width:56px;height:56px;border:0;background:var(--c);box-shadow:0 6px 18px color-mix(in srgb,var(--c) 45%,transparent);}
 #panel-flash .fc-flipbtn:hover{background:color-mix(in srgb,var(--c) 85%,#000);}
@@ -3400,7 +3401,6 @@ html.sb-collapsed .brand-logo{width:46px;height:46px;border-width:2px;border-rad
     <div class="toolbar">
       <div class="sel-group"><select id="bookFilter-flash" aria-label="Giáo trình"></select><select id="lessonFilter-flash" aria-label="Bài học"></select><select id="partFilter-flash" aria-label="Phạm vi ôn"></select></div>
       <div class="tb-brand mid"><b>Học TOCFL<em>cùng Thịnh &amp; Loan</em></b></div>
-      <div class="sel-group"><button class="fc-chipbtn" id="fc-restart" type="button" title="Đặt lại tiến độ và học lại từ đầu">↺ Làm lại</button></div>
     </div>
     <div class="fc-layout">
       <div class="fc-main">
@@ -3475,6 +3475,7 @@ html.sb-collapsed .brand-logo{width:46px;height:46px;border-width:2px;border-rad
           </div>
         </div>
         <div class="fc-nav">
+          <button class="fc-btn fc-restart" id="fc-restart" type="button" aria-label="Làm lại" title="Đặt lại tiến độ và học lại từ đầu"><svg class="ic" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"/><polyline points="3 4 3 9 8 9"/></svg>Làm lại</button>
           <button class="fc-btn" id="fc-prev" type="button"><svg class="ic" viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>Trước</button>
           <button class="fc-flipbtn" id="fc-flip" type="button" aria-label="Lật thẻ" title="Lật thẻ (Space)"><svg class="ic" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button>
           <button class="fc-btn" id="fc-next" type="button">Tiếp<svg class="ic" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
