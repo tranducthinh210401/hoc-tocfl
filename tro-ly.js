@@ -669,7 +669,7 @@ cgo.addEventListener('click',sendChat);
 function sendChat(){
   var t=cta.value.trim().slice(0,1400);if(!t||busy)return;
   cta.value='';cauto();sugEl.style.display='none';
-  convo.push({role:'user',content:t});addMsg('user',t);
+  convo.push({role:'user',content:t});var um=addMsg('user',t);
   if(!API){addMsg('assistant','Mình chưa được nối với máy chủ AI nên chưa trò chuyện tự nhiên được 🥲 Bạn xem hướng dẫn trong thư mục worker/README.md để bật nhé.');convo.pop();return}
   busy=true;cgo.disabled=true;
   var typing=addMsg('assistant','…');
@@ -685,7 +685,10 @@ function sendChat(){
   }).catch(function(e){
     convo.pop();
     typing.textContent=e&&e.code==='limit'?'Hôm nay bạn đã dùng hết lượt hỏi rồi, mai quay lại nhé!':'Mình chưa trả lời được lúc này, bạn gửi lại giúp mình nhé.';
-  }).then(function(){busy=false;cgo.disabled=false;msgsEl.scrollTop=msgsEl.scrollHeight});
+  }).then(function(){busy=false;cgo.disabled=false;
+    /* trả lời xong: đưa tin nhắn của người dùng lên đầu khung để đọc câu trả lời từ đầu, không nhảy xuống cuối */
+    msgsEl.scrollTop=msgsEl.scrollTop+(um.getBoundingClientRect().top-msgsEl.getBoundingClientRect().top)-10;
+  });
 }
 /* Lấy dữ liệu đã kiểm chứng từ kho TOCFL của trang để AI trả lời đúng, không bịa */
 /* Nhận ý định hỏi nhanh: "chào buổi sáng là gì" → muốn chữ Hán; "早安是什麼" / "早安 là gì" → muốn nghĩa tiếng Việt */
