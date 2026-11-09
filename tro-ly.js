@@ -674,6 +674,12 @@ function sendChat(){
   busy=true;cgo.disabled=true;
   var typing=addMsg('assistant','…');
   apiChat(convo.slice(-12)).then(function(r){
+    if(/\*\*\s*字詞\s*\*\*/.test(r.text)){   /* AI chép nguyên mẫu "字詞" → thay bằng từ thật */
+      var rw='',tz=(t.match(ZH_ALL)||[]).join('');
+      if(tz&&tz.length<=10&&tz.length>=t.replace(/[\s?？!！。.]/g,'').length*0.6)rw=tz;
+      else{try{var hit=searchVi(t.replace(/[?？!！.]/g,''),1)[0];if(hit)rw=hit.han}catch(e){}}
+      r.text=rw?r.text.replace(/\*\*\s*字詞\s*\*\*/,'**'+rw+'**'):r.text.replace(/^\s*\*\*\s*字詞\s*\*\*\s*/,'');
+    }
     var ps0=detectPassage(t);if(ps0){try{r.text=passageStats(r.text,t,ps0)}catch(e){}}
     var fh=fmt(r.text);typing.classList.toggle('rich',fh.indexOf('ta-rich')>=0);typing.innerHTML=fh+srcHtml(r.sources)+(r.status&&r.status!=='ok'?'<div class="ta-src">⚠️ Tra web: '+esc(r.status)+'</div>':'');convo.push({role:'assistant',content:r.text});convo=convo.slice(-20);store('ta_chat',convo);
   }).catch(function(e){
