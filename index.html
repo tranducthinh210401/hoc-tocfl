@@ -9333,8 +9333,13 @@ kbBuild();initScene();idle();
   }
   var mq=window.matchMedia('(max-width:760px)');
   function typing(t){return !!t&&((t.tagName==='INPUT'&&/^(text|search|number|tel|email|url|)$/i.test(t.type))||t.tagName==='TEXTAREA');}
-  document.addEventListener('focusin',function(e){if(mq.matches&&typing(e.target))document.documentElement.classList.add('kb-open');});
-  document.addEventListener('focusout',function(){setTimeout(function(){if(!typing(document.activeElement))document.documentElement.classList.remove('kb-open');},80);});
+  /* chỉ ẩn thanh đáy khi bàn phím THẬT SỰ mở (vùng nhìn thấy bị thu nhỏ); ô nhập tự focus mà chưa có bàn phím thì vẫn giữ thanh */
+  var vv=window.visualViewport,root=document.documentElement;
+  function kbReal(){return vv?(window.innerHeight-vv.height>120):true;}
+  function sync(){root.classList.toggle('kb-open',!!(mq.matches&&typing(document.activeElement)&&kbReal()));}
+  document.addEventListener('focusin',function(){sync();setTimeout(sync,350);});
+  document.addEventListener('focusout',function(){setTimeout(sync,80);});
+  if(vv)vv.addEventListener('resize',sync);
 })();
 
 /* Điện thoại: theo dõi chiều cao thực của vùng nhìn thấy (khi bàn phím bật lên) để game toàn màn hình không bị bàn phím che */
