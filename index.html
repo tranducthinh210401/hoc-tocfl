@@ -9335,7 +9335,7 @@ kbBuild();initScene();idle();
   function typing(t){return !!t&&((t.tagName==='INPUT'&&/^(text|search|number|tel|email|url|)$/i.test(t.type))||t.tagName==='TEXTAREA');}
   /* chỉ ẩn thanh đáy khi bàn phím THẬT SỰ mở (vùng nhìn thấy bị thu nhỏ); ô nhập tự focus mà chưa có bàn phím thì vẫn giữ thanh */
   var vv=window.visualViewport,root=document.documentElement;
-  function kbReal(){return vv?(window.innerHeight-vv.height>120):true;}
+  function kbReal(){return vv?(Math.max(window.innerHeight,document.documentElement.clientHeight)-vv.height>150):false;}
   function sync(){root.classList.toggle('kb-open',!!(mq.matches&&typing(document.activeElement)&&kbReal()));}
   document.addEventListener('focusin',function(){sync();setTimeout(sync,350);});
   document.addEventListener('focusout',function(){setTimeout(sync,80);});
