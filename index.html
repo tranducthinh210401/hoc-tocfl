@@ -174,6 +174,7 @@
   .c-listen{--g:linear-gradient(135deg,#12b8d6,#0679b8);--g1:#0b94c4;}
   .c-type{--g:linear-gradient(135deg,#66cc10,#3da000);--g1:#4fb208;}
   .c-match{--g:linear-gradient(135deg,#2ab4f5,#1b8fe0);--g1:#1fa0ee;}
+  .c-exam{--g:linear-gradient(135deg,#f08a4b,#d9531e);--g1:#e5703a;}
   body{padding-left:var(--sbw);}
 
   .wrap{max-width:none;width:100%;margin:0;padding:0 24px 80px;}
@@ -1881,7 +1882,7 @@ body{background:var(--bg);color:var(--text);}
 :focus-visible{outline:2px solid var(--u-jade)!important;outline-offset:2px;}
 
 /* --- 1. Thanh bên: mọi chức năng cùng một kiểu, không còn cầu vồng --- */
-.c-home,.c-score,.c-dict,.c-flash,.c-list,.c-quiz,.c-listen,.c-type,.c-match,.c-special,.c-fruit,.c-mario,.c-fish,.c-hang{--g:var(--u-jade);--g1:var(--u-jade);}
+.c-home,.c-score,.c-dict,.c-flash,.c-list,.c-quiz,.c-listen,.c-type,.c-match,.c-exam,.c-special,.c-fruit,.c-mario,.c-fish,.c-hang{--g:var(--u-jade);--g1:var(--u-jade);}
 .sidebar{background:var(--surface);border-right:1px solid var(--border);}
 .brand{background:none;display:flex;flex-direction:column;align-items:center;gap:10px;padding:18px 16px 14px;border-bottom:1px solid var(--border-soft);}
 .brand-logo{width:76px;height:76px;margin:0;border:0;box-shadow:0 0 0 2px var(--u-jade);flex:none;}
@@ -2023,6 +2024,7 @@ html.sb-collapsed .tab-btn.active{box-shadow:0 4px 14px rgba(0,122,255,.35);}
 .c-listen,#panel-listen{--c:#408aa5;}
 .c-type,#panel-type{--c:#4f40a5;}
 .c-match,#panel-match{--c:#7d40a5;}
+.c-exam,#panel-exam{--c:#c2552d;}
 .c-special,#panel-special{--c:#9e3d64;}
 .c-fruit,#panel-fruit{--c:#789339;}
 .c-mario,#panel-mario{--c:#9e3d3d;}
@@ -2396,6 +2398,8 @@ html.sb-collapsed .brand-logo{width:46px;height:46px;border-width:2px;border-rad
 :root[data-theme="dark"] .c-home,:root[data-theme="dark"] #panel-home{--c:#7191d6;}
 :root[data-theme="dark"] .c-type,:root[data-theme="dark"] #panel-type{--c:#8071d6;}
 :root[data-theme="dark"] .c-match,:root[data-theme="dark"] #panel-match{--c:#ad71d6;}
+:root[data-theme="dark"] .c-exam,:root[data-theme="dark"] #panel-exam{--c:#e8956f;}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .c-exam,:root:not([data-theme="light"]) #panel-exam{--c:#e8956f;}}
 :root[data-theme="dark"] .c-hang,:root[data-theme="dark"] #panel-hang{--c:#d671cc;}
 :root[data-theme="dark"] .c-special,:root[data-theme="dark"] #panel-special{--c:#d67199;}
 :root[data-theme="dark"] .c-fish,:root[data-theme="dark"] #panel-fish{--c:#89a7bd;}
@@ -3043,6 +3047,7 @@ html.sb-collapsed .brand-logo{width:46px;height:46px;border-width:2px;border-rad
     <button class="tab-btn c-listen" data-tab="listen" data-short="Nghe viết"><span class="ico"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg></span><span class="tt">Listening</span><span class="td">Nghe từ, gõ chữ Hán / pinyin, chép chính tả</span></button>
     <button class="tab-btn c-type" data-tab="type" data-short="Gõ từ"><span class="ico"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg></span><span class="tt">Gõ từ</span><span class="td">Gõ từ tiếng Trung hoặc pinyin</span></button>
     <button class="tab-btn c-match" data-tab="match" data-short="Ghép cặp"><span class="ico"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span><span class="tt">Ghép cặp</span><span class="td">Nối từ với nghĩa hoặc pinyin</span></button>
+    <button class="tab-btn c-exam" data-tab="exam" data-short="Thi thử"><span class="ico"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 14l2 2 4-4"/></svg></span><span class="tt">Thi thử</span><span class="td">Đề thi thử TOCFL Đọc A2, 50 câu, 60 phút</span></button>
     <button class="tab-btn c-special" data-tab="special" data-short="Đặc biệt"><span class="hot">HOT <svg viewBox="0 0 24 24" fill="#fde047" stroke="#f97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.3 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></span><span class="ico"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg></span><span class="tt">Game đặc biệt</span><span class="td">Hỗn hợp, Dịch câu, Arcade và game mới</span></button>
     <button class="tab-btn c-fruit" data-tab="fruit" data-moved="special" data-short="Hoa quả"><span class="hot">NEW</span><span class="ico">🍌</span><span class="tt">Ném Hoa Quả</span><span class="td">Gõ pinyin hoặc chữ Hán, khỉ ném chuối đẩy lùi rắn</span></button>
     <button class="tab-btn c-mario" data-tab="mario" data-moved="special" data-short="Mario"><span class="hot">NEW</span><span class="ico">🍄</span><span class="tt">Mario vượt chướng ngại</span><span class="td">Nhìn chữ Hán hoặc nghĩa, gõ pinyin, mario ăn nấm và giết rùa</span></button>
@@ -3721,6 +3726,84 @@ html.sb-collapsed .brand-logo{width:46px;height:46px;border-width:2px;border-rad
     <div class="mt-info-r"><button class="mt-pause" id="qg-ipause" type="button" aria-label="Tạm dừng">⏸</button><button class="mt-cont" id="qg-icont" type="button">Tiếp tục (2s)</button></div>
   </div>
 
+  <!-- TAB: Thi thử -->
+  <div class="panel" id="panel-exam">
+    <div class="toolbar">
+      <div class="tb-brand mid"><b>Học TOCFL<em>cùng Thịnh &amp; Loan</em></b></div>
+    </div>
+    <div class="ex-wrap">
+      <div class="mt-idle ex-idle" id="ex-scrStart">
+        <div class="mt-big">📝</div><h2>Thi thử</h2>
+        <p>Đề thi thử TOCFL phần Đọc, cấp A2 (入門基礎級): 50 câu, 60 phút, tự động nộp khi hết giờ. Nộp bài xong xem được điểm, đáp án và lời giải thích từng câu.</p>
+        <div class="ex-resume xhide" id="ex-resume">
+          <div id="ex-resumeTxt"></div>
+          <div class="ex-resbtns"><button class="btn ghost" id="ex-resNo" type="button">Làm bài mới</button><button class="btn primary" id="ex-resYes" type="button">Làm tiếp</button></div>
+        </div>
+        <div class="ex-left">
+          <table class="struct">
+      <tr><th>部分</th><th>題型</th><th>題號</th><th>題數</th><th>選項</th></tr>
+      <tr><td>一</td><td>單句理解 <span class="vi2">– Đọc câu, chọn tranh</span></td><td>1–15</td><td>15</td><td>三選一</td></tr>
+      <tr><td>二</td><td>看圖釋義 <span class="vi2">– Xem tranh/tài liệu, chọn câu</span></td><td>16–30</td><td>15</td><td>三選一</td></tr>
+      <tr><td>三</td><td>選詞填空 <span class="vi2">– Chọn từ điền vào đoạn văn</span></td><td>31–40</td><td>10</td><td>三選一</td></tr>
+      <tr><td>四</td><td>完成段落 <span class="vi2">– Hoàn thành đoạn văn (A–F)</span></td><td>41–45</td><td>5</td><td>配合題</td></tr>
+      <tr><td>五</td><td>閱讀理解 <span class="vi2">– Đọc hiểu đoạn văn</span></td><td>46–50</td><td>5</td><td>四選一</td></tr>
+    </table>
+
+    <ol class="rules">
+      <li>本測驗共 50 題，作答時間 60 分鐘。<span class="vi">Đề có 50 câu, làm trong 60 phút.</span></li>
+      <li>每題只有一個正確答案。<span class="vi">Mỗi câu chỉ có một đáp án đúng.</span></li>
+      <li>可以按「上一題」、「下一題」或右邊的題號換題。不確定的題目可以按「標記」，之後再回來看。<span class="vi">Có thể bấm số câu bên phải để chuyển câu. Câu chưa chắc thì bấm "Đánh dấu" để quay lại sau.</span></li>
+      <li>時間到了，系統會自動交卷。<span class="vi">Hết giờ, bài sẽ tự động nộp.</span></li>
+      <li>交卷以後可以看分數，也可以看每一題的答案和說明。<span class="vi">Nộp bài xong em xem được điểm, đáp án và lời giải thích từng câu.</span></li>
+    </ol>
+        </div>
+        <button class="mt-start" id="ex-btnStart" type="button">開始作答 Bắt đầu làm bài</button>
+        <div class="err" id="ex-startErr"></div>
+      </div>
+
+      <div class="xhide" id="ex-scrExam">
+        <div class="mt-top ex-bar"><div class="mt-row"><b>華語文能力測驗 TOCFL<span class="ex-sub">　閱讀測驗｜入門基礎級 Band A｜模擬練習</span></b><div class="timer" id="ex-timer"><small>剩餘時間</small><span id="ex-clock">60:00</span></div></div></div>
+        <div class="exam">
+          <div class="qpane mt-card">
+            <div class="parthead" id="ex-partHead"></div>
+            <div class="qbody" id="ex-qBody"></div>
+            <div class="foot">
+              <button class="btn ghost" id="ex-btnPrev" type="button">◀ 上一題</button>
+              <button class="btn ghost flag" id="ex-btnFlag" type="button">⚑ 標記 Đánh dấu</button>
+              <div class="sp"></div>
+              <button class="btn primary" id="ex-btnNext" type="button">下一題 ▶</button>
+            </div>
+          </div>
+          <aside class="side mt-card">
+            <h5 id="ex-sideTitle">作答情形</h5>
+            <div class="legend" id="ex-legend"></div>
+            <div id="ex-palette"></div>
+            <button class="btn red" id="ex-btnSubmit" type="button">交卷 Nộp bài</button>
+            <button class="btn ghost xhide" id="ex-btnBackResult" type="button">回到成績 Xem lại điểm</button>
+          </aside>
+        </div>
+      </div>
+
+      <div class="xhide" id="ex-scrResult">
+        <div class="paper mt-card">
+          <h2 style="margin:0;color:var(--navy)">成績 Kết quả</h2>
+          <div class="vi2" id="ex-resWho" style="color:var(--muted)"></div>
+          <div class="score">
+            <div class="num"><span id="ex-resRaw">0</span><small> / 50 題</small></div>
+            <div class="vi2" id="ex-resNote" style="max-width:460px;font-size:.95rem"></div>
+          </div>
+          <table class="struct" id="ex-resTable"></table>
+          <p class="vi2" style="font-size:.85rem;color:var(--muted)">Lưu ý: TOCFL thật không chấm theo số câu đúng mà quy ra thang điểm 80. Ngưỡng đạt 基礎級 (A2) là 60/80. Số câu đúng ở đây chỉ để em tự luyện và theo dõi tiến bộ, không phải điểm thi chính thức.</p>
+          <div class="center" style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:10px">
+            <button class="btn primary" id="ex-btnReview" type="button">檢討 Xem lại từng câu</button>
+            <button class="btn ghost" id="ex-btnRetry" type="button">Làm lại từ đầu</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ex-modal xhide" id="ex-modal"><div class="box" id="ex-modalBox"></div></div>
+
   <!-- TAB: Ném Hoa Quả -->
   <div class="panel" id="panel-fruit">
     <div class="toolbar"><div class="sel-group"><select id="bookFilter-fruit" aria-label="Giáo trình"></select><select id="lessonFilter-fruit" aria-label="Bài học"></select><select id="partFilter-fruit" aria-label="Phạm vi ôn"></select></div><div class="tb-brand"><b>Học TOCFL<em>cùng Thịnh &amp; Loan</em></b></div></div>
@@ -3974,6 +4057,8 @@ document.querySelectorAll('.tab-btn').forEach(btn=>{
       footer.textContent = "Gõ Hán tự bằng bộ gõ tiếng Trung trên máy bạn · Gõ nghĩa tiếng Việt chỉ cần đúng 1 nghĩa, bỏ qua phần trong ngoặc ( ) · Enter kiểm tra · Ctrl+Space gợi ý · Ctrl+E xem ví dụ · Ctrl+X nghe phát âm";
     } else if(btn.dataset.tab === 'quiz'){
       footer.textContent = "Chọn đáp án bằng chuột hoặc phím 1–4 · Ctrl+X nghe lại (chế độ Từ → Nghĩa) · Enter sang câu tiếp · Xanh = đúng, đỏ = sai";
+    } else if(btn.dataset.tab === 'exam'){
+      footer.textContent = "Chọn đáp án bằng chuột hoặc phím A–F · ← → chuyển câu · Bấm Đánh dấu cho câu chưa chắc · Hết 60 phút bài tự động nộp · Bài đang làm dở được lưu lại";
     } else if(btn.dataset.tab === 'special'){
       footer.textContent = "Hỗn hợp: random trắc nghiệm, nghe viết, gõ từ · Flappy Bird: Space / click chuột trái để bay · Dịch câu: Enter kiểm tra · Ctrl+Space hiện từ tiếp theo · Ctrl+X nghe câu · Cần Internet để phát âm và tải bản dịch";
     } else if(btn.dataset.tab === 'list'){
@@ -9278,6 +9363,7 @@ kbBuild();initScene();idle();
     type:['practice','Gõ từ tiếng Trung hoặc pinyin','Luyện gõ: nhìn nghĩa để gõ từ tiếng Trung, hoặc nhìn từ để gõ pinyin. Có tính giờ, gợi ý và chấm điểm.',['Đổi chiều luyện bằng công tắc chế độ','Có tính giờ, gợi ý và chấm điểm']],
     reflex:['practice','Nhìn câu tiếng Việt, gõ câu tiếng Trung','Luyện phản xạ dịch câu: màn hình hiện một câu tiếng Việt, bạn gõ lại bằng chữ Hán. Không tính giờ, bạn gõ thong thả; máy chấm ngay và phát âm đáp án.',['Chọn giáo trình và bài ở thanh phía trên','Có gợi ý (3 lượt) và nút Xem đáp án','Đúng hiện thanh xanh, sai hiện thanh đỏ kèm đáp án','Cuối lượt có thể làm lại các câu sai']],
     match:['practice','Nối từ với nghĩa hoặc pinyin','Trò chơi nối cặp: ghép từ tiếng Trung với nghĩa hoặc pinyin tương ứng trước khi hết giờ.',['Ghép nhanh để được điểm cao','Có tính giờ và tổng kết kết quả']],
+    exam:['practice','Đề thi thử TOCFL Đọc A2, 50 câu, 60 phút','Làm trọn một đề thi thử TOCFL phần Đọc cấp A2 (入門基礎級) như thi thật: 50 câu chia 5 phần, có đồng hồ đếm ngược 60 phút và tự động nộp bài khi hết giờ. Nộp xong xem điểm, đáp án và lời giải thích từng câu.',['50 câu, 5 phần: chọn tranh, xem tài liệu, điền từ, hoàn thành đoạn văn, đọc hiểu','Có đánh dấu câu chưa chắc và bảng số câu để chuyển nhanh','Lưu bài đang làm dở, có thể làm tiếp lần sau']],
     special:['games','Hỗn hợp, Dịch câu, Arcade và 4 game mới','Trộn ngẫu nhiên nhiều dạng bài: trắc nghiệm, nghe viết, gõ từ; luyện dịch câu ví dụ; chơi Flappy Bird (bay qua cột rồi trả lời từ vựng) hoặc Vẹt Bay Trên Mây (chuyển làn để bay vào từ đúng nghĩa). Ngoài ra có thêm Ném Hoa Quả, Mario vượt chướng ngại, Cá lớn nuốt cá bé và Hangman.',['Bài có bao nhiêu từ/câu thì hỏi bấy nhiêu câu','Có chế độ dịch câu ví dụ hai chiều','Game mới: Ném Hoa Quả, Mario, Cá lớn nuốt cá bé, Hangman']],
   };
   var T={study:'hm-study',practice:'hm-practice',games:'hm-games'};
@@ -10686,5 +10772,501 @@ window.dkLookup = run;
 <script src="firebase-config.js?v=2"></script>
 <script src="tro-ly.js?v=20261109b" defer></script>
 <script src="tai-khoan.js?v=10" defer></script>
+<style id="exam-css">
+/* Thi thử */
+#panel-exam{--navy:var(--c);--line:var(--border);--muted:var(--text-secondary);--ans:var(--c);--mark:#e8a317;--ok:#1e8449;--okbg:#e5f4e4;--bad:#c0392b;--badbg:#fbebeb;--soft:color-mix(in srgb,var(--c) 7%,var(--surface));--zh:"Noto Sans TC","PingFang TC","Microsoft JhengHei","Heiti TC",sans-serif}
+:root[data-theme="dark"] #panel-exam{--ok:#4cc27a;--okbg:#143323;--bad:#ff7b6e;--badbg:#3c1d1c}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #panel-exam{--ok:#4cc27a;--okbg:#143323;--bad:#ff7b6e;--badbg:#3c1d1c}}
+#panel-exam .xhide,#ex-modal.xhide{display:none!important}
+#panel-exam .ex-wrap{max-width:1200px;margin:0 auto}
+#panel-exam .ex-idle{max-width:900px;margin:0 auto;padding:36px 28px}
+#panel-exam .ex-left{text-align:left;margin:18px 0 22px}
+#panel-exam .ex-idle .mt-start{margin-top:4px}
+#panel-exam .ex-resume{max-width:560px;margin:0 auto 18px;text-align:left;background:var(--soft);border:1px solid color-mix(in srgb,var(--c) 30%,var(--border-soft));border-radius:var(--u-r-m);padding:14px 16px;font-size:.95rem}
+#panel-exam .ex-resbtns{display:flex;gap:10px;justify-content:flex-end;margin-top:10px}
+#panel-exam .ex-bar{margin-bottom:14px;padding:12px 18px}
+#panel-exam .ex-bar .mt-row b{font-size:1rem}
+#panel-exam .ex-sub{font-weight:600;font-size:.8rem;color:var(--text-secondary)}
+#panel-exam .timer{background:var(--soft);color:var(--c);font-weight:800;font-variant-numeric:tabular-nums;padding:6px 14px;border-radius:12px;font-size:1.15rem;min-width:118px;text-align:center;line-height:1.3}
+#panel-exam .timer small{display:block;font-size:.62rem;font-weight:600;color:var(--text-secondary);letter-spacing:.05em}
+#panel-exam .timer.warn{background:var(--badbg);color:var(--bad)}
+#panel-exam table.struct{width:100%;border-collapse:collapse;margin:8px 0 18px;font-size:.95rem}
+#panel-exam table.struct th,#panel-exam table.struct td{border:1px solid var(--line);padding:7px 10px;text-align:center}
+#panel-exam table.struct th{background:var(--soft);color:var(--c)}
+#panel-exam table.struct td:nth-child(2){text-align:left}
+#panel-exam .rules{background:var(--soft);border:1px solid var(--line);border-radius:var(--u-r-m);padding:14px 18px 14px 34px;margin:0 0 6px}
+#panel-exam .rules li{margin:3px 0}
+#panel-exam .rules .vi{display:block;color:var(--muted);font-size:.86rem}
+#panel-exam .btn{border:1px solid transparent;border-radius:999px;padding:10px 22px;font:inherit;font-weight:700;cursor:pointer}
+#panel-exam .btn.primary{background:var(--c);color:#fff}
+#panel-exam .btn.primary:hover{background:var(--u-jade-dk)}
+#panel-exam .btn.ghost{background:var(--surface);border-color:var(--border);color:var(--text)}
+#panel-exam .btn.ghost:hover{border-color:var(--c)}
+#panel-exam .btn.red{background:var(--bad);color:#fff}
+#panel-exam .btn:disabled{opacity:.45;cursor:default}
+#panel-exam .center{text-align:center}
+#panel-exam .err{color:var(--bad);font-size:.9rem;margin-top:8px;min-height:1.2em}
+#panel-exam .exam{display:grid;grid-template-columns:1fr 270px;gap:16px}
+#panel-exam .qpane{padding:0;min-height:70vh;display:flex;flex-direction:column}
+#panel-exam .parthead{border-bottom:1px solid var(--line);padding:12px 20px;background:var(--soft);border-radius:var(--u-r-m) var(--u-r-m) 0 0}
+#panel-exam .parthead .pt{font-weight:800;color:var(--c);font-size:1.05rem}
+#panel-exam .parthead .pt em{font-style:normal;font-weight:600;color:var(--muted);font-size:.85rem;margin-left:8px}
+#panel-exam .parthead .desc{font-size:.93rem;margin-top:3px;font-family:var(--zh)}
+#panel-exam .parthead .vi{font-size:.82rem;color:var(--muted)}
+#panel-exam .qbody{padding:20px 24px;flex:1;font-family:var(--zh)}
+#panel-exam .qno{display:inline-block;background:var(--c);color:#fff;font-weight:800;border-radius:6px;padding:1px 10px;margin-right:10px;font-family:inherit}
+#panel-exam .stem{font-size:1.2rem;margin:4px 0 16px;line-height:1.8}
+#panel-exam .passage{background:var(--soft);border:1px solid var(--line);border-radius:var(--u-r-s);padding:14px 18px;font-size:1.08rem;line-height:2.05;margin-bottom:16px;text-align:justify}
+#panel-exam .blank{display:inline-block;min-width:3.2em;text-align:center;border-bottom:2px solid currentColor;margin:0 3px;font-weight:700;line-height:1.3}
+#panel-exam .blank.cur{background:color-mix(in srgb,var(--mark) 35%,transparent);border-bottom-color:var(--mark)}
+#panel-exam .blank.filled{color:var(--c)}
+#panel-exam .optlist{display:flex;flex-direction:column;gap:9px}
+#panel-exam .opt{display:flex;align-items:flex-start;gap:12px;text-align:left;background:var(--surface);color:var(--text);border:1.5px solid var(--line);border-radius:var(--u-r-m);padding:10px 14px;font:inherit;font-size:1.08rem;width:100%;cursor:pointer}
+#panel-exam .opt:hover,#panel-exam .picopt:hover{border-color:var(--c)}
+#panel-exam .lt{flex:none;width:30px;height:30px;border-radius:50%;border:2px solid var(--muted);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;color:var(--muted)}
+#panel-exam .opt.sel,#panel-exam .picopt.sel{border-color:var(--c);background:var(--soft)}
+#panel-exam .opt.sel .lt,#panel-exam .picopt.sel .lt{background:var(--c);border-color:var(--c);color:#fff}
+#panel-exam .picgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+#panel-exam .picopt{display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--surface);color:var(--text);border:1.5px solid var(--line);border-radius:var(--u-r-m);padding:10px 8px 12px;font:inherit;cursor:pointer}
+#panel-exam .picopt svg{width:100%;max-width:230px;height:auto;filter:grayscale(1) contrast(1.15)}
+#panel-exam .opt.ok,#panel-exam .picopt.ok{border-color:var(--ok)!important;background:var(--okbg)!important}
+#panel-exam .opt.ok .lt,#panel-exam .picopt.ok .lt{background:var(--ok);border-color:var(--ok);color:#fff}
+#panel-exam .opt.no,#panel-exam .picopt.no{border-color:var(--bad)!important;background:var(--badbg)!important}
+#panel-exam .opt.no .lt,#panel-exam .picopt.no .lt{background:var(--bad);border-color:var(--bad);color:#fff}
+#panel-exam .explain{margin-top:16px;border-radius:var(--u-r-m);padding:12px 16px;font-size:.95rem;color:var(--text)}
+#panel-exam .explain.ok{background:var(--okbg);border:1px solid var(--ok)}
+#panel-exam .explain.no{background:var(--badbg);border:1px solid var(--bad)}
+#panel-exam .explain b{display:block;margin-bottom:2px}
+#panel-exam .material{display:flex;justify-content:center;margin-bottom:18px}
+#panel-exam .note,#panel-exam .phone,#panel-exam .sign,#panel-exam .ad,#panel-exam table.mt{color:#1d2430}
+#panel-exam .note{background:#fffef8;border:1px solid #cfc7ad;box-shadow:3px 4px 0 #e5dfcb;padding:16px 22px;max-width:460px;width:100%;font-size:1.05rem;line-height:1.9;position:relative}
+#panel-exam .note:before{content:"";position:absolute;top:-9px;left:50%;width:16px;height:16px;margin-left:-8px;border-radius:50%;background:#7b8796;box-shadow:inset -3px -3px 0 rgba(0,0,0,.2)}
+#panel-exam .note .sig{text-align:right;margin-top:4px}
+#panel-exam .phone{border:3px solid #333;border-radius:22px;padding:22px 16px 26px;max-width:300px;width:100%;background:#fff;position:relative}
+#panel-exam .phone:before{content:"";position:absolute;top:9px;left:50%;width:46px;height:5px;margin-left:-23px;background:#333;border-radius:3px}
+#panel-exam .phone .bubble{background:#eef0f3;border-radius:12px;padding:10px 12px;font-size:1rem;line-height:1.75}
+#panel-exam .phone .from{font-size:.8rem;color:#5d6878;margin-bottom:4px}
+#panel-exam .sign{border:3px double #333;padding:14px 22px;max-width:460px;width:100%;background:#fff;text-align:center;line-height:1.9}
+#panel-exam .sign h4{margin:0 0 6px;font-size:1.3rem;letter-spacing:.15em}
+#panel-exam .sign .l{text-align:left}
+#panel-exam .ad{border:2px dashed #333;padding:16px 22px;max-width:460px;width:100%;background:#fff;text-align:center;line-height:1.8}
+#panel-exam .ad h4{margin:0 0 4px;font-size:1.35rem}
+#panel-exam .ad .big{font-size:1.5rem;font-weight:800}
+#panel-exam table.mt{border-collapse:collapse;font-size:1.05rem;background:#fff}
+#panel-exam table.mt th,#panel-exam table.mt td{border:1.5px solid #333;padding:6px 20px;text-align:center}
+#panel-exam table.mt th{background:#eee}
+#panel-exam table.mt caption{font-weight:800;font-size:1.15rem;padding-bottom:6px;color:var(--text)}
+#panel-exam .foot{border-top:1px solid var(--line);padding:12px 20px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+#panel-exam .foot .sp{flex:1}
+#panel-exam .foot .btn{padding:9px 18px}
+#panel-exam .btn.flag.on{background:var(--mark);color:#fff;border-color:var(--mark)}
+#panel-exam .side{padding:14px;align-self:start;position:sticky;top:12px}
+#panel-exam .side h5{margin:0 0 6px;font-size:.92rem;color:var(--c)}
+#panel-exam .pgroup{margin-bottom:10px}
+#panel-exam .pgroup .gl{font-size:.75rem;color:var(--muted);margin:4px 0}
+#panel-exam .cells{display:grid;grid-template-columns:repeat(5,1fr);gap:5px}
+#panel-exam .cell{border:1.5px solid var(--line);background:var(--surface);color:var(--muted);border-radius:8px;height:32px;font:inherit;font-size:.85rem;font-weight:700;position:relative;cursor:pointer;padding:0}
+#panel-exam .cell.done{background:var(--c);border-color:var(--c);color:#fff}
+#panel-exam .cell.cur{outline:3px solid #f5c542;outline-offset:1px}
+#panel-exam .cell.flag:after{content:"";position:absolute;top:-4px;right:-4px;width:10px;height:10px;border-radius:50%;background:var(--mark);border:2px solid var(--surface)}
+#panel-exam .cell.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+#panel-exam .cell.no{background:var(--bad);border-color:var(--bad);color:#fff}
+#panel-exam .legend{font-size:.75rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 12px;margin:8px 0 12px}
+#panel-exam .legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:4px;vertical-align:-1px;border:1.5px solid var(--line)}
+#panel-exam .side .btn{width:100%;margin-top:6px}
+#panel-exam .paper{padding:28px 32px}
+#panel-exam .score{display:flex;gap:24px;align-items:center;flex-wrap:wrap;margin:6px 0 18px}
+#panel-exam .score .num{font-size:3rem;font-weight:800;color:var(--c);line-height:1}
+#panel-exam .score .num small{font-size:1.2rem;color:var(--muted)}
+.ex-modal{position:fixed;inset:0;background:rgba(10,20,35,.5);display:flex;align-items:center;justify-content:center;z-index:1000;padding:16px}
+.ex-modal .box{background:var(--surface);color:var(--text);border-radius:var(--u-r-l,20px);max-width:440px;width:100%;padding:22px 24px;box-shadow:var(--shadow-md)}
+.ex-modal h3{margin:0 0 8px;color:var(--text)}
+.ex-modal .row{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}
+.ex-modal .btn{border:1px solid transparent;border-radius:999px;padding:10px 22px;font:inherit;font-weight:700;cursor:pointer}
+.ex-modal .btn.primary{background:var(--blue,#0a84ff);color:#fff}
+.ex-modal .btn.ghost{background:var(--surface);border-color:var(--border);color:var(--text)}
+.ex-modal .btn.red{background:#c0392b;color:#fff}
+.ex-modal .vi2{color:var(--text-secondary)}
+.ex-toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#1d2430;color:#fff;padding:11px 18px;border-radius:12px;z-index:1100;max-width:90%}
+@media (max-width:860px){
+  #panel-exam .exam{grid-template-columns:1fr}
+  #panel-exam .side{position:static}
+  #panel-exam .cells{grid-template-columns:repeat(10,1fr)}
+  #panel-exam .picgrid{gap:8px}
+  #panel-exam .qbody{padding:16px}
+  #panel-exam .paper{padding:20px}
+  #panel-exam .ex-idle{padding:28px 16px}
+  #panel-exam .ex-sub{display:none}
+}
+@media (max-width:520px){#panel-exam .picgrid{grid-template-columns:1fr}#panel-exam .picopt{flex-direction:row}#panel-exam .picopt svg{max-width:220px}}
+</style>
+<script id="exam-js">
+(function(){
+"use strict";
+
+/* =====================================================================
+   1. HÌNH VẼ (SVG tự vẽ, kiểu tranh đen trắng như đề TOCFL)
+   ===================================================================== */
+const SV = inner => `<svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="198" height="148" fill="#fff" stroke="#bbb"/>${inner}</svg>`;
+const E  = (x,y,ch,s=34) => `<text x="${x}" y="${y}" font-size="${s}" text-anchor="middle" dominant-baseline="central">${ch}</text>`;
+const TX = (x,y,s,size=15,w=600) => `<text x="${x}" y="${y}" font-size="${size}" font-weight="${w}" text-anchor="middle" dominant-baseline="central" font-family="Noto Sans TC,PingFang TC,Microsoft JhengHei,sans-serif" fill="#222">${s}</text>`;
+const row = (arr,y,s=30,x0=100,gap=34) => { const st = x0 - gap*(arr.length-1)/2; return arr.map((c,i)=>E(st+i*gap,y,c,s)).join(""); };
+
+function clock(h,m){
+  const cx=100,cy=75,r=58; let s=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="#fff" stroke="#222" stroke-width="3"/>`;
+  for(let i=0;i<12;i++){const a=i*Math.PI/6, r1=i%3?50:45;
+    s+=`<line x1="${cx+r1*Math.sin(a)}" y1="${cy-r1*Math.cos(a)}" x2="${cx+54*Math.sin(a)}" y2="${cy-54*Math.cos(a)}" stroke="#222" stroke-width="${i%3?1.5:3}"/>`;}
+  [[12,0],[3,1],[6,2],[9,3]].forEach(([n,k])=>{const a=k*Math.PI/2;s+=TX(cx+36*Math.sin(a),cy-36*Math.cos(a),n,12,700);});
+  const ha=((h%12)+m/60)*Math.PI/6, ma=m*Math.PI/30;
+  s+=`<line x1="${cx}" y1="${cy}" x2="${cx+28*Math.sin(ha)}" y2="${cy-28*Math.cos(ha)}" stroke="#222" stroke-width="5" stroke-linecap="round"/>`;
+  s+=`<line x1="${cx}" y1="${cy}" x2="${cx+46*Math.sin(ma)}" y2="${cy-46*Math.cos(ma)}" stroke="#222" stroke-width="3" stroke-linecap="round"/>`;
+  return SV(s+`<circle cx="${cx}" cy="${cy}" r="4" fill="#222"/>`);
+}
+function furniture(kind,on,under){
+  let s="";
+  if(kind==="table"){
+    s+=`<rect x="35" y="72" width="130" height="9" fill="#fff" stroke="#222" stroke-width="2.5"/><line x1="45" y1="81" x2="45" y2="140" stroke="#222" stroke-width="3"/><line x1="155" y1="81" x2="155" y2="140" stroke="#222" stroke-width="3"/>`;
+    s+=row(on,56,30); s+=row(under,120,30);
+  }else{ // bed
+    s+=`<rect x="28" y="30" width="10" height="90" fill="#fff" stroke="#222" stroke-width="2.5"/><rect x="38" y="66" width="135" height="20" rx="3" fill="#fff" stroke="#222" stroke-width="2.5"/><rect x="42" y="56" width="30" height="11" rx="5" fill="#fff" stroke="#222" stroke-width="2"/><line x1="44" y1="86" x2="44" y2="104" stroke="#222" stroke-width="3"/><line x1="166" y1="86" x2="166" y2="104" stroke="#222" stroke-width="3"/>`;
+    s+=row(on,48,30,118); s+=row(under,126,28,110);
+  }
+  return SV(s+`<line x1="5" y1="141" x2="195" y2="141" stroke="#888"/>`);
+}
+function doorWin(doorOpen,winOpen){
+  let s=`<rect x="12" y="14" width="176" height="126" fill="#fff" stroke="#222" stroke-width="2"/>`;
+  s+=`<rect x="30" y="52" width="48" height="88" fill="${doorOpen?'#555':'#fff'}" stroke="#222" stroke-width="2.5"/>`;
+  if(doorOpen) s+=`<polygon points="30,52 56,62 56,132 30,140" fill="#fff" stroke="#222" stroke-width="2.5"/><circle cx="51" cy="98" r="2.5" fill="#222"/>`;
+  else s+=`<circle cx="70" cy="98" r="3" fill="#222"/>`;
+  s+=`<rect x="108" y="38" width="62" height="48" fill="${winOpen?'#555':'#fff'}" stroke="#222" stroke-width="2.5"/>`;
+  if(winOpen) s+=`<polygon points="108,38 92,32 92,92 108,86" fill="#fff" stroke="#222" stroke-width="2"/><polygon points="170,38 186,32 186,92 170,86" fill="#fff" stroke="#222" stroke-width="2"/>`;
+  else s+=`<line x1="139" y1="38" x2="139" y2="86" stroke="#222" stroke-width="2"/><line x1="108" y1="62" x2="170" y2="62" stroke="#222" stroke-width="2"/>`;
+  return SV(s);
+}
+function streetMap(bx,by){
+  let s=`<rect x="86" y="0" width="28" height="150" fill="#ddd"/><rect x="0" y="92" width="200" height="22" fill="#ddd"/><rect x="0" y="26" width="200" height="22" fill="#ddd"/>`;
+  s+=`<line x1="100" y1="0" x2="100" y2="150" stroke="#fff" stroke-width="2" stroke-dasharray="6 6"/>`;
+  s+=E(100,138,"🚶",20)+`<path d="M76 142 L76 122 M71 127 L76 121 L81 127" stroke="#222" stroke-width="2.5" fill="none"/>`;
+  s+=`<rect x="${bx-22}" y="${by-16}" width="44" height="34" fill="#fff" stroke="#222" stroke-width="2"/>`+TX(bx,by-4,"$",14,800)+TX(bx,by+9,"銀行",11,700);
+  return SV(s);
+}
+const calendar=(m,d,w)=>SV(`<rect x="52" y="12" width="96" height="126" rx="4" fill="#fff" stroke="#222" stroke-width="2.5"/><rect x="52" y="12" width="96" height="30" rx="4" fill="#444"/><text x="100" y="27" font-size="16" font-weight="800" text-anchor="middle" dominant-baseline="central" fill="#fff" font-family="Noto Sans TC,PingFang TC,Microsoft JhengHei,sans-serif">${m}月</text>${TX(100,80,d,46,800)}${TX(100,121,"星期"+w,15,700)}`);
+const priceTag=(ch,p)=>SV(E(100,58,ch,62)+`<rect x="52" y="104" width="96" height="30" rx="4" fill="#fff" stroke="#222" stroke-width="2"/>`+TX(100,119,p+"元",17,800));
+const trip=(ch,a,b,t)=>SV(E(100,40,ch,42)+TX(100,88,a+" → "+b,17,800)+TX(100,118,t,15,600));
+function glass(level){
+  let s="";
+  if(level>0){const top=128-96*level, w0=48+ (128-top)*0.08;
+    s+=`<polygon points="${100-(22+(128-top)*0.08)},${top} ${100+(22+(128-top)*0.08)},${top} 122,128 78,128" fill="#999"/>`;}
+  s+=`<polygon points="68,30 132,30 122,128 78,128" fill="none" stroke="#222" stroke-width="3"/>`;
+  return SV(s+`<line x1="40" y1="130" x2="160" y2="130" stroke="#888"/>`);
+}
+const scene=(...parts)=>SV(parts.join(""));
+
+/* =====================================================================
+   2. ĐỀ THI – 50 câu
+   ===================================================================== */
+const PARTS=[
+ {no:"一",name:"單句理解",en:"Sentence Comprehension",from:1,to:15,
+  desc:"說明：在這一部分，每題有一個句子和三張圖片，請選出和句子意思相符的圖片。",
+  vi:"Mỗi câu có một câu văn và ba tranh. Chọn tranh khớp với nghĩa của câu."},
+ {no:"二",name:"看圖釋義",en:"Picture Description",from:16,to:30,
+  desc:"說明：在這一部分，每題有一張圖片和三個句子，請根據圖片的內容，選出正確的句子。",
+  vi:"Mỗi câu có một tranh hoặc tài liệu thực tế và ba câu. Chọn câu đúng với nội dung tranh."},
+ {no:"三",name:"選詞填空",en:"Gap Filling",from:31,to:40,
+  desc:"說明：在這一部分，每一段短文有幾個空格，每個空格有三個選項，請選出正確的答案完成短文。",
+  vi:"Mỗi đoạn văn có vài chỗ trống, mỗi chỗ có ba lựa chọn. Chọn từ đúng để hoàn thành đoạn văn."},
+ {no:"四",name:"完成段落",en:"Paragraph Completion",from:41,to:45,
+  desc:"說明：在這一部分，短文裡有五個空格，請從 (A)～(F) 中選出適合的答案完成短文。每個選項只能用一次，有一個選項用不到。",
+  vi:"Đoạn văn có 5 chỗ trống. Chọn (A)–(F) phù hợp. Mỗi lựa chọn dùng một lần, có một lựa chọn thừa."},
+ {no:"五",name:"閱讀理解",en:"Reading Comprehension",from:46,to:50,
+  desc:"說明：在這一部分，請閱讀短文，並根據內容回答問題。每題有四個選項。",
+  vi:"Đọc đoạn văn rồi trả lời câu hỏi. Mỗi câu có bốn lựa chọn."}
+];
+
+const Q=[];
+/* ---------- 第一部分 單句理解 (1–15)：句子 → 三張圖 ---------- */
+const P1=[
+ ["我們三點半在學校門口見。",[clock(3,30),clock(6,15),clock(2,30)],0,"三點半 = 3:30. Tranh (B) là 六點十五分 (6:15), tranh (C) là 兩點半 (2:30). Chú ý kim ngắn chỉ giờ, kim dài chỉ phút."],
+ ["桌子上有一本書，桌子下有一隻貓。",[furniture("table",["🐈"],["📕"]),furniture("table",["📕"],["🐈"]),furniture("table",["📕","📕"],[])],1,"桌子上 = trên bàn có sách, 桌子下 = dưới bàn có mèo. Tranh (A) đảo vị trí, tranh (C) không có mèo."],
+ ["他們正在踢足球。",[scene(row(["🏃","🏀","⛹️"],75,44,100,56)),scene(row(["🏃","🎾","🏃"],75,44,100,56)),scene(row(["🏃","⚽","🏃"],75,44,100,56))],2,"踢足球 = đá bóng. Tranh (A) là bóng rổ (打籃球), tranh (B) là quần vợt (打網球)."],
+ ["門開著，窗戶關著。",[doorWin(true,false),doorWin(false,true),doorWin(true,true)],0,"V + 著 chỉ trạng thái: cửa ra vào đang mở, cửa sổ đang đóng."],
+ ["我買了三個蘋果和兩根香蕉。",[scene(row(["🍎","🍎","🍌","🍌","🍌"],75,34)),scene(row(["🍎","🍎","🍎","🍌","🍌"],75,34)),scene(row(["🍎","🍎","🍎","🍌"],75,34))],1,"3 quả táo + 2 quả chuối. Đếm kỹ số lượng, đây là bẫy rất hay gặp."],
+ ["這雙鞋子一千二百元。",[priceTag("👜","1200"),priceTag("👟","2100"),priceTag("👟","1200")],2,"一雙鞋子 = một đôi giày, 一千二百 = 1200. Tranh (A) là túi da (皮包), tranh (B) sai giá (兩千一百)."],
+ ["過了第一個路口，右邊就是銀行。",[streetMap(148,128),streetMap(148,70),streetMap(52,70)],1,"Người đi từ dưới lên. 過了第一個路口 = đã qua ngã tư thứ nhất, 右邊 = bên phải. Tranh (A) ngân hàng ở trước ngã tư, tranh (C) ở bên trái."],
+ ["外面在下雨，可是他沒帶傘。",[scene(E(60,45,"🌧️",44)+E(130,95,"🚶",58)),scene(E(60,45,"🌧️",44)+E(130,95,"🚶",58)+E(150,48,"☂️",40)),scene(E(60,45,"☀️",44)+E(130,95,"🚶",58))],0,"下雨 = mưa, 沒帶傘 = không mang ô. Tranh (B) có ô, tranh (C) trời nắng."],
+ ["他用筷子吃麵。",[scene(E(80,80,"🍽️",60)+E(140,80,"🍴",44)),scene(E(80,80,"🍲",60)+E(140,80,"🥄",44)),scene(E(80,80,"🍜",60)+E(140,80,"🥢",44))],2,"筷子 = đũa. Tranh (A) là dao nĩa (刀子、叉子), tranh (B) là thìa (湯匙)."],
+ ["從臺北到臺中坐高鐵要一個小時。",[trip("🚌","臺北","臺中","一個小時"),trip("🚄","臺北","臺中","一個小時"),trip("🚄","臺北","臺南","一個小時")],1,"從…到… = từ… đến…, 高鐵 = tàu cao tốc. Tranh (A) là xe buýt, tranh (C) sai điểm đến (臺南)."],
+ ["小狗在床上睡覺。",[furniture("bed",[],["🐕"]),furniture("bed",["🐕"],[]),furniture("bed",["🐈"],[])],1,"床上 = trên giường, 小狗 = con chó. Tranh (A) chó ở dưới giường, tranh (C) là con mèo."],
+ ["他把水喝完了。",[glass(0),glass(0.9),glass(0.45)],0,"把 + 水 + 喝完了 = đã uống hết nước, nên ly rỗng."],
+ ["今天是十月二十號，星期三。",[calendar(10,12,"三"),calendar(12,20,"三"),calendar(10,20,"三")],2,"十月二十號 = ngày 20 tháng 10. Tranh (A) là ngày 12, tranh (B) là tháng 12."],
+ ["停車場裡有三輛汽車和兩輛機車。",[scene(row(["🚗","🚗","🚗"],50,36)+row(["🏍️","🏍️"],108,36)),scene(row(["🚗","🚗"],50,36)+row(["🏍️","🏍️","🏍️"],108,36)),scene(row(["🚗","🚗","🚗"],50,36)+row(["🏍️"],108,36))],0,"汽車 = ô tô, 機車 = xe máy. Phải có 3 ô tô và 2 xe máy."],
+ ["他一回家就睡覺了。",[scene(E(55,75,"🏢",54)+TX(100,75,"→",28,800)+E(150,75,"🛌",54)),scene(E(55,75,"🏠",54)+TX(100,75,"→",28,800)+E(150,75,"🛌",54)),scene(E(55,75,"🏠",54)+TX(100,75,"→",28,800)+E(150,75,"📺",54))],1,"一…就… = vừa về nhà là đi ngủ ngay. Tranh (A) ở công ty, tranh (C) đang xem tivi."]
+];
+P1.forEach((r,i)=>Q.push({n:i+1,part:0,type:"pic",stem:r[0],opts:r[1],ans:r[2],exp:r[3]}));
+
+/* ---------- 第二部分 看圖釋義 (16–30)：圖片/真實材料 → 三個句子 ---------- */
+const note =(body,sig)=>`<div class="note">${body}${sig?`<div class="sig">${sig}</div>`:""}</div>`;
+const phone=(from,body)=>`<div class="phone"><div class="from">${from}</div><div class="bubble">${body}</div></div>`;
+const sign =(t,body)=>`<div class="sign"><h4>${t}</h4><div class="l">${body}</div></div>`;
+const ad   =(t,body)=>`<div class="ad"><h4>${t}</h4>${body}</div>`;
+const P2=[
+ [note("李老師：<br>　　我今天早上發燒了，要去醫院，不能去上課。明天我一定會去學校。","學生 小文"),
+  ["小文今天在醫院上課。","小文今天不舒服。","小文明天要去醫院。"],1,"發燒 = bị sốt, nên bạn ấy 不舒服. Ngày mai bạn ấy đi học chứ không phải đi bệnh viện."],
+ [sign("游泳池開放時間","星期二～星期日<br>早上 6:00 ～ 晚上 9:00<br>※ 星期一休息<br>※ 六歲以下的小孩要和大人一起來"),
+  ["星期一可以去游泳。","五歲的小孩可以自己去游泳。","星期六晚上八點可以去游泳。"],2,"Thứ Bảy có mở cửa, mở đến 9 giờ tối nên 8 giờ vẫn bơi được. Trẻ dưới 6 tuổi phải đi cùng người lớn."],
+ [`<table class="mt"><caption>小林麵店</caption><tr><th>牛肉麵</th><td>120 元</td></tr><tr><th>雞肉飯</th><td>50 元</td></tr><tr><th>青菜</th><td>40 元</td></tr><tr><th>飲料</th><td>30 元</td></tr><tr><td colspan="2">※ 買牛肉麵，送一杯飲料！</td></tr></table>`,
+  ["雞肉飯比青菜便宜。","買一碗牛肉麵，不用付飲料的錢。","這家店只賣麵。"],1,"送一杯飲料 = tặng một ly nước. Cơm gà 50 元 đắt hơn rau 40 元."],
+ [phone("小明","媽：我下班以後要和同事去吃飯，九點以前會回家。你們先吃，不用等我。"),
+  ["小明晚上不回家。","小明要和媽媽一起吃晚飯。","小明今天晚上不在家吃飯。"],2,"Bạn ấy ăn tối với đồng nghiệp và bảo cả nhà ăn trước. Bạn ấy vẫn về nhà trước 9 giờ."],
+ [`<table class="mt"><caption>高鐵時刻表</caption><tr><th>臺北 出發</th><th>到 臺中</th></tr><tr><td>08:00</td><td>10:30</td></tr><tr><td>12:00</td><td>14:30</td></tr><tr><td>17:00</td><td>19:30</td></tr></table>`,
+  ["從臺北到臺中要兩個半小時。","中午沒有車從臺北出發。","一天只有兩班車。"],0,"Chuyến nào cũng đi 2 tiếng 30 phút (兩個半小時). Có chuyến 12:00, và có tổng 3 chuyến."],
+ [ad("租　屋","房租一個月 <span class='big'>8000</span> 元<br>房間裡有冷氣、書桌、床<br>廚房要和別人一起用<br>走路到捷運站只要五分鐘<br>電話：0912-345678　陳小姐"),
+  ["房間裡有廚房。","這個房間離捷運站不遠。","想租房間要寫信給陳小姐。"],1,"走路只要五分鐘 = đi bộ chỉ 5 phút, tức là gần. Bếp dùng chung ở ngoài phòng, liên hệ bằng điện thoại."],
+ [sign("中文說故事比賽","日期：十二月十日（星期六）下午兩點<br>地點：學校二樓大教室<br>想參加的同學，請在十二月一日以前到辦公室報名。"),
+  ["比賽在早上。","十二月五日還可以報名。","想參加要先到辦公室報名。"],2,"Cuộc thi vào buổi chiều (下午). Hạn đăng ký là trước ngày 1/12, nên ngày 5/12 đã quá hạn."],
+ [ad("冬天外套特賣！","每件 <span class='big'>1200</span> 元<br>買兩件只要 <span class='big'>2000</span> 元<br>只到這個星期日！"),
+  ["買兩件外套，一件一千元。","這個特賣活動有一個月。","外套每件兩千元。"],0,"2000 ÷ 2 = 1000 元 mỗi cái. Đợt giảm giá chỉ đến Chủ nhật này."],
+ [note("同學們：<br>　　這幾天早上很冷，下午卻很熱。出門的時候請帶著外套，冷的時候就可以穿。","王老師"),
+  ["最近下午比早上冷。","老師要大家帶外套。","王老師的外套不見了。"],1,"請帶著外套 = hãy mang theo áo khoác. Buổi chiều nóng hơn buổi sáng."],
+ [note("小美：<br>　　我把你的書放在你房間的桌子上了，鑰匙在冰箱上面。我先去上班了。","姐姐"),
+  ["書在小美的房間裡。","姐姐把鑰匙帶去上班了。","姐姐今天不上班。"],0,"Câu 把 + 書 + 放在你房間的桌子上 cho biết sách ở trong phòng Tiểu Mỹ. Chìa khóa để trên tủ lạnh, chị đã đi làm rồi."],
+ [sign("圖書館注意事項","1. 請不要在這裡吃東西、喝飲料。<br>2. 手機請關機或是不要有聲音。<br>3. 一次最多可以借五本書，可以借兩個星期。"),
+  ["在圖書館裡可以喝水。","可以借五本書，借一個月。","在圖書館裡不能用手機打電話。"],2,"Điện thoại phải tắt hoặc để im lặng nên không được gọi. Sách chỉ mượn được 2 tuần, và không được ăn uống."],
+ [phone("王華","李大明：明天的會改到下午三點，在三樓會議室。請你告訴其他同事。"),
+  ["明天開會的時間改了。","會議在二樓。","王華明天不去開會。"],0,"改到下午三點 = đổi sang 3 giờ chiều. Phòng họp ở tầng 3 (三樓)."],
+ [`<table class="mt"><caption>陳牙醫診所</caption><tr><th></th><th>上午</th><th>下午</th></tr><tr><th>星期一～五</th><td>9:00–12:00</td><td>14:00–17:30</td></tr><tr><th>星期六</th><td>9:00–12:00</td><td>休息</td></tr><tr><th>星期日</th><td>休息</td><td>休息</td></tr></table>`,
+  ["星期日也能看病。","平日中午十二點到兩點不看病。","星期六下午可以去看牙。"],1,"Ngày thường nghỉ từ 12:00 đến 14:00. Chiều thứ Bảy và Chủ nhật đều nghỉ."],
+ [phone("安安","小美：下星期六是我的生日，晚上六點來我家吃飯，好嗎？記得帶你男朋友一起來！"),
+  ["生日會在餐廳。","安安要去小美家吃飯。","安安請小美到家裡吃晚飯。"],2,"來我家吃飯 = đến nhà tôi (nhà An An) ăn cơm. Bữa tiệc ở nhà, không phải ở nhà hàng."],
+ [ad("華語課開始報名！","上課時間：十月一日～十二月二十日<br>每星期一、三、五　晚上 7:00–9:00<br>每班只收十二個學生<br>學費：一學期 3500 元"),
+  ["一個班最多有十二個學生。","學費一個月三千五百元。","星期二晚上也有課。"],0,"只收十二個學生 = chỉ nhận 12 học viên. Học phí 3500 元 là cho một học kỳ, và chỉ học thứ Hai, Tư, Sáu."]
+];
+P2.forEach((r,i)=>Q.push({n:i+16,part:1,type:"mat",material:r[0],opts:r[1],ans:r[2],exp:r[3]}));
+
+/* ---------- 第三部分 選詞填空 (31–40) ---------- */
+const PASS3a="我的房間又小又{31}，東西放得到處都是。上個週末，媽媽要我{32}房間整理乾淨。我{33}早上九點開始整理，{34}下午三點才整理完。現在房間{35}乾淨又整齊，我的心情也很好。";
+const PASS3b="王先生每天{36}騎機車上班。他上班的時候會{37}一家很有名的麵包店，所以常常在那裡買早餐。昨天他{38}到公司，經理就告訴他下午兩點要{39}。王先生覺得今天很忙，{40}中午沒時間吃飯。";
+const P3=[
+ [PASS3a,31,["整齊","乾淨","亂"],2,"Vế sau nói 東西放得到處都是 (đồ để khắp nơi), nên phòng 亂 (bừa bộn)."],
+ [PASS3a,32,["把","被","給"],0,"Cấu trúc 把 + 房間 + 整理乾淨 (dọn sạch căn phòng)."],
+ [PASS3a,33,["在","從","離"],1,"從…開始 / 從 A 到 B: bắt đầu từ 9 giờ sáng."],
+ [PASS3a,34,["經過","以前","一直到"],2,"一直到下午三點才整理完 = mãi đến 3 giờ chiều mới dọn xong."],
+ [PASS3a,35,["又","也","還"],0,"又…又… = vừa… vừa…: 又乾淨又整齊."],
+ [PASS3b,36,["正在","總是","已經"],1,"每天 + 總是 = ngày nào cũng, lúc nào cũng (thói quen)."],
+ [PASS3b,37,["經過","參加","使用"],0,"經過 + địa điểm = đi ngang qua tiệm bánh mì."],
+ [PASS3b,38,["就","又","一"],2,"一…就…: 他一到公司，經理就告訴他… (vừa đến công ty là giám đốc báo ngay)."],
+ [PASS3b,39,["請假","開會","留言"],1,"Ông ấy bận vì 2 giờ chiều phải 開會 (họp)."],
+ [PASS3b,40,["所以","因為","可是"],0,"Vế trước là nguyên nhân (很忙), vế sau là kết quả, nên dùng 所以."]
+];
+P3.forEach(r=>Q.push({n:r[1],part:2,type:"gap",passage:r[0],opts:r[2],ans:r[3],exp:r[4]}));
+
+/* ---------- 第四部分 完成段落 (41–45) ---------- */
+const PASS4="我叫阿明，是越南人，去年九月來臺灣學中文。剛來的時候，我{41}，常常聽不懂老師說的話。後來我{42}，每天下課以後都去圖書館念書。週末的時候，我{43}去市場買東西，跟老闆說中文。現在我的中文{44}，也交了很多臺灣朋友。下個月我要參加 TOCFL 考試，{45}，就一定會考得很好。";
+const P4OPTS=["一句中文都不會說","越來越好了","總是和朋友一起","開始努力學習","我相信只要認真準備","把房間整理乾淨"];
+const P4=[[41,0,"剛來的時候 (lúc mới đến) → chưa nói được câu tiếng Trung nào, nên mới 聽不懂."],
+          [42,3,"後來 (sau đó) → bắt đầu chăm chỉ học, ngày nào cũng lên thư viện."],
+          [43,2,"週末…去市場 → luôn đi chợ cùng bạn bè."],
+          [44,1,"現在我的中文 → càng ngày càng giỏi (越來越好了)."],
+          [45,4,"Cặp 只要…就… (chỉ cần… thì…): 只要認真準備，就一定會考得很好. (F) là lựa chọn thừa."]];
+P4.forEach(r=>Q.push({n:r[0],part:3,type:"gap",passage:PASS4,opts:P4OPTS,ans:r[1],exp:r[2],bank:true}));
+
+/* ---------- 第五部分 閱讀理解 (46–50) ---------- */
+const PASS5a="上個星期六，我和家人從臺北坐高鐵到嘉義，再從嘉義坐車去阿里山。我們早上七點就出發了，到阿里山的時候已經中午了。山上很冷，可是風景非常漂亮。我們在山上住了兩個晚上。第一天晚上，我們去看星星；第二天早上四點，我們一起床就去看日出。雖然很累，但是大家都玩得很愉快。";
+const PASS5b="暑假快到了，很多學生想去打工。小林打算在咖啡店工作，因為他覺得在那裡可以練習說中文，也可以認識新朋友。可是他媽媽認為打工太辛苦了，希望他暑假在家休息，或是去上鋼琴課。小林說：「我已經十八歲了，我想試試看自己賺錢。」最後，媽媽同意了。";
+const P5=[
+ [PASS5a,"他們怎麼去阿里山？",["從臺北坐車直接到阿里山","坐飛機到嘉義","先坐高鐵到嘉義，再坐車","騎機車去"],2,"從臺北坐高鐵到嘉義，再從嘉義坐車去阿里山 (đi tàu cao tốc đến Gia Nghĩa, rồi đi xe lên núi)."],
+ [PASS5a,"他們在阿里山住了多久？",["兩個晚上","一個晚上","三個晚上","一個星期"],0,"我們在山上住了兩個晚上。"],
+ [PASS5a,"根據短文，下面哪一個是對的？",["他們下午才出發","山上很熱","大家玩得不高興","他們第二天很早就起床了"],3,"第二天早上四點，我們一起床就去看日出 (4 giờ sáng đã dậy). Họ xuất phát lúc 7 giờ sáng, trên núi lạnh, và cả nhà chơi rất vui."],
+ [PASS5b,"小林為什麼想在咖啡店工作？",["咖啡店離家很近","可以練習中文，也可以交朋友","咖啡店給的錢比較多","他很喜歡喝咖啡"],1,"在那裡可以練習說中文，也可以認識新朋友。"],
+ [PASS5b,"根據短文，下面哪一個是對的？",["媽媽一開始就同意了","小林暑假要去上鋼琴課","媽媽覺得打工很辛苦","小林今年十六歲"],2,"媽媽認為打工太辛苦了. Đến cuối (最後) mẹ mới đồng ý, và Tiểu Lâm 18 tuổi."]
+];
+P5.forEach((r,i)=>Q.push({n:46+i,part:4,type:"read",passage:r[0],stem:r[1],opts:r[2],ans:r[3],exp:r[4]}));
+Q.sort((a,b)=>a.n-b.n);
+
+/* =====================================================================
+   3. TRẠNG THÁI & ĐIỀU KHIỂN
+   ===================================================================== */
+const LT="ABCDEF";
+const LIMIT=60*60; // giây
+const KEY="hoctocfl_exam_a2_v1";
+let st={ans:{},flag:{},cur:0,start:0,end:0,submitted:false};
+let tick=null, review=false;
+const $=s=>document.querySelector(s);
+
+function save(){ try{localStorage.setItem(KEY,JSON.stringify(st));}catch(e){} }
+function load(){ try{const v=JSON.parse(localStorage.getItem(KEY)||"null"); if(v&&v.start) return v;}catch(e){} return null; }
+function clear(){ try{localStorage.removeItem(KEY);}catch(e){} }
+
+function fmt(s){s=Math.max(0,Math.round(s));return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");}
+function remaining(){ return LIMIT-((st.end||Date.now())-st.start)/1000; }
+function runClock(){
+  clearInterval(tick);
+  const upd=()=>{ const r=remaining(); $("#ex-clock").textContent=fmt(r);
+    $("#ex-timer").classList.toggle("warn", r<=300 && !st.submitted);
+    if(r<=0 && !st.submitted){ doSubmit(true); } };
+  upd(); tick=setInterval(upd,1000);
+}
+function show(id){ ["#ex-scrStart","#ex-scrExam","#ex-scrResult"].forEach(s=>$(s).classList.add("xhide")); $(id).classList.remove("xhide"); if($("#panel-exam").classList.contains("active")) window.scrollTo(0,0); }
+
+/* ---------- vẽ một câu ---------- */
+function passageHTML(text,curN){
+  return text.replace(/\{(\d+)\}/g,(m,k)=>{ k=+k; const a=st.ans[k];
+    const q=Q.find(x=>x.n===k); const fill=(a!==undefined)? (q.bank? "("+LT[a]+")" : q.opts[a]) : "";
+    return `<span class="blank${k===curN?' cur':''}${fill?' filled':''}">${fill||k}</span>`; });
+}
+function render(){
+  const q=Q[st.cur], p=PARTS[q.part];
+  $("#ex-partHead").innerHTML=`<div class="pt">第${p.no}部分　${p.name}<em>${p.en}｜第 ${p.from}～${p.to} 題</em></div><div class="desc">${p.desc}</div><div class="vi">${p.vi}</div>`;
+  const chosen=st.ans[q.n];
+  const cls=i=>{ if(review){ if(i===q.ans) return " ok"; if(i===chosen) return " no"; return ""; } return i===chosen?" sel":""; };
+  let h="";
+  if(q.type==="pic"){
+    h+=`<div class="stem"><span class="qno">${q.n}</span>${q.stem}</div><div class="picgrid">`+
+       q.opts.map((svg,i)=>`<button class="picopt${cls(i)}" data-i="${i}"><span class="lt">${LT[i]}</span>${svg}</button>`).join("")+`</div>`;
+  }else if(q.type==="mat"){
+    h+=`<div class="material">${q.material}</div><div class="stem" style="font-size:1rem;margin-bottom:10px"><span class="qno">${q.n}</span>根據圖片，下面哪一個句子是對的？</div><div class="optlist">`+
+       q.opts.map((o,i)=>`<button class="opt${cls(i)}" data-i="${i}"><span class="lt">${LT[i]}</span><span>${o}</span></button>`).join("")+`</div>`;
+  }else if(q.type==="gap"){
+    h+=`<div class="passage">${passageHTML(q.passage,q.n)}</div>`;
+    h+=`<div class="stem" style="font-size:1rem;margin-bottom:10px"><span class="qno">${q.n}</span>${q.bank?"請選出第 "+q.n+" 題空格的答案：":"請選出最適合的答案："}</div>`;
+    h+= q.bank
+      ? `<div class="optlist" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))">`+q.opts.map((o,i)=>{ const used=Object.entries(st.ans).some(([k,v])=>+k!==q.n&&+k>=41&&+k<=45&&v===i); return `<button class="opt${cls(i)}" data-i="${i}"${used&&!review?' style="opacity:.55"':''}><span class="lt">${LT[i]}</span><span>${o}${used&&!review?' <small style="color:#888">(đã dùng)</small>':''}</span></button>`; }).join("")+`</div>`
+      : `<div class="optlist" style="flex-direction:row;flex-wrap:wrap">`+q.opts.map((o,i)=>`<button class="opt${cls(i)}" data-i="${i}" style="width:auto;flex:1 1 150px"><span class="lt">${LT[i]}</span><span>${o}</span></button>`).join("")+`</div>`;
+  }else{
+    h+=`<div class="passage">${q.passage}</div><div class="stem"><span class="qno">${q.n}</span>${q.stem}</div><div class="optlist">`+
+       q.opts.map((o,i)=>`<button class="opt${cls(i)}" data-i="${i}"><span class="lt">${LT[i]}</span><span>${o}</span></button>`).join("")+`</div>`;
+  }
+  if(review){
+    const ok=chosen===q.ans;
+    h+=`<div class="explain ${ok?'ok':'no'}"><b>${ok?"✓ Đúng":"✗ "+(chosen===undefined?"Chưa làm":"Sai, em chọn ("+LT[chosen]+")")}　·　正答：(${LT[q.ans]})${q.bank?" "+P4OPTS[q.ans]:""}</b>${q.exp}</div>`;
+  }
+  $("#ex-qBody").innerHTML=h;
+  $("#ex-qBody").querySelectorAll("[data-i]").forEach(b=>b.addEventListener("click",()=>{ if(review||st.submitted) return; choose(+b.dataset.i); }));
+  $("#ex-btnPrev").disabled=st.cur===0;
+  $("#ex-btnNext").textContent= st.cur===Q.length-1 ? (review?"回到成績 ▶":"交卷 ▶") : "下一題 ▶";
+  $("#ex-btnFlag").classList.toggle("on",!!st.flag[q.n]);
+  $("#ex-btnFlag").classList.toggle("xhide",review);
+  palette();
+}
+function choose(i){ const q=Q[st.cur]; st.ans[q.n]=i; save(); render(); }
+function go(k){ st.cur=Math.max(0,Math.min(Q.length-1,k)); save(); render(); window.scrollTo({top:0}); }
+
+function palette(){
+  $("#ex-sideTitle").textContent= review? "檢討 Xem lại" : "作答情形 Tiến độ";
+  $("#ex-legend").innerHTML= review
+    ? `<span><i style="background:var(--ok);border-color:var(--ok)"></i>Đúng</span><span><i style="background:var(--bad);border-color:var(--bad)"></i>Sai / bỏ trống</span>`
+    : `<span><i style="background:var(--ans);border-color:var(--ans)"></i>Đã làm</span><span><i></i>Chưa làm</span><span><i style="background:var(--mark);border-color:var(--mark);border-radius:50%"></i>Đánh dấu</span>`;
+  $("#ex-palette").innerHTML=PARTS.map((p,pi)=>`<div class="pgroup"><div class="gl">第${p.no}部分 ${p.name}</div><div class="cells">`+
+    Q.filter(q=>q.part===pi).map(q=>{ const idx=Q.indexOf(q); let c="cell";
+      if(review) c+= st.ans[q.n]===q.ans?" ok":" no"; else { if(st.ans[q.n]!==undefined) c+=" done"; if(st.flag[q.n]) c+=" flag"; }
+      if(idx===st.cur) c+=" cur"; return `<button class="${c}" data-q="${idx}">${q.n}</button>`; }).join("")+`</div></div>`).join("");
+  $("#ex-palette").querySelectorAll("[data-q]").forEach(b=>b.addEventListener("click",()=>go(+b.dataset.q)));
+  const done=Object.keys(st.ans).length;
+  $("#ex-btnSubmit").classList.toggle("xhide",review);
+  $("#ex-btnBackResult").classList.toggle("xhide",!review);
+  if(!review) $("#ex-btnSubmit").textContent=`交卷 Nộp bài (${done}/50)`;
+}
+
+/* ---------- nộp bài ---------- */
+function modal(html){ $("#ex-modalBox").innerHTML=html; $("#ex-modal").classList.remove("xhide"); }
+function closeModal(){ $("#ex-modal").classList.add("xhide"); }
+function askSubmit(){
+  const left=Q.filter(q=>st.ans[q.n]===undefined).map(q=>q.n);
+  const flags=Q.filter(q=>st.flag[q.n]).map(q=>q.n);
+  modal(`<h3>確定要交卷嗎？</h3><div class="vi2">Em chắc chắn muốn nộp bài?</div>
+    <p class="vi2" style="margin:10px 0 0">${left.length?`Còn <b style="color:var(--bad)">${left.length} câu chưa làm</b>: ${left.join(", ")}`:"Em đã làm đủ 50 câu."}${flags.length?`<br>Câu đang đánh dấu: ${flags.join(", ")}`:""}<br>Thời gian còn lại: ${fmt(remaining())}</p>
+    <div class="row"><button class="btn ghost" id="ex-mNo">繼續作答 Làm tiếp</button><button class="btn red" id="ex-mYes">交卷 Nộp bài</button></div>`);
+  $("#ex-mNo").onclick=closeModal; $("#ex-mYes").onclick=()=>{closeModal();doSubmit(false);};
+}
+function doSubmit(auto){
+  st.submitted=true; st.end=Math.min(Date.now(), st.start+LIMIT*1000); save(); runClock();
+  if(auto && $("#panel-exam").classList.contains("active")) toast("Đã hết 60 phút, bài được nộp tự động.");
+  showResult();
+}
+function tally(){
+  return PARTS.map((p,pi)=>{ const qs=Q.filter(q=>q.part===pi); const ok=qs.filter(q=>st.ans[q.n]===q.ans).length; return {p,ok,total:qs.length}; });
+}
+function showResult(){
+  review=false;
+  const t=tally(), raw=t.reduce((s,x)=>s+x.ok,0), used=(st.end-st.start)/1000;
+  $("#ex-resRaw").textContent=raw;
+  $("#ex-resWho").textContent=`Thời gian làm bài: ${fmt(used)}`;
+  const pct=Math.round(raw/50*100);
+  $("#ex-resNote").innerHTML= pct>=80? `Đúng ${pct}%. Rất tốt! Em đã nắm chắc dạng đề A2. Hãy xem lại những câu sai để không mất điểm oan.`
+    : pct>=60? `Đúng ${pct}%. Khá tốt. Em xem lại phần nào ít câu đúng nhất trong bảng bên dưới để ôn thêm.`
+    : `Đúng ${pct}%. Em cần ôn thêm. Bấm "Xem lại từng câu" để đọc lời giải thích, rồi làm lại đề nhé.`;
+  $("#ex-resTable").innerHTML=`<tr><th>部分</th><th>題型</th><th>答對</th><th>Tỉ lệ</th></tr>`+
+    t.map(x=>`<tr><td>${x.p.no}</td><td>${x.p.name} <span class="vi2" style="color:var(--muted)">${x.p.en}</span></td><td>${x.ok} / ${x.total}</td><td>${Math.round(x.ok/x.total*100)}%</td></tr>`).join("")+
+    `<tr><th colspan="2">合計 Tổng</th><th>${raw} / 50</th><th>${pct}%</th></tr>`;
+  show("#ex-scrResult");
+}
+function report(){
+  const t=tally(), raw=t.reduce((s,x)=>s+x.ok,0);
+  const wrong=Q.filter(q=>st.ans[q.n]!==q.ans).map(q=>q.n);
+  return [
+    "TOCFL 閱讀 入門基礎級 – ĐỀ THI THỬ",
+    `Thời gian làm: ${fmt((st.end-st.start)/1000)} / 60:00`,
+    `Số câu đúng: ${raw}/50 (${Math.round(raw/50*100)}%)`,
+    ...t.map(x=>`  第${x.p.no}部分 ${x.p.name}: ${x.ok}/${x.total}`),
+    `Câu sai/bỏ trống: ${wrong.length?wrong.join(", "):"không có"}`,
+    `Bài làm: ${Q.map(q=>q.n+(st.ans[q.n]===undefined?"-":LT[st.ans[q.n]])).join(" ")}`
+  ].join("\n");
+}
+
+/* ---------- gắn sự kiện ---------- */
+function startExam(fresh){
+  if(fresh){ st={ans:{},flag:{},cur:0,start:Date.now(),end:0,submitted:false}; save(); }
+  runClock();
+  if(st.submitted){ showResult(); return; }
+  show("#ex-scrExam"); render();
+}
+$("#ex-btnStart").onclick=()=>startExam(true);
+$("#ex-btnPrev").onclick=()=>go(st.cur-1);
+$("#ex-btnNext").onclick=()=>{ if(st.cur<Q.length-1) go(st.cur+1); else if(review) showResult(); else askSubmit(); };
+$("#ex-btnFlag").onclick=()=>{ const n=Q[st.cur].n; st.flag[n]=!st.flag[n]; save(); render(); };
+$("#ex-btnSubmit").onclick=askSubmit;
+$("#ex-btnBackResult").onclick=showResult;
+$("#ex-btnReview").onclick=()=>{ review=true; st.cur=0; show("#ex-scrExam"); render(); };
+$("#ex-btnRetry").onclick=()=>{
+  clear(); clearInterval(tick); review=false;
+  closeModal();
+  $("#ex-timer").classList.remove("warn");
+  $("#who").textContent="";
+  startExam(true);
+};
+document.addEventListener("keydown",e=>{
+  if(!$("#panel-exam").classList.contains("active") || $("#ex-scrExam").classList.contains("xhide") || !$("#ex-modal").classList.contains("xhide") || /INPUT|TEXTAREA/.test(document.activeElement.tagName)) return;
+  if(e.key==="ArrowRight") $("#ex-btnNext").click();
+  else if(e.key==="ArrowLeft") $("#ex-btnPrev").click();
+  else if(!review && !st.submitted){ const i="abcdef".indexOf(e.key.toLowerCase()); if(i>=0 && i<Q[st.cur].opts.length) choose(i); }
+});
+function toast(m){ const t=document.createElement("div"); t.className="ex-toast"; t.textContent=m; document.body.appendChild(t); setTimeout(()=>t.remove(),3500); }
+
+/* ---------- tiếp tục bài đang làm dở ---------- */
+function refreshResume(){
+  const box=$("#ex-resume"); if(!box) return;
+  const saved=load();
+  if(!saved || saved.submitted || $("#ex-scrStart").classList.contains("xhide")){ box.classList.add("xhide"); return; }
+  const left=(60*60)-((Date.now()-saved.start)/1000);
+  if(left<=0){ box.classList.add("xhide"); return; }
+  $("#ex-resumeTxt").textContent=`Em đang làm dở bài thi (đã làm ${Object.keys(saved.ans).length}/50 câu, còn ${fmt(left)}). Em muốn làm tiếp không?`;
+  box.classList.remove("xhide");
+}
+$("#ex-resYes").onclick=()=>{ const s=load(); if(s){ st=s; startExam(false); } };
+$("#ex-resNo").onclick=()=>{ clear(); $("#ex-resume").classList.add("xhide"); };
+(function(){
+  const saved=load();
+  if(saved){
+    st=saved;
+    if(st.submitted){ startExam(false); }
+    else if(remaining()<=0){ startExam(false); doSubmit(true); }
+    else refreshResume();
+  }
+  const tb=document.querySelector('.tab-btn[data-tab="exam"]');
+  if(tb) tb.addEventListener("click",refreshResume);
+})();
+
+})();
+</script>
 </body>
 </html>
