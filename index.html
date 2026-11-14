@@ -11231,7 +11231,7 @@ $("#ex-btnRetry").onclick=()=>{
   clear(); clearInterval(tick); review=false;
   closeModal();
   $("#ex-timer").classList.remove("warn");
-  $("#who").textContent="";
+  const w=$("#ex-resWho"); if(w) w.textContent="";
   startExam(true);
 };
 document.addEventListener("keydown",e=>{
