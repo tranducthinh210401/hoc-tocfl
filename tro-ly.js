@@ -726,14 +726,23 @@ function detectIntent(text){
 }
 /* Đoạn văn: người dùng gửi nhiều câu → dịch sang ngôn ngữ còn lại + liệt kê từ vựng + thống kê */
 function detectPassage(text){
-  text=String(text||'').trim();if(text.length<30||NOINT_RE.test(text))return null;
+  text=String(text||'').trim();if(text.length<10)return null;
   var flat=text.replace(/\s+/g,''),zh=(text.match(ZH_ALL)||[]).join('').length;
+  var asked=/(dịch|translate|翻譯|翻译)/i.test(text.slice(0,25));            /* "dịch giúp mình đoạn này: …" */
   var sents=text.split(/[。！？!?]+|\.(?=\s|$)|\n+/).filter(function(x){return x.replace(/\s/g,'').length>1}).length;
-  if(zh>=15&&zh>=flat.length*0.4)return {dir:'zh2vi'};
-  if(zh<6){
-    var words=text.split(/\s+/).length;
-    if(words>=18&&(sents>=2||/\n/.test(text)))return {dir:'vi2zh'};
-    if(words>=40)return {dir:'vi2zh'};
+  if(zh>=10&&zh>=flat.length*0.4){
+    if(!asked&&detectIntent(text))return null;                              /* "早安是什麼意思" → tra nhanh */
+    if(!asked&&NOINT_RE.test(text))return null;
+    if(zh>=14||/[，。！？、；,.!?]/.test(text)||asked)return {dir:'zh2vi'};
+    return null;
+  }
+  if(zh<4){
+    var words=text.replace(/^[^:：\n]{0,40}(dịch|translate)[^:：\n]{0,30}[:：]\s*/i,'').split(/\s+/).filter(Boolean).length;
+    if(NOINT_RE.test(text)&&!asked)return null;
+    if(asked&&words>=4)return {dir:'vi2zh'};
+    var isQ=/\?\s*$/.test(text)||/^(cho (mình|tôi) hỏi|làm sao|tại sao|vì sao|khi nào|ở đâu|cái gì|có phải|có thể|bạn có)/i.test(text);
+    if(isQ)return (words>=25||sents>=3)?{dir:'vi2zh'}:null;
+    if(words>=12||(words>=8&&sents>=2)||(words>=9&&/[,;]/.test(text)))return {dir:'vi2zh'};
   }
   return null;
 }
