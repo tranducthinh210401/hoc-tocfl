@@ -2773,6 +2773,8 @@ html.sb-collapsed .brand-logo{width:46px;height:46px;border-width:2px;border-rad
 #panel-talk .tk-vi{font-family:'Be Vietnam Pro',sans-serif;font-size:clamp(14.5px,1.3vw,17px);font-weight:500;line-height:1.5;color:var(--text-secondary);margin-top:4px;}
 #panel-talk .tk-wrap.nopy .tk-c i{display:none;}
 #panel-talk .tk-wrap.novi .tk-vi{display:none;}
+#panel-talk .tk-wrap.hz .tk-zh{display:none;}
+#panel-talk .tk-wrap.hz .tk-vi{display:block!important;margin-top:2px;font-size:clamp(18px,1.9vw,23px);font-weight:600;line-height:1.55;color:var(--text);}
 #panel-talk .tk-empty{margin:36px auto 10px;max-width:460px;text-align:center;color:var(--text-secondary);font-size:14px;line-height:1.6;padding:28px 20px;border:1px dashed var(--border);border-radius:var(--u-r-m,18px);background:var(--surface-2);}
 #panel-talk .tk-empty b{display:block;font-size:16px;color:var(--text);margin-bottom:6px;}
 @media (max-width:700px){
@@ -3540,6 +3542,7 @@ html.sb-collapsed .brand-logo{width:46px;height:46px;border-width:2px;border-rad
             <div class="tk-opt">Pinyin<button class="tk-sw" id="tk-swpy" type="button" role="switch" aria-checked="true" aria-label="Hiện pinyin"></button></div>
             <div class="tk-opt">Tốc độ đọc<select class="tk-sel tk-rate" id="tk-rate" aria-label="Tốc độ đọc"><option value="1">Chậm</option><option value="1.25">Thường</option><option value="1.5">Nhanh</option><option value="1.75">Rất nhanh</option></select></div>
             <div class="tk-opt">Dịch nghĩa<button class="tk-sw" id="tk-swvi" type="button" role="switch" aria-checked="true" aria-label="Hiện dịch nghĩa"></button></div>
+            <div class="tk-opt">Dịch chữ Hán<button class="tk-sw" id="tk-swhz" type="button" role="switch" aria-checked="false" aria-label="Dịch toàn bộ hội thoại sang tiếng Việt"></button></div>
           </div>
         </div>
       </div>
@@ -9137,11 +9140,13 @@ kbBuild();initScene();idle();
 
   /* ---------- Cài đặt hiển thị (nhớ trên máy) ---------- */
   const SKEY = 'tv_talk_v1';
-  let cfg = {py:true, vi:true, rate:1.25};
-  try{ const s = JSON.parse(localStorage.getItem(SKEY) || 'null'); if(s){ cfg.py = s.py !== false; cfg.vi = s.vi !== false; if(+s.rate >= 0.8 && +s.rate <= 2) cfg.rate = +s.rate; } }catch(e){}
+  let cfg = {py:true, vi:true, hz:false, rate:1.25};
+  try{ const s = JSON.parse(localStorage.getItem(SKEY) || 'null'); if(s){ cfg.py = s.py !== false; cfg.vi = s.vi !== false; cfg.hz = s.hz === true; if(+s.rate >= 0.8 && +s.rate <= 2) cfg.rate = +s.rate; } }catch(e){}
   function applyCfg(){
     $('tk-wrap').classList.toggle('nopy', !cfg.py);
     $('tk-wrap').classList.toggle('novi', !cfg.vi);
+    $('tk-wrap').classList.toggle('hz', !!cfg.hz);
+    $('tk-swhz').setAttribute('aria-checked', !!cfg.hz);
     $('tk-swpy').setAttribute('aria-checked', cfg.py);
     $('tk-swvi').setAttribute('aria-checked', cfg.vi);
     $('tk-rate').value = String(cfg.rate);
@@ -9313,6 +9318,7 @@ kbBuild();initScene();idle();
   });
   $('tk-swpy').addEventListener('click', () => { cfg.py = !cfg.py; applyCfg(); });
   $('tk-swvi').addEventListener('click', () => { cfg.vi = !cfg.vi; applyCfg(); });
+  $('tk-swhz').addEventListener('click', () => { cfg.hz = !cfg.hz; applyCfg(); });
   $('tk-rate').addEventListener('change', e => { cfg.rate = +e.target.value || 1.25; applyCfg(); e.target.blur();
     try{ if(playing && currentAudio && 'playbackRate' in currentAudio){ currentAudio.defaultPlaybackRate = cfg.rate; currentAudio.playbackRate = cfg.rate; } }catch(x){} });
 
