@@ -673,7 +673,13 @@ function sendChat(){
   if(!API){addMsg('assistant','Mình chưa được nối với máy chủ AI nên chưa trò chuyện tự nhiên được 🥲 Bạn xem hướng dẫn trong thư mục worker/README.md để bật nhé.');convo.pop();return}
   busy=true;cgo.disabled=true;
   var typing=addMsg('assistant','…');
-  apiChat(convo.slice(-12)).then(function(r){
+  var lastDraw=0,shown=false;
+  function live(txt){   /* vẽ dần câu trả lời, tối đa ~8 lần/giây cho nhẹ máy */
+    var now=Date.now();if(now-lastDraw<120)return;lastDraw=now;
+    txt=txt.replace(/<think>[\s\S]*?<\/think>/g,'').replace(/<think>[\s\S]*$/,'');if(!txt.trim())return;
+    try{var fh=fmt(txt);typing.classList.toggle('rich',fh.indexOf('ta-rich')>=0);typing.innerHTML=fh;shown=true}catch(e){}
+  }
+  apiChat(convo.slice(-12),live).then(function(r){
     if(/\*\*\s*字詞\s*\*\*/.test(r.text)){   /* AI chép nguyên mẫu "字詞" → thay bằng từ thật */
       var rw='',tz=(t.match(ZH_ALL)||[]).join('');
       if(tz&&tz.length<=10&&tz.length>=t.replace(/[\s?？!！。.]/g,'').length*0.6)rw=tz;
@@ -803,11 +809,31 @@ function srcHtml(src){
   src.forEach(function(x){if(!x||!x.url||!/^https:\/\//.test(x.url)||seen[x.name])return;seen[x.name]=1;out.push('<a href="'+esc(x.url)+'" target="_blank" rel="noopener">'+esc(x.name)+'</a>')});
   return out.length?'<div class="ta-src">🔎 Nguồn tra cứu: '+out.join(' · ')+'</div>':'';
 }
-function apiChat(messages){
+function apiChat(messages,onDelta){
   var lastUser='';for(var i=messages.length-1;i>=0;i--){if(messages[i].role==='user'){lastUser=messages[i].content;break}}
-  return fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({task:'chat',messages:messages,context:buildContext(lastUser)})})
-   .then(function(r){return r.json().catch(function(){return {ok:false,error:'http_'+r.status}})})
-   .then(function(j){if(!j||!j.ok||!j.data||!j.data.reply){var e=new Error('chat');e.code=j&&j.error;throw e}return {text:String(j.data.reply),sources:j.data.sources||[],status:j.data.status||''}});
+  var streaming=!!onDelta&&typeof ReadableStream!=='undefined';
+  return fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({task:'chat',messages:messages,context:buildContext(lastUser),stream:streaming})})
+   .then(function(r){
+    var ct=r.headers.get('content-type')||'';
+    if(streaming&&r.ok&&ct.indexOf('event-stream')>=0&&r.body&&r.body.getReader){
+      var rd=r.body.getReader(),dec=new TextDecoder(),buf='',text='',meta={sources:[],status:''};
+      return (function pump(){return rd.read().then(function(x){
+        if(x.value)buf+=dec.decode(x.value,{stream:!x.done});
+        var i;while((i=buf.indexOf('\n'))>=0){
+          var line=buf.slice(0,i).trim();buf=buf.slice(i+1);
+          if(line.indexOf('data:')!==0)continue;
+          try{var j=JSON.parse(line.slice(5));if(j.t){text+=j.t;onDelta(text)}if(j.done){meta=j}}catch(e){}
+        }
+        if(!x.done)return pump();
+        text=text.replace(/<think>[\s\S]*?<\/think>/g,'').trim();
+        if(!text){var e=new Error('chat');throw e}
+        return {text:text,sources:meta.sources||[],status:meta.status||''};
+      })})();
+    }
+    return r.json().catch(function(){return {ok:false,error:'http_'+r.status}}).then(function(j){
+      if(!j||!j.ok||!j.data||!j.data.reply){var e=new Error('chat');e.code=j&&j.error;throw e}
+      return {text:String(j.data.reply),sources:j.data.sources||[],status:j.data.status||''}});
+   });
 }
 function showView(v){
   dictEl.hidden=v!=='dict';chatEl.hidden=v!=='chat';

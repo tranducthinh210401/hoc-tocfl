@@ -108,7 +108,7 @@ const tmo = (ms) => (typeof AbortSignal !== "undefined" && AbortSignal.timeout ?
 async function moedict(word) {
   for (const path of ["https://www.moedict.tw/uni/", "https://www.moedict.tw/a/"]) {
     try {
-      const r = await fetch(path + encodeURIComponent(word) + ".json", { signal: tmo(3000) });
+      const r = await fetch(path + encodeURIComponent(word) + ".json", { signal: tmo(1800) });
       if (!r.ok) continue;
       const d = await r.json();
       const hs = (d.heteronyms || []).slice(0, 2);
@@ -122,7 +122,7 @@ async function moedict(word) {
 async function wiktionary(word) {
   try {
     const u = "https://vi.wiktionary.org/w/api.php?action=query&format=json&prop=extracts&explaintext=1&redirects=1&titles=" + encodeURIComponent(word);
-    const r = await fetch(u, { signal: tmo(3000) });
+    const r = await fetch(u, { signal: tmo(1800) });
     if (!r.ok) return null;
     const d = await r.json();
     const pages = d.query && d.query.pages ? Object.values(d.query.pages) : [];
@@ -206,6 +206,7 @@ export default {
     let msgs = null;
     let sources = [];
     const status = {};
+    const limP = overLimit(env, req);   /* chạy song song với tra cứu để đỡ chờ */
     if (task === "chat") {
       msgs = (Array.isArray(body.messages) ? body.messages : [])
         .filter(m => m && (m.role === "user" || m.role === "assistant") && typeof m.content === "string" && m.content.trim())
@@ -221,7 +222,7 @@ export default {
       }
       if (!msgs.length || msgs[msgs.length - 1].role !== "user") return json({ ok: false, error: "empty" }, 400, h);
     } else if (!q) return json({ ok: false, error: "empty" }, 400, h);
-    if (await overLimit(env, req)) return json({ ok: false, error: "limit" }, 429, h);
+    if (await limP) return json({ ok: false, error: "limit" }, 429, h);
 
     const system = task === "grammar" ? SYS_GRAMMAR : task === "chat" ? SYS_CHAT : SYS_TRANSLATE;
     const hint = task === "translate" && (body.dir === "zh2vi" || body.dir === "vi2zh")
@@ -230,13 +231,15 @@ export default {
       const models = (env.MODELS || "@cf/meta/llama-3.3-70b-instruct-fp8-fast,@cf/qwen/qwen3-30b-a3b-fp8").split(",").map(x => x.trim()).filter(Boolean);
       const messages = [{ role: "system", content: system + "\n/no_think" }].concat(
         task === "chat" ? msgs : [{ role: "user", content: "<input>\n" + q + "\n</input>" + hint }]);
+      const wantStream = task === "chat" && body.stream === true;
       let r = null, lastErr = null;
       for (const model of models) {
         try {
           r = await env.AI.run(model, {
             messages,
-            max_tokens: task === "chat" ? 2600 : task === "grammar" ? 1800 : 600,
+            max_tokens: task === "chat" ? 2200 : task === "grammar" ? 1800 : 600,
             temperature: task === "chat" ? 0.45 : 0.2,
+            ...(wantStream ? { stream: true } : {}),
           });
           break;
         } catch (e) {
@@ -245,6 +248,31 @@ export default {
         }
       }
       if (r === null) throw lastErr || new Error("no model");
+      if (wantStream && r && typeof r.getReader === "function") {
+        /* Phát từng đoạn chữ về trình duyệt ngay khi AI sinh ra → người dùng thấy câu trả lời hiện dần, không phải chờ hết */
+        const enc = new TextEncoder(), dec = new TextDecoder();
+        const meta = JSON.stringify({ done: 1, sources: sources.map(x => ({ name: x.name, url: x.url })), status: status.web || "" });
+        let buf = "";
+        const out = new TransformStream({
+          transform(chunk, ctl) {
+            buf += dec.decode(chunk, { stream: true });
+            let i;
+            while ((i = buf.indexOf("\n")) >= 0) {
+              const line = buf.slice(0, i).trim(); buf = buf.slice(i + 1);
+              if (!line.startsWith("data:")) continue;
+              const d = line.slice(5).trim();
+              if (!d || d === "[DONE]") continue;
+              try {
+                const j = JSON.parse(d);
+                const t = typeof j.response === "string" ? j.response : (j.choices && j.choices[0] && j.choices[0].delta && j.choices[0].delta.content) || "";
+                if (t) ctl.enqueue(enc.encode("data: " + JSON.stringify({ t }) + "\n\n"));
+              } catch {}
+            }
+          },
+          flush(ctl) { ctl.enqueue(enc.encode("data: " + meta + "\n\n")); },
+        });
+        return new Response(r.pipeThrough(out), { status: 200, headers: { ...h, "Content-Type": "text/event-stream; charset=utf-8", "Cache-Control": "no-cache", "X-Accel-Buffering": "no" } });
+      }
       let text = typeof r === "string" ? r : (r && (r.response || (r.choices && r.choices[0] && r.choices[0].message && r.choices[0].message.content))) || "";
       text = String(text).replace(/<think>[\s\S]*?<\/think>/g, "").trim();
       if (!text) return json({ ok: false, error: "empty_reply" }, 502, h);
